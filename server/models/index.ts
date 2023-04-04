@@ -35,5 +35,10 @@ Post.initModel(sequelize);
 Post_comment.initModel(sequelize);
 Nft_info.initModel(sequelize);
 
+User.associate(db);
+Nft.associate(db);
+Post.associate(db);
+Post_comment.associate(db);
+
 // 모듈로 꺼낸다.
 export default db;
