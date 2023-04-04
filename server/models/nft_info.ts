@@ -5,6 +5,7 @@ interface Nft_infoAttributes {
     player:string;
     grade:number;
     level:number;
+    team:string;
     season:string;
     img_url:string;
 }
@@ -14,6 +15,7 @@ class Nft_info extends Model<Nft_infoAttributes> {
     public player!: string;
     public grade!: number;
     public level!: number;
+    public team!: string;
     public season!: string;
     public img_url!: string;
 
@@ -36,6 +38,10 @@ class Nft_info extends Model<Nft_infoAttributes> {
             },
             level: {
                 type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            team: {
+                type: DataTypes.STRING(255),
                 allowNull: false,
             },
             season: {
