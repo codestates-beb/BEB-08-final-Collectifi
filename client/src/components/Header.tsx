@@ -1,12 +1,24 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 // import { Link } from 'react-scroll';
+import {useAnimation, motion, useScroll} from 'framer-motion';
 import {FaBars} from 'react-icons/fa';
+import {PageLayoutProps} from './PageLayout';
 
-const Nav = styled.nav`
-  background: tomato;
+const navVariants = {
+  top: {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+  },
+  scroll: {
+    backgroundColor: 'white',
+  },
+};
+
+const Nav = styled(motion.div)`
+  background: '#000';
   height: 70px;
+  /* margin-top: -70px; */
   display: flex;
   justify-content: center;
   font-size: 1rem;
@@ -108,10 +120,25 @@ const NavBtnLink = styled(Link)`
   }
 `;
 
-const Navbar = ({toggle}: {toggle: () => void}) => {
+const Header = ({toggle}: PageLayoutProps) => {
+  const headerAnimation = useAnimation();
+  const {scrollY} = useScroll();
+  useEffect(() => {
+    scrollY.onChange(() => {
+      if (scrollY.get() > 50) {
+        headerAnimation.start('scroll');
+        // setDarkMode(false);
+      } else {
+        headerAnimation.start('top');
+        // setDarkMode(true);
+      }
+    });
+  }, [scrollY, headerAnimation]);
+
   return (
     <>
-      <Nav>
+      <Nav variants={navVariants} animate={headerAnimation} initial={'top'}>
+        {/* <Nav scrollNav={scrollNav}> */}
         <NavbarContainer>
           <NavLogo to="/">Hello</NavLogo>
           <MobileIcon onClick={toggle}>
@@ -143,4 +170,4 @@ const Navbar = ({toggle}: {toggle: () => void}) => {
   );
 };
 
-export default Navbar;
+export default Header;
