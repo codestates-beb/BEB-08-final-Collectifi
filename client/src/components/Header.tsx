@@ -8,10 +8,12 @@ import {PageLayoutProps} from './PageLayout';
 
 const navVariants = {
   top: {
-    backgroundColor: 'rgba(0, 0, 0, 0)',
+    // backgroundColor: 'rgba(0, 0, 0, 0)',
+    backgroundColor: '#000',
   },
   scroll: {
-    backgroundColor: 'white',
+    backgroundColor: 'grey',
+    // backgroundColor: 'white',
   },
 };
 
@@ -101,6 +103,7 @@ const NavBtn = styled.nav`
   }
 `;
 const NavBtnLink = styled(Link)`
+  font-weight: bold;
   border-radius: 50px;
   background: #01bf71;
   white-space: nowrap;
@@ -117,6 +120,12 @@ const NavBtnLink = styled(Link)`
     transition: all 0.2s ease-in-out;
     background: #fff;
     color: #010606;
+  }
+  @media screen and (max-width: 960px) {
+    max-width: 10ch;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
   }
 `;
 
@@ -162,7 +171,7 @@ const Header = ({toggle}: PageLayoutProps) => {
             </NavItem>
           </NavMenu>
           <NavBtn>
-            <NavBtnLink to="/">Sign In</NavBtnLink>
+            <NavBtnLink to="/">Connect to Wallet</NavBtnLink>
           </NavBtn>
         </NavbarContainer>
       </Nav>

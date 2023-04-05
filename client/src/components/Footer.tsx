@@ -8,6 +8,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
+import {Link} from 'react-router-dom';
 
 const FooterWrapper = styled.div`
   background-color: #101522;
@@ -35,20 +36,22 @@ const FooterLinksDiv = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
-  color: white;
+  color: rgb(175, 175, 179);
 `;
-const Link = styled.a`
+const Link2 = styled(Link)`
   color: rgb(175, 175, 179);
   text-decoration: none;
 `;
 const Socialmedia = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 4px;
 `;
 interface ImgProps {
-  color: '#ff0000' | '#1da1f2' | '#0077b5' | '#c32aa3';
+  color: '#ff0000' | '#1da1f2' | '#0077b5' | '#c32aa3' | '#1877f2';
 }
-const Img = styled.div<ImgProps>`
+const Img = styled(Link)<ImgProps>`
+  color: rgb(175, 175, 179);
   width: 80%;
   font-size: 25px;
   cursor: pointer;
@@ -69,7 +72,7 @@ const P = styled.p`
   margin: 0.5rem 0;
   cursor: pointer;
   &:hover {
-    color: #01bf71;
+    color: white;
     transition: 0.3s ease-out;
   }
 `;
@@ -87,17 +90,17 @@ const BelowP = styled.p`
   font-size: 14px;
   line-height: 15px;
   margin-left: 2rem;
-  color: white;
+  color: rgb(175, 175, 179);
   font-weight: 600;
 `;
 const Hr = styled.hr`
-  color: white !important;
+  color: rgb(175, 175, 179) !important;
   width: 100%;
 `;
 const FooterCopyrightP = styled.div`
   font-size: 14px;
   line-height: 15px;
-  color: rgba(255, 255, 255);
+  color: rgb(175, 175, 179);
   font-weight: 600;
 `;
 
@@ -108,65 +111,68 @@ function Footer() {
         <FooterLinks className="sb__footer-links">
           <FooterLinksDiv className="sb__footer-links_div">
             <H4>For Business</H4>
-            <Link>
+            <Link2 to="">
               <P>Employer</P>
-            </Link>
-            <Link>
+            </Link2>
+            <Link2 to="">
               <P>Health Plan</P>
-            </Link>
-            <Link>
+            </Link2>
+            <Link2 to="">
               <P>Individual</P>
-            </Link>
+            </Link2>
           </FooterLinksDiv>
 
           <FooterLinksDiv className="sb__footer-links_div">
             <H4>Resources</H4>
-            <Link>
+            <Link2 to="">
               <P>resource center</P>
-            </Link>
-            <Link>
+            </Link2>
+            <Link2 to="">
               <P>Testimonials</P>
-            </Link>
-            <Link>
+            </Link2>
+            <Link2 to="">
               <P>STV</P>
-            </Link>
+            </Link2>
           </FooterLinksDiv>
 
           <FooterLinksDiv className="sb__footer-links_div">
             <H4>Partners</H4>
-            <Link>
+            <Link2 to="">
               <P>Swing Tech</P>
-            </Link>
+            </Link2>
           </FooterLinksDiv>
           <FooterLinksDiv className="sb__footer-links_div">
             <H4>Company</H4>
-            <Link>
+            <Link2 to="">
               <P>About</P>
-            </Link>
-            <Link>
+            </Link2>
+            <Link2 to="">
               <P>Prress</P>
-            </Link>
-            <Link>
+            </Link2>
+            <Link2 to="">
               <P>Career</P>
-            </Link>
-            <Link>
+            </Link2>
+            <Link2 to="">
               <P>Contact</P>
-            </Link>
+            </Link2>
           </FooterLinksDiv>
           <FooterLinksDiv className="sb__footer-links_div">
             <H4>SNS</H4>
             <Socialmedia className="socialmedia">
-              <Img color="#1da1f2">
+              <Img to="" color="#1da1f2">
                 <FontAwesomeIcon icon={faTwitter} />
               </Img>
-              <Img color="#ff0000">
+              <Img to="" color="#ff0000">
                 <FontAwesomeIcon icon={faYoutube} />
               </Img>
-              <Img color="#0077b5">
+              <Img to="" color="#0077b5">
                 <FontAwesomeIcon icon={faLinkedin} />
               </Img>
-              <Img color="#c32aa3">
+              <Img to="" color="#c32aa3">
                 <FontAwesomeIcon icon={faInstagram} />
+              </Img>
+              <Img to="" color="#1877f2">
+                <FontAwesomeIcon icon={faFacebook} />
               </Img>
             </Socialmedia>
           </FooterLinksDiv>
@@ -179,26 +185,26 @@ function Footer() {
             </FooterCopyrightP>
           </div>
           <FooterBelowLinks className="sb__footer-below-links">
-            <Link>
+            <Link2 to="">
               <div>
                 <BelowP>Terms &Conditions</BelowP>
               </div>
-            </Link>
-            <Link>
+            </Link2>
+            <Link2 to="">
               <div>
                 <BelowP>Privacy</BelowP>
               </div>
-            </Link>
-            <Link>
+            </Link2>
+            <Link2 to="">
               <div>
                 <BelowP>Security</BelowP>
               </div>
-            </Link>
-            <Link>
+            </Link2>
+            <Link2 to="">
               <div>
                 <BelowP>Cookie Declaration</BelowP>
               </div>
-            </Link>
+            </Link2>
           </FooterBelowLinks>
         </FooterBelow>
       </FooterPadding>
