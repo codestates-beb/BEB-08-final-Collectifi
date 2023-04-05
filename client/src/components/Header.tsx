@@ -121,12 +121,6 @@ const NavBtnLink = styled(Link)`
     background: #fff;
     color: #010606;
   }
-  @media screen and (max-width: 960px) {
-    max-width: 10ch;
-    white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
-  }
 `;
 
 const Header = ({toggle}: PageLayoutProps) => {
@@ -171,7 +165,7 @@ const Header = ({toggle}: PageLayoutProps) => {
             </NavItem>
           </NavMenu>
           <NavBtn>
-            <NavBtnLink to="/">Connect to Wallet</NavBtnLink>
+            <NavBtnLink to="/">Connect</NavBtnLink>
           </NavBtn>
         </NavbarContainer>
       </Nav>
