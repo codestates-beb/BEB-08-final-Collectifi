@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Routes, Route} from 'react-router-dom';
-import './App.css';
+import { BrowserRouter } from "react-router-dom";
+import { RecoilRoot } from "recoil";
+import { ThemeProvider } from 'styled-components';
 import Sidebar from './components/Sidebar';
-import Footer from './components/Footer';
-import PageLayout from './components/PageLayout';
-import MainPage from './pages/MainPage';
-import NotFound from './pages/NotFound';
+import Router from './Router'; 
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,21 +24,19 @@ function App() {
     setIsOpen(!isOpen);
   };
 
-  return (
-    <div className="App">
-      <Routes>
-        <Route element={<PageLayout toggle={toggle} />}>
-          <Route path="/" element={<MainPage />} />
-          {/* <Route path="/" element={<Home />} />
-                        <Route path={`/users/:username`} element={<MyPage />} />
-                        <Route path="/market" element={<Market />} />
-                        <Route path="/create" element={<Create />} /> */}
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+  const theme = {
+    mainColor: '#111',
+  }
 
-      <Sidebar toggle={toggle} isOpen={isOpen} />
-    </div>
+  return (
+    <RecoilRoot>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Router toggle={toggle} />
+          <Sidebar toggle={toggle} isOpen={isOpen} />
+        </BrowserRouter> 
+      </ThemeProvider>           
+    </RecoilRoot>
   );
 }
 
