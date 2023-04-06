@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import PageLayout from './components/PageLayout';
 import MainPage from './pages/MainPage';
 import NotFound from './pages/NotFound';
+import Community from './pages/CommunityPage';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,10 +32,7 @@ function App() {
       <Routes>
         <Route element={<PageLayout toggle={toggle} />}>
           <Route path="/" element={<MainPage />} />
-          {/* <Route path="/" element={<Home />} />
-                        <Route path={`/users/:username`} element={<MyPage />} />
-                        <Route path="/market" element={<Market />} />
-                        <Route path="/create" element={<Create />} /> */}
+          <Route path="/community" element={<Community />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

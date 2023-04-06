@@ -5,6 +5,10 @@ import {Link} from 'react-router-dom';
 import {useAnimation, motion, useScroll} from 'framer-motion';
 import {FaBars} from 'react-icons/fa';
 import {PageLayoutProps} from './PageLayout';
+// import {f} from '@fortawesome/react-fontawesome';
+import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import Dropdown from './Dropdown';
 
 const navVariants = {
   top: {
@@ -32,6 +36,7 @@ const Nav = styled(motion.div)`
     transition: 0.8s all ease;
   }
 `;
+
 const NavbarContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -77,7 +82,7 @@ const NavMenu = styled.ul`
     display: none;
   }
 `;
-const NavItem = styled.li`
+const NavItem = styled(Link)`
   height: 80px;
 `;
 const NavLink = styled.div`
@@ -124,6 +129,22 @@ const NavBtnLink = styled(Link)`
 `;
 
 const Header = ({toggle}: PageLayoutProps) => {
+  // const [click, setClick] = useState(false);
+  // const handleClick = () => setClick(!click);
+  const [dropdown, setDropdown] = useState('');
+
+  const onMouseEnter = (e: string) => {
+    if (window.innerWidth < 768) {
+      setDropdown(e);
+    } else {
+      setDropdown(e);
+    }
+  };
+
+  const onMouseLeave = () => {
+    setDropdown('');
+  };
+
   const headerAnimation = useAnimation();
   const {scrollY} = useScroll();
   useEffect(() => {
@@ -138,31 +159,81 @@ const Header = ({toggle}: PageLayoutProps) => {
     });
   }, [scrollY, headerAnimation]);
 
+  const menu = [
+    {
+      name: 'Play',
+      link: '/play',
+      submenu: [
+        {name: 'Draw', link: '/draw'},
+        {name: '강화', link: '/upgrade'},
+        {name: '승부', link: '/prediction'},
+      ],
+    },
+    {
+      name: 'Earn',
+      link: '/earn',
+      submenu: [
+        {name: '스테이킹', link: '/staking'},
+        {name: '스왑', link: '/swap'},
+      ],
+    },
+    {name: 'Market', link: '/market'},
+    {name: 'Win', link: '/win'},
+    {name: 'Community', link: '/community'},
+  ];
+
   return (
     <>
       <Nav variants={navVariants} animate={headerAnimation} initial={'top'}>
         {/* <Nav scrollNav={scrollNav}> */}
         <NavbarContainer>
-          <NavLogo to="/">Hello</NavLogo>
+          {/* <NavLogo to="/">COLLECTIFI</NavLogo> */}
+          <NavLogo to="/">Collectifi</NavLogo>
           <MobileIcon onClick={toggle}>
             <FaBars />
           </MobileIcon>
           <NavMenu>
-            <NavItem>
-              <NavLink>메뉴</NavLink>
+            {menu.map(item => (
+              <NavItem
+                key={item.name}
+                to={item.link}
+                onMouseEnter={() => onMouseEnter(item.name)}
+                onMouseLeave={onMouseLeave}
+              >
+                <NavLink>
+                  {item.name}
+                  {item.submenu && (
+                    <>
+                      <FontAwesomeIcon icon={faCaretDown} />
+                      {dropdown == item.name && (
+                        <Dropdown
+                          dropdown={dropdown}
+                          setDropdown={setDropdown}
+                          submenu={item.submenu}
+                        />
+                      )}
+                    </>
+                  )}
+                </NavLink>
+              </NavItem>
+            ))}
+
+            {/* <NavItem to="" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+              <NavLink>
+                Earn
+                <FontAwesomeIcon icon={faCaretDown} />
+                {dropdown && <Dropdown dropdown={dropdown} setDropdown={setDropdown} />}
+              </NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink>목록</NavLink>
+            <NavItem to="">
+              <NavLink>Market</NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink>추가</NavLink>
+            <NavItem to="">
+              <NavLink>Win</NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink>하기</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink>About</NavLink>
-            </NavItem>
+            <NavItem to="">
+              <NavLink>Community</NavLink>
+            </NavItem> */}
           </NavMenu>
           <NavBtn>
             <NavBtnLink to="/">Connect</NavBtnLink>

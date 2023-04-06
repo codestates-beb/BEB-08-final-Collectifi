@@ -50,7 +50,7 @@ const Socialmedia = styled.div`
 interface ImgProps {
   color: '#ff0000' | '#1da1f2' | '#0077b5' | '#c32aa3' | '#1877f2';
 }
-const Img = styled(Link)<ImgProps>`
+const Img = styled.div<ImgProps>`
   color: rgb(175, 175, 179);
   width: 80%;
   font-size: 25px;
@@ -159,19 +159,44 @@ function Footer() {
           <FooterLinksDiv className="sb__footer-links_div">
             <H4>SNS</H4>
             <Socialmedia className="socialmedia">
-              <Img to="" color="#1da1f2">
+              <Img
+                onClick={() => {
+                  window.open('https://github.com/DreamBoysYJ');
+                }}
+                color="#1da1f2"
+              >
                 <FontAwesomeIcon icon={faTwitter} />
               </Img>
-              <Img to="" color="#ff0000">
+              <Img
+                onClick={() => {
+                  window.open('https://github.com/jihwankim255');
+                }}
+                color="#ff0000"
+              >
                 <FontAwesomeIcon icon={faYoutube} />
               </Img>
-              <Img to="" color="#0077b5">
+              <Img
+                onClick={() => {
+                  window.open('https://github.com/bloud411');
+                }}
+                color="#0077b5"
+              >
                 <FontAwesomeIcon icon={faLinkedin} />
               </Img>
-              <Img to="" color="#c32aa3">
+              <Img
+                onClick={() => {
+                  window.open('https://github.com/keepgoing2021');
+                }}
+                color="#c32aa3"
+              >
                 <FontAwesomeIcon icon={faInstagram} />
               </Img>
-              <Img to="" color="#1877f2">
+              <Img
+                onClick={() => {
+                  window.open('https://github.com/soma90');
+                }}
+                color="#1877f2"
+              >
                 <FontAwesomeIcon icon={faFacebook} />
               </Img>
             </Socialmedia>

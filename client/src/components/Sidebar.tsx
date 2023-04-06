@@ -94,11 +94,11 @@ const Sidebar = ({isOpen, toggle}: {isOpen: boolean; toggle: () => void}) => {
       </Icon>
       <SidebarWrapper>
         <SidebarMenu>
-          <SidebarLink>메뉴</SidebarLink>
-          <SidebarLink>목록</SidebarLink>
-          <SidebarLink>추가</SidebarLink>
-          <SidebarLink>하기</SidebarLink>
-          <SidebarLink>About</SidebarLink>
+          <SidebarLink>Play</SidebarLink>
+          <SidebarLink>Earn</SidebarLink>
+          <SidebarLink>Market</SidebarLink>
+          <SidebarLink>Win</SidebarLink>
+          <SidebarLink>Community</SidebarLink>
         </SidebarMenu>
         <SideBtnWrap>
           <SidebarRoute to="">Sign In</SidebarRoute>
