@@ -7,6 +7,10 @@ import PageLayout from './components/PageLayout';
 import MainPage from './pages/MainPage';
 import NotFound from './pages/NotFound';
 import Community from './pages/CommunityPage';
+import {BrowserRouter} from 'react-router-dom';
+import {RecoilRoot} from 'recoil';
+import {ThemeProvider} from 'styled-components';
+import Router from './Router';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,19 +30,19 @@ function App() {
   const toggle = (): void => {
     setIsOpen(!isOpen);
   };
+  const theme = {
+    mainColor: '#111',
+  };
 
   return (
-    <div className="App">
-      <Routes>
-        <Route element={<PageLayout toggle={toggle} />}>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/community" element={<Community />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-
-      <Sidebar toggle={toggle} isOpen={isOpen} />
-    </div>
+    <RecoilRoot>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Router toggle={toggle} />
+          <Sidebar toggle={toggle} isOpen={isOpen} />
+        </BrowserRouter>
+      </ThemeProvider>
+    </RecoilRoot>
   );
 }
 
