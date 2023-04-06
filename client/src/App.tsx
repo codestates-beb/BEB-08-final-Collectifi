@@ -1,15 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Routes, Route} from 'react-router-dom';
-import './App.css';
-import Sidebar from './components/Sidebar';
-import Footer from './components/Footer';
-import PageLayout from './components/PageLayout';
-import MainPage from './pages/MainPage';
-import NotFound from './pages/NotFound';
-import Community from './pages/CommunityPage';
 import {BrowserRouter} from 'react-router-dom';
 import {RecoilRoot} from 'recoil';
 import {ThemeProvider} from 'styled-components';
+import Sidebar from './components/Sidebar';
 import Router from './Router';
 
 function App() {
@@ -30,6 +23,7 @@ function App() {
   const toggle = (): void => {
     setIsOpen(!isOpen);
   };
+
   const theme = {
     mainColor: '#111',
   };

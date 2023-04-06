@@ -19,3 +19,5 @@ const Router: React.FC<{toggle: () => void}> = props => {
 };
 
 export default Router;
+
+export default Router;

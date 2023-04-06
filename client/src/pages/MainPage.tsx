@@ -1,49 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Button from '../components/UI/Button';
+import AlertModal from '../components/UI/AlertModal';
 
 const MainPage = () => {
+  const [error, setError] = useState<any>(null);
+
+  const errorHandler = () => {
+    setError(null);
+  };
+
   return (
     <>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
+      <Button onClick={()=>{setError("asd")}}>TEST</Button>
+      {error && (
+        <AlertModal
+          title={"title"}
+          message={"message"}
+          onConfirm={errorHandler}
+        />
+      )}
     </>
   );
 };
