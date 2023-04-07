@@ -26,12 +26,14 @@ db.sequelize.sync({ force: false })
    });
 
 
-app.use("/", router);
 
 app.use(morgan('dev')); // 로그
 app.use(express.static(path.join(__dirname, 'public'))); // 요청시 기본 경로 설정
 app.use(express.json()); // json 파싱
 app.use(express.urlencoded({extended: false})); // uri 파싱
+
+app.use("/", router);
+
 const corsOptions = {
   origin: true,
   credentials: true,

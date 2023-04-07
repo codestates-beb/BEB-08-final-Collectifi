@@ -9,6 +9,7 @@ interface NftAttributes {
     level:number;
     price: number;
     img_url:string;
+    isSell:boolean;
 }
 
 class Nft extends Model<NftAttributes> {
@@ -20,6 +21,7 @@ class Nft extends Model<NftAttributes> {
     public level!: number;
     public price!: number;
     public img_url!: string;
+    public isSell!: boolean;
 
     public static initModel(sequelize: Sequelize) {
         return Nft.init(
@@ -54,6 +56,10 @@ class Nft extends Model<NftAttributes> {
             },
             img_url: {
                 type: DataTypes.STRING(255),
+                allowNull: false,
+            },
+            isSell: {
+                type: DataTypes.BOOLEAN,
                 allowNull: false,
             },
         },
