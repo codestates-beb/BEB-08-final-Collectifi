@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 
 interface DropdownProps {
-  dropdown: string;
   setDropdown: (value: string) => void;
   submenu?: SubmenuItem[];
 }
@@ -26,7 +25,7 @@ const DropdownMenu = styled.ul`
 `;
 
 const Item = styled.li`
-  background: rgb(175, 175, 179)
+  background: rgb(175, 175, 179);
   cursor: pointer;
 `;
 
@@ -35,16 +34,15 @@ const ItemLink = styled(Link)`
   width: 100%;
   height: 100%;
   text-decoration: none;
-  color: ;#9a6aff;
+  color: #9a6aff;
   padding: 16px;
 
   &:hover {
     background: grey;
-
   }
 `;
 
-const Dropdown = ({dropdown, setDropdown, submenu}: DropdownProps) => {
+const Dropdown = ({setDropdown, submenu}: DropdownProps) => {
   return (
     <DropdownMenu onClick={() => setDropdown('')}>
       {submenu?.map(item => (

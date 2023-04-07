@@ -162,16 +162,16 @@ const Header = ({toggle}: PageLayoutProps) => {
   const menu = [
     {
       name: 'Play',
-      link: '/play',
+      link: '/draw',
       submenu: [
         {name: 'Draw', link: '/draw'},
         {name: '강화', link: '/upgrade'},
-        {name: '승부', link: '/prediction'},
+        // {name: '승부', link: '/prediction'},
       ],
     },
     {
       name: 'Earn',
-      link: '/earn',
+      link: '/staking',
       submenu: [
         {name: '스테이킹', link: '/staking'},
         {name: '스왑', link: '/swap'},
@@ -206,11 +206,7 @@ const Header = ({toggle}: PageLayoutProps) => {
                     <>
                       <FontAwesomeIcon icon={faCaretDown} />
                       {dropdown == item.name && (
-                        <Dropdown
-                          dropdown={dropdown}
-                          setDropdown={setDropdown}
-                          submenu={item.submenu}
-                        />
+                        <Dropdown setDropdown={setDropdown} submenu={item.submenu} />
                       )}
                     </>
                   )}
