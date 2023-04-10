@@ -5,6 +5,7 @@ import {Link, Route, Routes, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {data} from '../data/data';
 import PostPage from './PostPage';
+import Pagination from '../components/UI/Pagination';
 
 interface PostAttributes {
   user_id: number;
@@ -33,16 +34,14 @@ const Community = () => {
     // .catch(error => {
     //   console.error(error);
     // });
-
-    setPost([
-      ...post,
-      ...data.slice(0, 100).map(post => {
+    setPost(
+      data.slice(0, 20).map(post => {
         return {
           ...post,
           created_at: new Date(post.created_at),
         };
       }),
-    ]);
+    );
   }, []);
 
   // const fetchMoreData = () => {
@@ -73,18 +72,35 @@ const Community = () => {
     navigate(`/community/${id}`);
     window.scrollTo(0, 0);
   };
+
+  // 페이지네이션
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const [postsPerPage, setPostsPerPage] = useState(20); // 페이지당 posts 수
+  // 현재 posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPost = post.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
   return (
     <div>
       <Routes>
         <Route path=":id" element={<PostPage />} />
       </Routes>
-      {post &&
-        post.map((item, idx) => (
+      {currentPost &&
+        currentPost.map((item, idx) => (
           <div key={item.user_id} onClick={() => handleClick(idx + 1)}>
             {idx + 1}번{item.user_id}
             {item.title}
           </div>
         ))}
+      <Pagination
+        dataPerPage={postsPerPage}
+        dataLength={post.length}
+        paginate={paginate}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };
