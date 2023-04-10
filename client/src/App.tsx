@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import { BrowserRouter } from "react-router-dom";
-import { RecoilRoot } from "recoil";
-import { ThemeProvider } from 'styled-components';
+import {BrowserRouter} from 'react-router-dom';
+import {RecoilRoot} from 'recoil';
+import {ThemeProvider} from 'styled-components';
 import Sidebar from './components/Sidebar';
-import Router from './Router'; 
+import Router from './Router';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +26,7 @@ function App() {
 
   const theme = {
     mainColor: '#111',
-  }
+  };
 
   return (
     <RecoilRoot>
@@ -34,8 +34,8 @@ function App() {
         <BrowserRouter>
           <Router toggle={toggle} />
           <Sidebar toggle={toggle} isOpen={isOpen} />
-        </BrowserRouter> 
-      </ThemeProvider>           
+        </BrowserRouter>
+      </ThemeProvider>
     </RecoilRoot>
   );
 }
