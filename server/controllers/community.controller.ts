@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { ResponseData } from "./controllers";
 import db from "../models";
-import jwt, { Secret } from "jsonwebtoken";
+// import jwt, { Secret } from "jsonwebtoken";
 import Web3 from "web3";
 import erc20abi from "../abis/erc20Abi";
 import { MyRequest } from "../@types/session";

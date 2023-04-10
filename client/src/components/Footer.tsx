@@ -21,14 +21,14 @@ const FooterPadding = styled.div`
   flex-direction: column;
 `;
 const FooterLinks = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items; flex-start;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    text-align: left;
-    margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 2rem;
 `;
 const FooterLinksDiv = styled.div`
   width: 150px;

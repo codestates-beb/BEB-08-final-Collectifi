@@ -11,19 +11,20 @@ import StakingPage from './pages/StakingPage';
 import SwapPage from './pages/SwapPage';
 import MarketPage from './pages/MarketPage';
 import WinPage from './pages/WinPage';
+import PostPage from './pages/PostPage';
 
 const Router: React.FC<{toggle: () => void}> = props => {
   return (
     <Routes>
       <Route element={<PageLayout toggle={props.toggle} />}>
         <Route path="/" element={<MainPage />} />
-        <Route path="/community" element={<Community />} />
         <Route path="/draw" element={<DrawCardPage />} />
         <Route path="/upgrade" element={<UpgradeCardPage />} />
         <Route path="/staking" element={<StakingPage />} />
         <Route path="/swap" element={<SwapPage />} />
         <Route path="/market" element={<MarketPage />} />
         <Route path="/win" element={<WinPage />} />
+        <Route path="/community/*" element={<Community />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
