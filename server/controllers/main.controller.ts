@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import { ResponseData } from "./controllers";
 import db from "../models";
-import jwt, { Secret } from "jsonwebtoken";
 import { Session } from "express-session";
 import { MyRequest } from "../@types/session";
 

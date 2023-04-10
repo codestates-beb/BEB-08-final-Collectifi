@@ -9,3 +9,13 @@
 ol, ul {
   list-style: none;
 }
+
+body {
+  color: rgb(18, 18, 18);
+  background-color: rgb(250, 250, 250);
+}
+
+a {
+  color: rgb(18, 18, 18);
+  text-decoration: none;
+}
