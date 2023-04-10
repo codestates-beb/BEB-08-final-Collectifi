@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import Web3 from "web3";
+import { MyRequest } from "../@types/session";
 import erc20abi from "../abi/erc20abi";
 import erc721abi from "../abi/erc721abi";
 import db from "../models";
@@ -23,13 +24,14 @@ export const market_get = async (
 };
 
 export const market_sell_get = async (
-    req: Request,
+    req: MyRequest,
     res: Response,
     next: NextFunction
   ) => {
     try {
+        const id = req.session.user?.id;
       const nfts = await db.Nft.findAll({
-          where:{isSell:false}//세션 아이디 받아오기
+          where:{isSell : false,user_id : id}//세션 아이디 받아오기
       })
       res.status(200).send({data:nfts});
     } catch (e) {
@@ -38,13 +40,16 @@ export const market_sell_get = async (
   };
 
 export const market_buy_post = async (
-  req: Request,
+  req: MyRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const {price,toAddress,token_id} = req.body;
-    const user_id = req.body.user_id;
+    const {price,token_id,user_id} = req.body;
+    const toAddress = req.session.user?.address;
+    const toUserId = req.session.user?.id;
+
+
     const nftOwnerAddress = await erc721Contract.methods.ownerOf(token_id).call();
     
     const seller = await db.User.findOne({
@@ -56,6 +61,8 @@ export const market_buy_post = async (
 
     if(await erc20Contract.methods.balanceOf(toAddress) >= price){
         if(nftOwnerAddress == fromAddress){
+            await erc721Contract.methods.approve(toAddress,token_id)
+            .send({from:fromAddress,gas:500000});
             await erc721Contract.methods.transferNFT(fromAddress,toAddress,token_id)
             .send({from:fromAddress,gas:500000});
             await erc20Contract.methods.transfer(fromAddress,price)
@@ -63,7 +70,8 @@ export const market_buy_post = async (
 
             const nftModify = await db.Nft.update({
                 isSell:false,
-                price
+                price,
+                user_id:toUserId
             },{
                 where:{token_id:token_id}
             })
@@ -71,7 +79,7 @@ export const market_buy_post = async (
         }
     }
     
-    res.send("market");
+    res.send("성공했으면 좋겠습니다.");
   } catch (e) {
     console.log(e);
   }
@@ -79,13 +87,13 @@ export const market_buy_post = async (
 
 
 export const market_sell_post = async (
-    req: Request,
+    req: MyRequest,
     res: Response,
     next: NextFunction
   ) => {
     try {
-      const {price,fromAddress,token_id} = req.body;
-    //   const fromAddress = req.session.user?.address;
+      const {price,token_id} = req.body;
+      const fromAddress = req.session.user?.address;
       const nftOwnerAddress = await erc721Contract.methods.ownerOf(token_id).call();
 
       
