@@ -25,8 +25,9 @@ function App() {
   };
 
   const theme = {
-    mainColor: '#111',
-  };
+    mainColor: 'rgb(253, 17, 92)',
+    lineColor: 'rgb(203, 203, 203)',
+  }
 
   return (
     <RecoilRoot>
