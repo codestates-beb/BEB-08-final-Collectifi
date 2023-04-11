@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import { ResponseData } from "./controllers";
 import db from "../models";
-import jwt, { Secret } from "jsonwebtoken";
 import { Session } from "express-session";
 import { MyRequest } from "../@types/session";
 
@@ -39,12 +38,13 @@ export const login_post = async (
       // 3. session에 해당 user 정보 저장
       req.session.loggedIn = true;
       req.session.user = user;
+      const result: ResponseData = {
+        message: "Login Complete",
+        data:user
+      };
+      res.status(200).send(result);
     }
 
-    const result: ResponseData = {
-      message: "Login Complete",
-    };
-    res.send(result);
   } catch (e) {
     console.log(e);
   }
