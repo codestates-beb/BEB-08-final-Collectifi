@@ -4,6 +4,7 @@ import {RecoilRoot} from 'recoil';
 import {ThemeProvider} from 'styled-components';
 import Sidebar from './components/Sidebar';
 import Router from './Router';
+import ScrollReset from './components/ScrollReset';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,8 +32,9 @@ function App() {
 
   return (
     <RecoilRoot>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>      
         <BrowserRouter>
+          <ScrollReset />
           <Router toggle={toggle} />
           <Sidebar toggle={toggle} isOpen={isOpen} />
         </BrowserRouter>
