@@ -7,10 +7,9 @@ import {data} from '../data/data';
 import PostPage from './PostPage';
 import Pagination from '../components/UI/Pagination';
 import Button from '../components/UI/Button';
-import {MyPageLayout} from '../components/mypage/MyPage';
-import BoardList from '../components/mypage/BoardList';
-import BoardTitleItem from '../components/mypage/BoardTitleItem';
-import BoardListItem from '../components/mypage/BoardListItem';
+import BoardList from '../components/UI/BoardList';
+import BoardTitleItem from '../components/UI/BoardTitleItem';
+import BoardListItem from '../components/UI/BoardListItem';
 // created_at 포맷 라이브러리
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
@@ -24,6 +23,13 @@ interface PostsAttributes {
   created_at: Date;
   views: number;
 }
+const CommunityLayout = styled.div`
+  max-width: 60%;
+  margin: 0 auto;
+  @media only screen and (max-width: 1024px) {
+    max-width: 93%;
+  }
+`;
 
 const Community = () => {
   const navigate = useNavigate();
@@ -53,7 +59,9 @@ const Community = () => {
       }),
     );
   }, []);
-
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // },[])
   // const fetchMoreData = () => {
   //   if (!postLoading) {
   //     SetPostLoading(true);
@@ -79,7 +87,7 @@ const Community = () => {
   //   }
   // };
   const handleClick = (id: number) => {
-    navigate(`/community/${id}`);
+    // navigate(`/community/${id}`);
     window.scrollTo(0, 0);
   };
 
@@ -96,7 +104,7 @@ const Community = () => {
   };
 
   return (
-    <MyPageLayout>
+    <CommunityLayout>
       <Routes>
         <Route path=":id" element={<PostPage setCurrentPage={setCurrentPage} />} />
       </Routes>
@@ -130,7 +138,7 @@ const Community = () => {
                 key={item.id}
                 listItem={listItem}
                 gridTemplateColumns="1fr 1fr 1fr 1fr"
-                onClick={() => handleClick(item.id)}
+                linkTo={item.id.toString()}
               />
             );
           })}
@@ -142,7 +150,7 @@ const Community = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-    </MyPageLayout>
+    </CommunityLayout>
   );
 };
 

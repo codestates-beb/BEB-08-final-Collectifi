@@ -38,12 +38,13 @@ export const login_post = async (
       // 3. session에 해당 user 정보 저장
       req.session.loggedIn = true;
       req.session.user = user;
+      const result: ResponseData = {
+        message: "Login Complete",
+        data:user
+      };
+      res.status(200).send(result);
     }
 
-    const result: ResponseData = {
-      message: "Login Complete",
-    };
-    res.send(result);
   } catch (e) {
     console.log(e);
   }

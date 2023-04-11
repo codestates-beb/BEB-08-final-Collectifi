@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import PageTitle from '../mypage/PageTitle';
+import PageTitle from '../UI/PageTitle';
 import Tab from '../UI/Tab';
 import CardList from '../market/CardList';
-import BoardList from './BoardList';
-import BoardTitleItem from './BoardTitleItem';
-import BoardListItem from './BoardListItem';
+import BoardList from '../UI/BoardList';
+import BoardTitleItem from '../UI/BoardTitleItem';
+import BoardListItem from '../UI/BoardListItem';
 
 const MyPage = () => {
   return (
@@ -28,9 +28,7 @@ const MyPage = () => {
                 key={i}
                 listItem={listItem}
                 gridTemplateColumns="1fr 2fr 1fr"
-                onClick={() => {
-                  return;
-                }}
+                linkTo={`${i}`}
               />
             );
           })}
@@ -50,9 +48,7 @@ const MyPage = () => {
                 key={i}
                 listItem={listItem}
                 gridTemplateColumns="1fr 2fr 2fr 1fr 1fr"
-                onClick={() => {
-                  return;
-                }}
+                linkTo={`${i}`}
               />
             );
           })}
@@ -64,10 +60,10 @@ const MyPage = () => {
 
 export default MyPage;
 
-export const MyPageLayout = styled.div`
-  max-width: 80%;
+const MyPageLayout = styled.div`
+  max-width: 60%;
   margin: 0 auto;
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 1024px) {
     max-width: 93%;
   }
 `;

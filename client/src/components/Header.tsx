@@ -171,7 +171,7 @@ const Header = ({toggle}: PageLayoutProps) => {
       link: '/draw',
       submenu: [
         {name: 'Draw', link: '/draw'},
-        {name: '강화', link: '/upgrade'},
+        {name: 'Upgrade', link: '/upgrade'},
         // {name: '승부', link: '/prediction'},
       ],
     },
