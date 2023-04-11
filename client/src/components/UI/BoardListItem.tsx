@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 type Props = {
   listItem: React.ReactNode[];
   gridTemplateColumns: string;
-  onClick?: () => void;
+  linkTo?: string;
+  className?: string;
   //children: React.ReactNode[];
 }
 
@@ -13,8 +14,8 @@ const BoardListItem: React.FC<Props> = (props) => {
   //const col = React.Children.count(props.children);
   const col = props.listItem.length;
   return (
-    <BoardListItemLayout isClick={props.onClick}>
-      <Link to="">
+    <BoardListItemLayout linkTo={props.linkTo} className={props.className}>
+      <Link to={props.linkTo || ""}>
         <BoardListItemRow className='title' gridTemplateColumns={props.gridTemplateColumns} col={col}>
           {/* {React.Children.map(props.children, (child, i) => <div className='item' key={i}>{child}</div>)} */}
           {props.listItem.map((el, i) => <div className='item' key={i}>{el}</div>)}
@@ -25,8 +26,8 @@ const BoardListItem: React.FC<Props> = (props) => {
 
 export default BoardListItem;
 
-const BoardListItemLayout = styled.li<{isClick?: () => void}>`
-  ${props => !props.isClick && `pointer-events: none;`}
+const BoardListItemLayout = styled.li<{linkTo?: string}>`
+  ${props => !props.linkTo && `pointer-events: none;`}
 `
 const BoardListItemRow = styled.div<{gridTemplateColumns: string; col: number}>`
   display: grid;
@@ -36,7 +37,11 @@ const BoardListItemRow = styled.div<{gridTemplateColumns: string; col: number}>`
     background: linear-gradient(rgb(236, 236, 236) 0%, rgb(239, 239, 239) 100%);
   }
 
-  & .item {
+  & .item {    
     padding: 24px 12px;
+    // width: 100%;
+    // overflow: hidden;
+    // white-space: nowrap;
+    // text-overflow: ellipsis;
   }  
 `

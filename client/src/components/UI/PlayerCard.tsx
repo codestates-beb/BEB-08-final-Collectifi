@@ -38,8 +38,7 @@ const PlayerCardLayout = styled.div<{glow?: Glow; cardWidth?: string;}>`
   & img {
     width: 100%;
     transform: scale(1.6);
-    margin-top: -10%;
-    margin-bottom: -5%;
+    margin: -10% 0 -5% 1%
   }
 
   ${props => {
