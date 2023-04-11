@@ -6,8 +6,16 @@ import axios from 'axios';
 import {data} from '../data/data';
 import PostPage from './PostPage';
 import Pagination from '../components/UI/Pagination';
-
-interface PostAttributes {
+import Button from '../components/UI/Button';
+import {MyPageLayout} from '../components/mypage/MyPage';
+import BoardList from '../components/mypage/BoardList';
+import BoardTitleItem from '../components/mypage/BoardTitleItem';
+import BoardListItem from '../components/mypage/BoardListItem';
+// created_at 포맷 라이브러리
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+interface PostsAttributes {
+  id: number;
   user_id: number;
   title: string;
   content: string;
@@ -16,13 +24,14 @@ interface PostAttributes {
   created_at: Date;
   views: number;
 }
+
 const Community = () => {
   const navigate = useNavigate();
   // const [page, setPage] = useState(1);
-  const [post, setPost] = useState<PostAttributes[]>([]);
+  const [posts, setPosts] = useState<PostsAttributes[]>([]);
   // const [postLoading, setPostLoading] = useState(false);
   // const [hasMore, setHasMore] = useState(true);
-  // 게시글 100개를 불러 옵니다.
+
   useEffect(() => {
     // axios
     // .get('http://localhost:5500', {params: {page: page}})
@@ -34,8 +43,9 @@ const Community = () => {
     // .catch(error => {
     //   console.error(error);
     // });
-    setPost(
-      data.slice(0, 20).map(post => {
+    // setCurrentPage()
+    setPosts(
+      data.map(post => {
         return {
           ...post,
           created_at: new Date(post.created_at),
@@ -75,33 +85,64 @@ const Community = () => {
 
   // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const [postsPerPage, setPostsPerPage] = useState(20); // 페이지당 posts 수
+  // const [postsPerPage, setPostsPerPage] = useState(20); // 페이지당 posts 수
+  const postsPerPage = 20;
   // 현재 posts
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPost = post.slice(indexOfFirstPost, indexOfLastPost);
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const currentPost = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
-    <div>
+    <MyPageLayout>
       <Routes>
-        <Route path=":id" element={<PostPage />} />
+        <Route path=":id" element={<PostPage setCurrentPage={setCurrentPage} />} />
       </Routes>
-      {currentPost &&
-        currentPost.map((item, idx) => (
-          <div key={item.user_id} onClick={() => handleClick(idx + 1)}>
-            {idx + 1}번{item.user_id}
-            {item.title}
+      <Button onClick={() => navigate('/write')}>글 작성</Button>
+      {/* {currentPost &&  
+        currentPost.map(item => (
+          <div key={item.id} onClick={() => handleClick(item.id)}>
+            <div>{item.id}번</div>
+
+            {`${item.title}                   ${item.user_id}`}
           </div>
-        ))}
+        ))} */}
+      <BoardList
+        title={
+          <BoardTitleItem
+            title={['POST', 'TITLE', 'USER', 'DATE']}
+            gridTemplateColumns="1fr 1fr 1fr 1fr"
+          />
+        }
+      >
+        {currentPost &&
+          currentPost.map(item => {
+            const listItem = [
+              item.id,
+              `${item.title} [${item.views}]`,
+              item.user_id,
+              item.created_at.toDateString(),
+            ];
+            return (
+              <BoardListItem
+                key={item.id}
+                listItem={listItem}
+                gridTemplateColumns="1fr 1fr 1fr 1fr"
+                onClick={() => handleClick(item.id)}
+              />
+            );
+          })}
+      </BoardList>
       <Pagination
         dataPerPage={postsPerPage}
-        dataLength={post.length}
+        dataLength={posts.length}
         paginate={paginate}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-    </div>
+    </MyPageLayout>
   );
 };
 

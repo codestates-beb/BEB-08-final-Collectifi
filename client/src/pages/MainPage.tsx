@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Button from '../components/UI/Button';
 import Tab from '../components/UI/Tab';
 import Modal from '../components/UI/Modal';
@@ -24,24 +24,36 @@ const MainPage = () => {
 
   return (
     <>
-      <Button onClick={()=>{setError("asd")}}>MODAL1</Button>
-      <Button onClick={()=>{setError2("asd")}}>MODAL2</Button> 
-      <Button onClick={()=>{setError3("asd")}}>MODAL3</Button>
+      <Button
+        onClick={() => {
+          setError('asd');
+        }}
+      >
+        MODAL1
+      </Button>
+      <Button
+        onClick={() => {
+          setError2('asd');
+        }}
+      >
+        MODAL2
+      </Button>
+      <Button
+        onClick={() => {
+          setError3('asd');
+        }}
+      >
+        MODAL3
+      </Button>
 
-      {error && (
-        <ModalAlert 
-          title={"title"}
-          message={"message"} 
-          onConfirm={errorHandler} 
-          />
-      )}
+      {error && <ModalAlert title={'title'} message={'message'} onConfirm={errorHandler} />}
       {error2 && (
-        <ModalAlert 
-          title={"title"}
-          message={"message"} 
-          onConfirm={errorHandler} 
-          onConfirm2={errorHandler2} 
-          />
+        <ModalAlert
+          title={'title'}
+          message={'message'}
+          onConfirm={errorHandler}
+          onConfirm2={errorHandler2}
+        />
       )}
       {error3 && (
         <Modal onConfirm={errorHandler}>
@@ -52,17 +64,17 @@ const MainPage = () => {
         </Modal>
       )}
 
-      <label htmlFor="input"/>
-      <Input id="input" placeholder='INPUT'/> 
+      <label htmlFor="input" />
+      <Input id="input" placeholder="INPUT" />
 
-      <Tab title={["TEST1", "TEST2", "TEST3"]}>
+      <Tab title={['TEST1', 'TEST2', 'TEST3']}>
         <div>test1</div>
         <div>test2</div>
         <div>test3</div>
       </Tab>
-         
+
       {/* <Market /> */}
-      {/* <MyPage /> */}
+      <MyPage />
     </>
   );
 };

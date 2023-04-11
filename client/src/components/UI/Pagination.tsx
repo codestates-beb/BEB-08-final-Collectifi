@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
+import {useParams} from 'react-router-dom';
 // import ReactPaginate from "react-paginate";
 import styled from 'styled-components';
 
@@ -75,6 +76,10 @@ function Pagination({dataPerPage, dataLength, paginate, currentPage, setCurrentP
   const startIndex = (currentPageRange - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const currentPageNumbers = pageNumbers.slice(startIndex, endIndex);
+  // const {id} = useParams<{id: string}>();
+  useEffect(() => {
+    setCurrentPageRange(Math.ceil(currentPage / pageSize));
+  }, [currentPage]);
   return (
     <Container>
       <PaginationContainer>

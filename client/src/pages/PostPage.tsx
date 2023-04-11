@@ -15,13 +15,14 @@ interface PostAttributes {
   views: number;
 }
 
-const PostPage = () => {
+const PostPage = ({setCurrentPage}: {setCurrentPage: (value: number) => void}) => {
   const navigate = useNavigate();
   const {id} = useParams<{id: string}>();
   const [post, setPost] = useState<PostAttributes | null>(null);
   useEffect(() => {
     if (id) {
       setPost(data[parseInt(id) - 1]);
+      setCurrentPage(Math.ceil(parseInt(id) / 20));
     }
   }, [id]);
   return (

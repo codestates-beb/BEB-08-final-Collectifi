@@ -22,11 +22,14 @@ const DropdownMenu = styled.ul`
   top: 70px;
   list-style: none;
   text-align: start;
+  overflow: hidden;
+  border-radius: 0 0 10px 10px;
 `;
 
 const Item = styled.li`
-  background: rgb(175, 175, 179);
+  background: white;
   cursor: pointer;
+  border: 1px solid black;
 `;
 
 const ItemLink = styled(Link)`
@@ -34,11 +37,11 @@ const ItemLink = styled(Link)`
   width: 100%;
   height: 100%;
   text-decoration: none;
-  color: #9a6aff;
+  color: black;
   padding: 16px;
 
   &:hover {
-    background: grey;
+    background: rgb(175, 175, 179);
   }
 `;
 

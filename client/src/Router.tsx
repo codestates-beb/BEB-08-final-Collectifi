@@ -12,6 +12,7 @@ import SwapPage from './pages/SwapPage';
 import MarketPage from './pages/MarketPage';
 import WinPage from './pages/WinPage';
 import PostPage from './pages/PostPage';
+import WritePage from './pages/WritePage';
 
 const Router: React.FC<{toggle: () => void}> = props => {
   return (
@@ -26,6 +27,7 @@ const Router: React.FC<{toggle: () => void}> = props => {
         <Route path="/win" element={<WinPage />} />
         <Route path="/community/*" element={<Community />} />
       </Route>
+      <Route path="/write" element={<WritePage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

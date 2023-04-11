@@ -10,6 +10,14 @@ import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Dropdown from './Dropdown';
 
+declare global {
+  interface Window {
+    ethereum?: {
+      request: (args: any) => Promise<any>;
+    };
+  }
+}
+
 const navVariants = {
   top: {
     // backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -46,7 +54,7 @@ const NavbarContainer = styled.div`
   padding: 0 24px;
   max-width: 1100px;
 `;
-const NavLogo = styled(Link)`
+export const NavLogo = styled(Link)`
   color: #fff;
   justify-self: flex-start;
   cursor: pointer;
@@ -107,7 +115,7 @@ const NavBtn = styled.nav`
     display: none;
   }
 `;
-const NavBtnLink = styled(Link)`
+const NavBtnLink = styled.div`
   font-weight: bold;
   border-radius: 50px;
   background: #01bf71;
@@ -129,8 +137,6 @@ const NavBtnLink = styled(Link)`
 `;
 
 const Header = ({toggle}: PageLayoutProps) => {
-  // const [click, setClick] = useState(false);
-  // const handleClick = () => setClick(!click);
   const [dropdown, setDropdown] = useState('');
 
   const onMouseEnter = (e: string) => {
@@ -173,14 +179,32 @@ const Header = ({toggle}: PageLayoutProps) => {
       name: 'Earn',
       link: '/staking',
       submenu: [
-        {name: '스테이킹', link: '/staking'},
-        {name: '스왑', link: '/swap'},
+        {name: 'Staking', link: '/staking'},
+        {name: 'Swap', link: '/swap'},
       ],
     },
     {name: 'Market', link: '/market'},
     {name: 'Win', link: '/win'},
     {name: 'Community', link: '/community'},
   ];
+
+  const connectWallet = async () => {
+    if (!window.ethereum) {
+      console.log('Ethereum not detected in browser');
+      return;
+    }
+    await window.ethereum
+      .request({
+        method: 'eth_requestAccounts',
+      })
+      .then(res => {
+        // setAccount(res[0]);
+        // setIsLoggedIn(true);
+        localStorage.setItem('isLoggedIn', res[0]);
+      })
+
+      .catch(e => console.log(e));
+  };
 
   return (
     <>
@@ -232,7 +256,13 @@ const Header = ({toggle}: PageLayoutProps) => {
             </NavItem> */}
           </NavMenu>
           <NavBtn>
-            <NavBtnLink to="/">Connect</NavBtnLink>
+            <NavBtnLink
+              onClick={() => {
+                connectWallet();
+              }}
+            >
+              Connect
+            </NavBtnLink>
           </NavBtn>
         </NavbarContainer>
       </Nav>
