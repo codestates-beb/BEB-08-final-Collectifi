@@ -13,6 +13,7 @@ import BoardListItem from '../components/UI/BoardListItem';
 // created_at 포맷 라이브러리
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
+TimeAgo.addDefaultLocale(en);
 interface PostsAttributes {
   id: number;
   user_id: number;
@@ -35,6 +36,7 @@ const Community = () => {
   const navigate = useNavigate();
   // const [page, setPage] = useState(1);
   const [posts, setPosts] = useState<PostsAttributes[]>([]);
+  const timeAgo = new TimeAgo('en-US');
   // const [postLoading, setPostLoading] = useState(false);
   // const [hasMore, setHasMore] = useState(true);
 
@@ -121,23 +123,33 @@ const Community = () => {
         title={
           <BoardTitleItem
             title={['POST', 'TITLE', 'USER', 'DATE']}
-            gridTemplateColumns="1fr 1fr 1fr 1fr"
+            gridTemplateColumns="1fr 3fr 1fr 1fr"
           />
         }
       >
         {currentPost &&
           currentPost.map(item => {
+            // const before = new Date(new Date().getTime() - item.created_at.getTime()).getTime();
+            // if (new Date().getMonth() - item.created_at.getMonth()) {
+            // }
             const listItem = [
               item.id,
               `${item.title} [${item.views}]`,
               item.user_id,
+              // timeAgo.format(item.created_at),
+              // new Date().getMonth(),
+              // item.created_ats.getMonth(),
+              // (new Date() - item.created_at).toString(),
               item.created_at.toDateString(),
+              // item.created_at.getTime(),
+              // new Date(new Date().getTime() - item.created_at.getTime()).toDateString(),
+              // before,
             ];
             return (
               <BoardListItem
                 key={item.id}
                 listItem={listItem}
-                gridTemplateColumns="1fr 1fr 1fr 1fr"
+                gridTemplateColumns="1fr 3fr 1fr 1fr"
                 linkTo={item.id.toString()}
               />
             );
