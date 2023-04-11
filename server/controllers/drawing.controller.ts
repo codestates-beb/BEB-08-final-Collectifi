@@ -13,15 +13,20 @@ export const drawing_post = async (req: MyRequest, res: Response, next: NextFunc
   try {
     const id = req.session.user?.id;
     const address = req.session.user?.address;
+    console.log('=======address=====', address);
     const {card_pack} = req.body;
     //db에서 card_pack별로 랜덤으로 하나 뽑기
     const data = await db.Nft_info.findOne({
       where: {
         card_pack,
+        card_color: 0,
       },
       order: db.sequelize.random(),
     });
     //card_pack에 따라 토큰 받아오기
+    // const setToken = await erc721Contract.methods
+    //   .setToken(process.env.ERC20_CA)
+    //   .send({from: process.env.SERVER_ADDRESS, gas: 500000});
     const mintNftPrice = await erc20Contract.methods
       .transfer(process.env.SERVER_ADDRESS, card_pack == 0 ? 1500 : card_pack == 1 ? 3000 : 5000)
       .send({from: address, gas: 500000});
@@ -59,10 +64,9 @@ export const drawing_post = async (req: MyRequest, res: Response, next: NextFunc
         const withdraw = await user.decrement('token_amount', {
           by: card_pack == 0 ? 1500 : card_pack == 1 ? 3000 : 5000,
         });
-        res.status(201).send({message: '민팅 성공', data: {mintedNft}});
+        res.status(200).send({message: '민팅 성공', data: {mintedNft}});
       }
     }
-    res.status(400).send({message: '민팅 실패'});
   } catch (e) {
     res.status(400).send({message: '민팅 실패'});
     console.log(e);

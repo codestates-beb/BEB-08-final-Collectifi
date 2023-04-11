@@ -26,17 +26,6 @@ export const community_get = async (req: MyRequest, res: Response, next: NextFun
         },
         {
           model: db.Post_comment,
-          attributes: ['content'],
-        },
-      ],
-      include: [
-        {
-          model: db.User,
-          attributes: ['nickname'],
-        },
-        {
-          model: db.Post_comment,
-          attributes: ['content'],
         },
       ],
     });
@@ -87,7 +76,7 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
       const giveToken = await contract.methods
         .transfer(user.address, 1)
         .send({from: process.env.SERVER_ADDRESS, gas: 500000});
-        .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+
       if (giveToken) {
         //6. 블록체인에서 토큰을 주었다면, db의 token_amount도 1 올려주기
         const incrementToken = await user.increment('token_amount', {by: 1});
@@ -122,18 +111,6 @@ export const detail_get = async (req: Request, res: Response, next: NextFunction
         },
         {
           model: db.Post_comment,
-          attributes: ['content'],
-        },
-      ],
-      },
-      include: [
-        {
-          model: db.User,
-          attributes: ['nickname'],
-        },
-        {
-          model: db.Post_comment,
-          attributes: ['content'],
         },
       ],
     });
@@ -142,7 +119,6 @@ export const detail_get = async (req: Request, res: Response, next: NextFunction
     //   where: {
     //     post_id: id,
     //   },
-
 
     // });
     // 조회수 증가
@@ -321,7 +297,6 @@ export const comment_post = async (req: MyRequest, res: Response, next: NextFunc
       user_id: userId,
       post_id: Number(postId),
       content,
-      content,
     });
     console.log(comment);
     // 4.
@@ -344,8 +319,11 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
     }
     // 2. front 에서 해당 comment의 id 받아오기
     const {commentId} = req.params;
+    console.log('=====commentId====', commentId);
     const {data} = req.body;
-    const comment = await db.post_comments.findOne({
+    console.log('=====data====', data);
+
+    const comment = await db.Post_comment.findOne({
       where: {
         id: commentId,
       },
@@ -374,9 +352,9 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
 
 export const editComment_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
-    // 1. 프론트에서 comment id, 기존 , content 받기
+    // 1. 프론트에서 comment id 받기
     const {commentId} = req.params;
-    const {content} = req.body;
+
     // 2. session의 user와 comment 작성한 user가 일치하는지 확인
     const comment = await db.Post_comment.findOne({
       where: {
@@ -389,7 +367,7 @@ export const editComment_get = async (req: MyRequest, res: Response, next: NextF
       sendResponse(res, 400, '실패했습니다');
     }
     // 3. 본래 content를 프론트에 전달하기
-    sendResponse(res, 200, '성공했습니다', content);
+    sendResponse(res, 200, '성공했습니다', comment.content);
   } catch (error) {
     sendResponse(res, 400, '실패했습니다');
 
@@ -443,7 +421,7 @@ export const deleteComment_delete = async (req: MyRequest, res: Response, next: 
       sendResponse(res, 400, '실패했습니다');
     }
     // 3. 해당 post 삭제
-    const result = await db.Post_comment.destroy({where: {commentId}});
+    const result = await db.Post_comment.destroy({where: {id: commentId}});
     // 4. 프론트에 성공했다 알려주기
     sendResponse(res, 200, '성공했습니다');
   } catch (error) {
