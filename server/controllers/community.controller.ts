@@ -18,14 +18,16 @@ export const community_get = async (req: MyRequest, res: Response, next: NextFun
       order: [['id', 'DESC']],
       limit,
       offset,
-      include: [{
-        model:db.User,
-        attributes:['nickname']
-      },{
-        model:db.Post_comment,
-        attributes:['content']
-      }]
-      
+      include: [
+        {
+          model: db.User,
+          attributes: ['nickname'],
+        },
+        {
+          model: db.Post_comment,
+          attributes: ['content'],
+        },
+      ],
     });
 
     // 2. 프론트에 보내주기
@@ -44,10 +46,10 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
   try {
     // 1. front에서 데이터 받아오기
     const {title, content} = req.body;
-    console.log("================title===============",title);
+    console.log('================title===============', title);
     // 2. session에서 user 추출
     const id = req.session.user?.id;
-    console.log("================id=================",id);
+    console.log('================id=================', id);
 
     // 3. id로 user 찾기
     const user = await db.User.findOne({
@@ -70,7 +72,7 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
       const contract = new web3.eth.Contract(erc20abi, process.env.ERC20_CA);
       const giveToken = await contract.methods
         .transfer(user.address, 1)
-        .send({from: process.env.SERVER_ADDRESS,gas:500000});
+        .send({from: process.env.SERVER_ADDRESS, gas: 500000});
       if (giveToken) {
         //6. 블록체인에서 토큰을 주었다면, db의 token_amount도 1 올려주기
         const incrementToken = await user.increment('token_amount', {by: 1});
@@ -96,20 +98,24 @@ export const detail_get = async (req: Request, res: Response, next: NextFunction
     const post = await db.Post.findOne({
       where: {
         id,
-      },include: [{
-        model:db.User,
-        attributes:['nickname']
-      },{
-        model:db.Post_comment,
-        attributes:['content']
-      }]
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ['nickname'],
+        },
+        {
+          model: db.Post_comment,
+          attributes: ['content'],
+        },
+      ],
     });
     // 3. DB에서 해당 포스트의 댓글 불러오기
     // const comments = await db.Post_comment.findAll({
     //   where: {
     //     post_id: id,
     //   },
-      
+
     // });
     // 조회수 증가
     const result = await post.increment('views', {by: 1});
@@ -207,7 +213,7 @@ export const editPost_get = async (req: MyRequest, res: Response, next: NextFunc
       res.status(401).send('you are not authorized');
     }
     // 3. 본래 title, content를 프론트에 전달하기
-    res.status(200).send({message:"성공했습니다.",data: {title, content}});
+    res.status(200).send({message: '성공했습니다.', data: {title, content}});
   } catch (error) {
     console.log(error);
   }
@@ -274,17 +280,17 @@ export const comment_post = async (req: MyRequest, res: Response, next: NextFunc
       body: {content},
       params: {postId},
     } = req;
-    console.log("===========req.params==========",req.params);
+    console.log('===========req.params==========', req.params);
     const userId = req.session.user?.id;
-    console.log("========id==========",postId)
+    console.log('========id==========', postId);
 
-    console.log(typeof userId, typeof Number(postId),typeof postId, typeof content);
+    console.log(typeof userId, typeof Number(postId), typeof postId, typeof content);
 
     // 2. Comment 추가
     const comment = await db.Post_comment.create({
       user_id: userId,
       post_id: Number(postId),
-      content
+      content,
     });
     console.log(comment);
     // 4.
