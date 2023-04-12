@@ -38,7 +38,7 @@ const FooterLinksDiv = styled.div`
   flex-direction: column;
   color: rgb(175, 175, 179);
 `;
-const Link2 = styled(Link)`
+const Link2 = styled.div`
   color: rgb(175, 175, 179);
   text-decoration: none;
 `;
@@ -111,48 +111,48 @@ function Footer() {
         <FooterLinks className="sb__footer-links">
           <FooterLinksDiv className="sb__footer-links_div">
             <H4>For Business</H4>
-            <Link2 to="">
+            <Link2>
               <P>Employer</P>
             </Link2>
-            <Link2 to="">
+            <Link2>
               <P>Health Plan</P>
             </Link2>
-            <Link2 to="">
+            <Link2>
               <P>Individual</P>
             </Link2>
           </FooterLinksDiv>
 
           <FooterLinksDiv className="sb__footer-links_div">
             <H4>Resources</H4>
-            <Link2 to="">
+            <Link2>
               <P>resource center</P>
             </Link2>
-            <Link2 to="">
+            <Link2>
               <P>Testimonials</P>
             </Link2>
-            <Link2 to="">
+            <Link2>
               <P>STV</P>
             </Link2>
           </FooterLinksDiv>
 
           <FooterLinksDiv className="sb__footer-links_div">
             <H4>Partners</H4>
-            <Link2 to="">
+            <Link2>
               <P>Swing Tech</P>
             </Link2>
           </FooterLinksDiv>
           <FooterLinksDiv className="sb__footer-links_div">
             <H4>Company</H4>
-            <Link2 to="">
+            <Link2>
               <P>About</P>
             </Link2>
-            <Link2 to="">
+            <Link2>
               <P>Prress</P>
             </Link2>
-            <Link2 to="">
+            <Link2>
               <P>Career</P>
             </Link2>
-            <Link2 to="">
+            <Link2>
               <P>Contact</P>
             </Link2>
           </FooterLinksDiv>
@@ -210,22 +210,22 @@ function Footer() {
             </FooterCopyrightP>
           </div>
           <FooterBelowLinks className="sb__footer-below-links">
-            <Link2 to="">
+            <Link2>
               <div>
                 <BelowP>Terms &Conditions</BelowP>
               </div>
             </Link2>
-            <Link2 to="">
+            <Link2>
               <div>
                 <BelowP>Privacy</BelowP>
               </div>
             </Link2>
-            <Link2 to="">
+            <Link2>
               <div>
                 <BelowP>Security</BelowP>
               </div>
             </Link2>
-            <Link2 to="">
+            <Link2>
               <div>
                 <BelowP>Cookie Declaration</BelowP>
               </div>

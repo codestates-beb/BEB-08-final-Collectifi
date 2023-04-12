@@ -5,6 +5,7 @@ import {ThemeProvider} from 'styled-components';
 import Sidebar from './components/Sidebar';
 import Router from './Router';
 import ScrollReset from './components/ScrollReset';
+import GlobalStyle from './Styles';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,11 +29,12 @@ function App() {
   const theme = {
     mainColor: 'rgb(253, 17, 92)',
     lineColor: 'rgb(203, 203, 203)',
-  }
+  };
 
   return (
     <RecoilRoot>
-      <ThemeProvider theme={theme}>      
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
         <BrowserRouter>
           <ScrollReset />
           <Router toggle={toggle} />

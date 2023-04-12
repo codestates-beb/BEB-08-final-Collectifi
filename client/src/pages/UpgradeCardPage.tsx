@@ -4,18 +4,7 @@ import Confetti from '../components/UI/Confetti';
 import CardList from '../components/market/CardList';
 import CardListItem from '../components/market/CardListItem';
 import PlayerCard from '../components/UI/PlayerCard';
-
-const Layout = styled.div`
-  max-width: 80%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: censter;
-  flex-direction: column;
-  align-items: center;
-  @media only screen and (max-width: 1024px) {
-    max-width: 93%;
-  }
-`;
+import {Layout} from '../Styles';
 
 const UpgradeCardPage = () => {
   return (
@@ -37,8 +26,9 @@ const UpgradeCardPage = () => {
         <div>강화 비용: 150 ETH</div>
         <div>보유 ETH: 0.00031 ETH</div>
         <button>강화하기</button>
+        <Confetti innerText={'성공'} />
       </Layout>
-      <Confetti innerText={'성공'} />
+
       <div>나의 카드 리스트</div>
       <CardList itemWidth="250px" />
     </>
