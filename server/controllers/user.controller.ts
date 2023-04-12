@@ -41,3 +41,29 @@ export const mypage_get = async (req: MyRequest, res: Response, next: NextFuncti
     console.log(e);
   }
 };
+
+// 유저 프로필(닉네임) 수정
+export const editProfile_post = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    // 1. session으로 해당 user의 id 받아오기
+    const id = req.session.user?.id;
+    // 2. front에서 수정한 닉네임 받아오기
+    const {nickname} = req.body;
+    // 3. db의 User 정보 업데이트
+    const result = await db.User.update(
+      {
+        nickname,
+      },
+      {
+        where: {id},
+      },
+    );
+    // 4. res 보내주기
+
+    sendResponse(res, 200, `닉네임을 ${nickname}으로 수정했습니다!`);
+  } catch (e) {
+    sendResponse(res, 400, '닉네임 변경 실패');
+
+    console.log(e);
+  }
+};
