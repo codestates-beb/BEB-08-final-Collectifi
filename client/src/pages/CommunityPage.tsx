@@ -13,6 +13,7 @@ import BoardListItem from '../components/UI/BoardListItem';
 // created_at 포맷 라이브러리
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
+import Tab from '../components/UI/Tab';
 TimeAgo.addDefaultLocale(en);
 interface PostsAttributes {
   id: number;
@@ -25,7 +26,7 @@ interface PostsAttributes {
   views: number;
 }
 const CommunityLayout = styled.div`
-  max-width: 60%;
+  max-width: 70%;
   margin: 0 auto;
   @media only screen and (max-width: 1024px) {
     max-width: 93%;
@@ -34,7 +35,7 @@ const CommunityLayout = styled.div`
 
 const Community = () => {
   const navigate = useNavigate();
-  // const [page, setPage] = useState(1);
+  const boardSize = '0.3fr 3fr 1fr 1fr 1fr 1fr';
   const [posts, setPosts] = useState<PostsAttributes[]>([]);
   const timeAgo = new TimeAgo('en-US');
   // const [postLoading, setPostLoading] = useState(false);
@@ -88,10 +89,6 @@ const Community = () => {
   //     SetPostLoading(false);
   //   }
   // };
-  const handleClick = (id: number) => {
-    // navigate(`/community/${id}`);
-    window.scrollTo(0, 0);
-  };
 
   // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
@@ -110,51 +107,89 @@ const Community = () => {
       <Routes>
         <Route path=":id" element={<PostPage setCurrentPage={setCurrentPage} />} />
       </Routes>
-      <Button onClick={() => navigate('/write')}>글 작성</Button>
-      {/* {currentPost &&  
-        currentPost.map(item => (
-          <div key={item.id} onClick={() => handleClick(item.id)}>
-            <div>{item.id}번</div>
 
-            {`${item.title}                   ${item.user_id}`}
-          </div>
-        ))} */}
-      <BoardList
-        title={
-          <BoardTitleItem
-            title={['POST', 'TITLE', 'USER', 'DATE']}
-            gridTemplateColumns="1fr 3fr 1fr 1fr"
-          />
-        }
-      >
-        {currentPost &&
-          currentPost.map(item => {
-            // const before = new Date(new Date().getTime() - item.created_at.getTime()).getTime();
-            // if (new Date().getMonth() - item.created_at.getMonth()) {
-            // }
-            const listItem = [
-              item.id,
-              `${item.title} [${item.views}]`,
-              item.user_id,
-              // timeAgo.format(item.created_at),
-              // new Date().getMonth(),
-              // item.created_ats.getMonth(),
-              // (new Date() - item.created_at).toString(),
-              item.created_at.toDateString(),
-              // item.created_at.getTime(),
-              // new Date(new Date().getTime() - item.created_at.getTime()).toDateString(),
-              // before,
-            ];
-            return (
-              <BoardListItem
-                key={item.id}
-                listItem={listItem}
-                gridTemplateColumns="1fr 3fr 1fr 1fr"
-                linkTo={item.id.toString()}
-              />
-            );
-          })}
-      </BoardList>
+      <Button onClick={() => navigate('/write')}>글 작성</Button>
+      <Tab title={['General', 'Popular']}>
+        <BoardList
+          title={
+            <BoardTitleItem
+              title={['POST', 'TITLE', 'USER', 'DATE', 'VIEW', 'LIKES']}
+              gridTemplateColumns={boardSize}
+            />
+          }
+        >
+          {currentPost &&
+            currentPost.map(item => {
+              // const before = new Date(new Date().getTime() - item.created_at.getTime()).getTime();
+              // if (new Date().getMonth() - item.created_at.getMonth()) {
+              // }
+              const listItem = [
+                item.id,
+                `${item.title} [${item.likes}]`,
+                item.user_id,
+                // timeAgo.format(item.created_at),
+                // new Date().getMonth(),
+                // item.created_ats.getMonth(),
+                // (new Date() - item.created_at).toString(),
+                item.created_at.toDateString(),
+                // item.created_at.getTime(),
+                // new Date(new Date().getTime() - item.created_at.getTime()).toDateString(),
+                // before,
+                item.views,
+                item.likes,
+              ];
+              return (
+                <BoardListItem
+                  key={item.id}
+                  listItem={listItem}
+                  gridTemplateColumns={boardSize}
+                  linkTo={item.id.toString()}
+                />
+              );
+            })}
+        </BoardList>
+        <BoardList
+          title={
+            <BoardTitleItem
+              title={['POST', 'TITLE', 'USER', 'DATE', 'VIEW', 'LIKES']}
+              gridTemplateColumns={boardSize}
+            />
+          }
+        >
+          {currentPost &&
+            currentPost
+              .filter(item => item.likes >= 50)
+              .map(item => {
+                // const before = new Date(new Date().getTime() - item.created_at.getTime()).getTime();
+                // if (new Date().getMonth() - item.created_at.getMonth()) {
+                // }
+                const listItem = [
+                  item.id,
+                  `${item.title} [${item.likes}]`,
+                  item.user_id,
+                  // timeAgo.format(item.created_at),
+                  // new Date().getMonth(),
+                  // item.created_ats.getMonth(),
+                  // (new Date() - item.created_at).toString(),
+                  item.created_at.toDateString(),
+                  // item.created_at.getTime(),
+                  // new Date(new Date().getTime() - item.created_at.getTime()).toDateString(),
+                  // before,
+                  item.views,
+                  item.likes,
+                ];
+                return (
+                  <BoardListItem
+                    key={item.id}
+                    listItem={listItem}
+                    gridTemplateColumns={boardSize}
+                    linkTo={item.id.toString()}
+                  />
+                );
+              })}
+        </BoardList>
+      </Tab>
+
       <Pagination
         dataPerPage={postsPerPage}
         dataLength={posts.length}

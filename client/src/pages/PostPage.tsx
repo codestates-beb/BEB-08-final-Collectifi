@@ -36,7 +36,7 @@ const PostPage = ({setCurrentPage}: {setCurrentPage: (value: number) => void}) =
           <div>내용: {post.content}</div>
           <div>
             {post.likes}
-            <span>좋아요</span> <span>싫어요</span>
+            <span>Likes</span> <span>DisLikes</span>
             {post.dislikes}
           </div>
           <Button onClick={() => navigate('/community')}>목록</Button>

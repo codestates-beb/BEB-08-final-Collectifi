@@ -29,6 +29,7 @@ const PaginationContainer = styled.div`
 const PaginationButton = styled.button`
   padding: 10px;
   margin: 0 5px;
+  cursor: pointer;
 `;
 
 const PageNumbersContainer = styled.div`
@@ -43,6 +44,7 @@ interface PageNumberButtonProps {
 const PageNumberButton = styled.button<PageNumberButtonProps>`
   padding: 10px;
   margin: 0 5px;
+  cursor: pointer;
 
   background-color: ${props => (props.active ? '#2E3D53' : 'white')};
   color: ${props => (props.active ? 'white' : 'black')};

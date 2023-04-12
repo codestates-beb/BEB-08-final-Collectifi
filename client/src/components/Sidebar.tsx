@@ -35,7 +35,11 @@ const SidebarWrapper = styled.div`
   color: #fff;
 `;
 // styled(Links)
-const SidebarLink = styled.div`
+const SidebarLink = styled(Link)`
+  padding: 10px;
+  /* background: grey; */
+
+  width: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,7 +52,7 @@ const SidebarLink = styled.div`
   cursor: pointer;
 
   &:hover {
-    color: #01bf71;
+    color: #969696;
     transition: 0.2s ease-in-out;
   }
 `;
@@ -57,18 +61,23 @@ const SideBtnWrap = styled.div`
   justify-content: center;
 `;
 const SidebarMenu = styled.ul`
-  display: grid;
+  /* display: grid; */
+  display: flex;
+  flex-direction: column;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(6 80px);
   text-align: center;
+  align-items: center;
+  padding: 10px;
+  margin: 10px;
 
   @media screen and (max-width: 480px) {
     grid-template-rows: repeat(6, 60px);
   }
 `;
-const SidebarRoute = styled(Link)`
+const SidebarRoute = styled.div`
   border-radius: 50px;
-  background: #01bf71;
+  background: ${props => props.theme.mainColor};
   white-space: nowrap;
   padding: 16px 64px;
   color: #010606;
@@ -94,14 +103,16 @@ const Sidebar = ({isOpen, toggle}: {isOpen: boolean; toggle: () => void}) => {
       </Icon>
       <SidebarWrapper>
         <SidebarMenu>
-          <SidebarLink>Play</SidebarLink>
-          <SidebarLink>Earn</SidebarLink>
-          <SidebarLink>Market</SidebarLink>
-          <SidebarLink>Win</SidebarLink>
-          <SidebarLink>Community</SidebarLink>
+          <SidebarLink to="/draw">Pack</SidebarLink>
+          <SidebarLink to="/upgrade">Upgrade</SidebarLink>
+          <SidebarLink to="/staking">Staking</SidebarLink>
+          <SidebarLink to="/swap">Swap</SidebarLink>
+          <SidebarLink to="/market">Market</SidebarLink>
+          <SidebarLink to="/win">Win</SidebarLink>
+          <SidebarLink to="/community">Community</SidebarLink>
         </SidebarMenu>
         <SideBtnWrap>
-          <SidebarRoute to="">Sign In</SidebarRoute>
+          <SidebarRoute>Connect</SidebarRoute>
         </SideBtnWrap>
       </SidebarWrapper>
     </SidebarContainer>

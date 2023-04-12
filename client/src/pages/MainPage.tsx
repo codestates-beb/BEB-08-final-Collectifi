@@ -79,6 +79,8 @@ const MainPage = () => {
       {/* <MyPage /> */}
       {/* <CardDetail /> */}
       <DummyComponent />
+      <DummyComponent />
+      <DummyComponent />
     </>
   );
 };

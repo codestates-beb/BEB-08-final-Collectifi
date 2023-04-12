@@ -15,7 +15,7 @@ export const Layout = styled.div`
 `;
 // 테스트용 컴포넌트
 export const DummyComponent = styled.div`
-  height: 300px;
+  height: 150px;
 `;
 
 // 글로벌 스타일
