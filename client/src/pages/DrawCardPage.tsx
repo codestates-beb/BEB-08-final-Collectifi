@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Layout} from '../Styles';
+import {DummyComponent, Layout} from '../Styles';
+import Button from '../components/UI/Button';
 
 const PackList = styled.div`
   display: flex;
@@ -18,52 +19,49 @@ const PackLabel = styled.div`
 `;
 
 const Pack = styled.div`
-  background: ${props => props.theme.mainColor};
-  width: 150px;
-  height: 200px;
+  background: white;
+  width: 220px;
+  height: 300px;
   border-radius: 10%;
-  border: 1px solid black;
-  color: white;
+  /* border: 1px solid black; */
+  color: black;
   text-align: center;
-`;
-
-const DummyComponent = styled.div`
-  height: 150px;
+  box-shadow: 5px 5px 5px grey;
+  &:hover {
+    transform: translateY(-5px); /* 마우스를 올렸을 때 위로 이동 */
+    transition: transform 0.5s ease; /* transition 속성 추가 */
+  }
 `;
 
 const DrawCardPage = () => {
   return (
     <Layout>
       <DummyComponent />
+      <div>보유: 10ETH</div>
+      <Button>My Card</Button>
       <PackList>
         <PackListItem>
           <PackLabel>Basic</PackLabel>
           <Pack>
-            <div>Bronze</div>
+            <div>Pack</div>
             <div>10 ETH</div>
           </Pack>
         </PackListItem>
         <PackListItem>
           <PackLabel>Standard</PackLabel>
           <Pack>
-            <div>Silver</div>
+            <div>Pack</div>
             <div>25 ETH</div>
-            <div></div>
           </Pack>
         </PackListItem>
         <PackListItem>
-          <PackLabel>Preminum</PackLabel>
+          <PackLabel>World Class</PackLabel>
           <Pack>
-            <div>Gold</div>
+            <div>Pack</div>
             <div>50 ETH</div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
           </Pack>
         </PackListItem>
       </PackList>
-      <DummyComponent />
       <DummyComponent />
     </Layout>
   );

@@ -6,6 +6,20 @@ import CardListItem from '../components/market/CardListItem';
 import PlayerCard from '../components/UI/PlayerCard';
 import {Layout} from '../Styles';
 
+const TargetCard = styled.div`
+  display: flex;
+  justify-content: center;
+  /* background: yellow; */
+  margin: 10px;
+  padding: 10px;
+  gap: 10px;
+  box-shadow: 5px 5px 5px 5px gray;
+`;
+const CardInfo = styled.div`
+  padding: 10px;
+  margin: 10px;
+`;
+
 const UpgradeCardPage = () => {
   return (
     <>
@@ -13,20 +27,24 @@ const UpgradeCardPage = () => {
         <h2>Upgrade Card</h2>
         <label>Select your target Card</label>
         <div>강화할 카드</div>
-        <CardListItem>
-          <PlayerCard
-            imgSrc="https://gateway.pinata.cloud/ipfs/QmVGZEoL8pzxfKwfj68GHtBScaGyPkX2REs4KuytewvLJP?filename=1-1.png"
-            cardWidth={'250px'}
-          />
-        </CardListItem>
-        <div>카드명: Lionel Messi </div>
-        <div>시즌: 2011 - 2012</div>
-        <div>73 Goals / 29 Assists</div>
-        <div>강화 성공률: 25%</div>
-        <div>강화 비용: 150 ETH</div>
-        <div>보유 ETH: 0.00031 ETH</div>
-        <button>강화하기</button>
-        <Confetti innerText={'성공'} />
+        <TargetCard>
+          <CardListItem>
+            <PlayerCard
+              imgSrc="https://gateway.pinata.cloud/ipfs/QmVGZEoL8pzxfKwfj68GHtBScaGyPkX2REs4KuytewvLJP?filename=1-1.png"
+              cardWidth={'200px'}
+            />
+          </CardListItem>
+          <CardInfo>
+            <div>카드명: Lionel Messi </div>
+            <div>시즌: 2011 - 2012</div>
+            <div>73 Goals / 29 Assists</div>
+            <div>강화 성공률: 25%</div>
+            <div>강화 비용: 150 ETH</div>
+            <div>보유 ETH: 0.00031 ETH</div>
+            <button>강화하기</button>
+            <Confetti innerText={'성공'} />
+          </CardInfo>
+        </TargetCard>
       </Layout>
 
       <div>나의 카드 리스트</div>

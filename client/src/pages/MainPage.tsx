@@ -7,6 +7,7 @@ import Input from '../components/UI/Input';
 import Market from '../components/market/Market';
 import MyPage from '../components/mypage/MyPage';
 import CardDetail from '../components/market/CardDetail';
+import {DummyComponent} from '../Styles';
 
 const MainPage = () => {
   const [error, setError] = useState<any>(null);
@@ -77,6 +78,7 @@ const MainPage = () => {
       {/* <Market /> */}
       {/* <MyPage /> */}
       {/* <CardDetail /> */}
+      <DummyComponent />
     </>
   );
 };

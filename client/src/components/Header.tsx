@@ -20,8 +20,8 @@ declare global {
 
 const navVariants = {
   top: {
-    // backgroundColor: 'rgba(0, 0, 0, 0)',
-    backgroundColor: '#000',
+    // backgroundColor: 'white',
+    backgroundColor: '#333333',
   },
   scroll: {
     backgroundColor: 'grey',
@@ -30,7 +30,7 @@ const navVariants = {
 };
 
 const Nav = styled(motion.div)`
-  background: '#000';
+  /* background: '#000'; */
   height: 70px;
   /* margin-top: -70px; */
   display: flex;
@@ -118,7 +118,7 @@ const NavBtn = styled.nav`
 const NavBtnLink = styled.div`
   font-weight: bold;
   border-radius: 50px;
-  background: #01bf71;
+  background: ${props => props.theme.mainColor};
   white-space: nowrap;
   padding: 10px 22px;
   color: #fff;
@@ -134,6 +134,9 @@ const NavBtnLink = styled.div`
     background: #fff;
     color: #010606;
   }
+`;
+const NonBlur = styled.div`
+  /* filter: */
 `;
 
 const Header = ({toggle}: PageLayoutProps) => {
@@ -170,7 +173,7 @@ const Header = ({toggle}: PageLayoutProps) => {
       name: 'Play',
       link: '/draw',
       submenu: [
-        {name: 'Draw', link: '/draw'},
+        {name: 'Pack', link: '/draw'},
         {name: 'Upgrade', link: '/upgrade'},
         // {name: '승부', link: '/prediction'},
       ],
@@ -261,7 +264,7 @@ const Header = ({toggle}: PageLayoutProps) => {
                 connectWallet();
               }}
             >
-              Connect
+              <NonBlur>Connect</NonBlur>
             </NavBtnLink>
           </NavBtn>
         </NavbarContainer>

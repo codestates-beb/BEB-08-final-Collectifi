@@ -29,9 +29,9 @@ const PostPage = ({setCurrentPage}: {setCurrentPage: (value: number) => void}) =
     <div>
       {post && (
         <>
-          <div>번호: {id}</div>
-          <div>작성자: {post.user_id}</div>
-          <div>날짜: {post.created_at}</div>
+          <div>
+            번호: {id} 작성자: {post.user_id} 날짜: {post.created_at}
+          </div>
           <span>제목: {post.title}</span> <span>조회수: {post.views}</span>
           <div>내용: {post.content}</div>
           <div>
