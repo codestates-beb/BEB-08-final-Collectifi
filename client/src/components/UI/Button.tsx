@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 
 type Props = {
-  class?: string; 
+  className?: string; 
   type?: 'submit' | 'reset' | 'button'; 
   onClick?: () => void;
   children?: React.ReactNode;
@@ -13,7 +13,7 @@ type Props = {
 const Button: React.FC<Props> = (props) => {
   return (
     <ButtonLayout
-      className={`button ${props.class && props.class}`}
+      className={`button ${props.className && props.className}`}
       type={props.type || 'button'}
       onClick={props.onClick}
       color={props.color}

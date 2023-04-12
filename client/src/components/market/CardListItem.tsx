@@ -6,12 +6,13 @@ import PlayerCard from '../UI/PlayerCard';
 type Props = {  
   price?: number;
   onClick?: () => void;
+  className?: string;
   children: React.ReactElement<object, typeof PlayerCard>; //React.ReactNode
 }
 
 const CardListItem: React.FC<Props> = (props) => {
   return (   
-    <CardListItemLayout isClick={props.onClick}>
+    <CardListItemLayout className={props.className} isClick={props.onClick} >
       <Link to="">
         <div className='wrapper'>
           <div className='item-wrapper'>
@@ -28,7 +29,7 @@ const CardListItem: React.FC<Props> = (props) => {
 
 export default CardListItem;
 
-const CardListItemLayout = styled.div<{isClick?: () => void;}>`
+const CardListItemLayout = styled.div<{isClick?: () => void; className?: string;}>`
   display: inline-block;  
   border-radius: 20px;
   border: 1px solid transparent;
