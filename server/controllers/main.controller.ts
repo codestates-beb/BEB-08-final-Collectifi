@@ -4,6 +4,8 @@ import {MyRequest} from '../@types/session';
 import {sendResponse} from './utils';
 import Web3 from 'web3';
 import erc20abi from '../abi/erc20abi';
+import {nft_infos} from './nft_infos';
+import {data} from './dummy_posts';
 const web3 = new Web3(`HTTP://127.0.0.1:${process.env.GANACHE_PORT}`);
 const erc20Contract = new web3.eth.Contract(erc20abi, process.env.ERC20_CA);
 
@@ -52,41 +54,63 @@ export const login_post = async (req: MyRequest, res: Response, next: NextFuncti
   }
 };
 
-//NFT_info 데이터 삽입
+// 로그아웃
+export const logout_post = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    req.session.user = null;
+    req.session.loggedIn = false;
+    sendResponse(res, 200, '로그아웃 성공');
+  } catch (e) {
+    sendResponse(res, 400, '로그아웃 실패');
+    console.log(e);
+  }
+};
+
+//더미 데이터 삽입
 export const dummy_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
-    // nft_info 10개 더미데이터 삽입
-    for (let i = 0; i < 5; i++) {
-      let bronzecards = await db.Nft_info.create({
-        player: `messi${i}`,
-        season: `201${i}`,
-        team: `FC Barcelona`,
-        card_pack: 0,
-        card_color: 0,
-        img_url:
-          'https://gateway.pinata.cloud/ipfs/QmP2Y8eJ2iYsqPkfXhrxC6TQ3Co7SvariVE9M8PF62oxtD?filename=3-1.png',
-      });
-
-      let silvercards = await db.Nft_info.create({
-        player: `messi${i}`,
-        season: `201${i}`,
-        team: `FC Barcelona`,
-        card_pack: 0,
-        card_color: 1,
-        img_url:
-          'https://gateway.pinata.cloud/ipfs/QmapWhXK9dbx89vZyKZxQ2K7L5myhkG8Ebd9c1MWFeBam9?filename=3-2.png',
-      });
-
-      let goldcards = await db.Nft_info.create({
-        player: `messi${i}`,
-        season: `201${i}`,
-        team: `FC Barcelona`,
-        card_pack: 0,
-        card_color: 2,
-        img_url:
-          'https://gateway.pinata.cloud/ipfs/QmVo6VHwEbZJcV7HKWFAenpCv9HWhp4XTLMdCzAm9ugXEx?filename=3-3.png',
+    // 더미 User 10개 만들고 넣기
+    for (let i = 0; i < 10; i++) {
+      let users = await db.User.create({
+        nickname: `user${i}`,
+        address: `xdf3234${i}`,
+        token_amount: 1000,
       });
     }
+
+    // Post 더미 데이터 200개 넣기
+    data.map(item => {
+      const posts = db.Post.create({
+        user_id: Math.floor(Math.random() * 10 + 1),
+        title: item.title,
+        content: item.content,
+      });
+    });
+
+    // Post_comment 더미 데이터 10개 넣기
+    for (let i = 0; i < 5; i++) {
+      let users = await db.Post_comment.create({
+        user_id: Math.floor(Math.random() * 10 + 1),
+        post_id: 200,
+        content: 'hello testttt',
+        likes: 50,
+        dislikes: 50,
+      });
+    }
+
+    // Nft_info 데이터 넣기
+    nft_infos.map(item => {
+      const result = db.Nft_info.create({
+        player: item.player,
+        season: item.season,
+        team: item.team,
+        card_pack: item.card_pack,
+        card_color: item.card_color,
+        img_url: item.img_url,
+      });
+    });
+
+    sendResponse(res, 200, '데이터 삽입 완료');
   } catch (e) {
     sendResponse(res, 400, '로그인에 실패했습니다');
     console.log(e);
