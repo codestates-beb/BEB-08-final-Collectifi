@@ -1,17 +1,44 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { postListQuery, cardListQuery } from '../../modules/mypage/atom';
+
+import { nft, post } from '../../modules/type';
 import PageTitle from '../UI/PageTitle';
 import Tab from '../UI/Tab';
 import CardList from '../market/CardList';
+import PlayerCard, { Glow } from '../UI/PlayerCard';
+import CardListItem from '../market/CardListItem';
 import BoardList from '../UI/BoardList';
 import BoardTitleItem from '../UI/BoardTitleItem';
 import BoardListItem from '../UI/BoardListItem';
 
-const MyPage = () => {
+const MyPage = () => {  
+  const cardList = useRecoilValue(cardListQuery);
+  const postList = useRecoilValue(postListQuery);
+  //console.log(cardList, postList);
+  const cardWidth = "250px";
+
   return (<MyPageLayout>
       <PageTitle title='MY PAGE'/>
       <Tab title={["MY CARD", "MY POST", "GET OFFER"]}>
-        <CardList itemWidth='250px'/>
+        <CardList itemWidth={cardWidth}>
+          {cardList.map((el:nft , i: number) => {
+            return (
+              <CardListItem 
+                key={i} 
+                //info={`${el.price}`} 
+                linkTo='aa'
+              >
+                <PlayerCard 
+                  imgSrc={el.img_url}
+                  //cardWidth={cardWidth}
+                  //glow={Glow.orange}
+                />
+              </CardListItem>       
+            )
+          })}  
+        </CardList> 
         <BoardList 
           title={<BoardTitleItem title={["POST1", "POST2", <div key={0}>POST3</div>]} 
           gridTemplateColumns='1fr 2fr 1fr'/>
@@ -44,9 +71,7 @@ const MyPage = () => {
 export default MyPage;
 
 const MyPageLayout = styled.div`
-  max-width: 60%;
+  padding: 0 20px;
+  max-width: 1140px;
   margin: 0 auto;
-  @media only screen and (max-width: 1024px) {
-    max-width: 93%;
-  }
 `
