@@ -164,6 +164,7 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
       }
     }
   } catch (e) {
+    res.status(400).send({message: '실패했습니다'});
     console.log(e);
   }
 };

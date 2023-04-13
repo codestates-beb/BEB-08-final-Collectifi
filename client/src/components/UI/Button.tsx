@@ -1,26 +1,25 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { darken, lighten } from 'polished';
+import { darken } from 'polished';
 
 type Props = {
-  class?: string; 
+  className?: string; 
   type?: 'submit' | 'reset' | 'button'; 
   onClick?: () => void;
   children?: React.ReactNode;
   color?: string;
 }
 
-
 const Button: React.FC<Props> = (props) => {
   return (
-    <StyledButton
-      className={`button ${props.class && props.class}`}
+    <ButtonLayout
+      className={`button ${props.className && props.className}`}
       type={props.type || 'button'}
       onClick={props.onClick}
       color={props.color}
     >
       {props.children}
-    </StyledButton>
+    </ButtonLayout>
   );
 };
 
@@ -31,23 +30,22 @@ Button.defaultProps = {
 export default Button;
 
 
-const StyledButton = styled.button<Props>`
+const ButtonLayout = styled.button<Props>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   outline: none;
   border: none;
-  border-radius: 4px;
-  color: white;
+  border-radius: 100px;
+  padding: 14px 30px;
+  color: rgb(250, 250, 250);
   font-weight: bold;
   cursor: pointer;
-  padding-left: 1rem;
-  padding-right: 1rem;
   
   //크기
-  height: 2rem;
-  width: 4rem;
-  font-size: 1rem;
+  //height: 2rem;
+  //width: 4rem;
+  font-size: 0.875rem;
 
   ${props => {
     let selected = props.color || props.theme.mainColor;
@@ -55,10 +53,10 @@ const StyledButton = styled.button<Props>`
     return css`
       background: ${selected};
       &:hover {
-        background: ${lighten(0.1, selected)};
+        background: ${darken(0.1, selected)};
       }
       &:active {
-        background: ${darken(0.1, selected)};
+        background: ${darken(0.2, selected)};
       }      
     `
   }}  

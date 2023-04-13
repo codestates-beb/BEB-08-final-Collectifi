@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract GLDToken is ERC20 {
     uint256 public maxSupply;
     address payable public joinRewardAddress;
-    uint256 pulic userReward;
+    uint256 public userReward;
     uint256 public initValue = 0;
 
 
@@ -17,9 +17,10 @@ contract GLDToken is ERC20 {
     }
 
 
-    function joinReward(address payable joinUserAddress) public view returns(bool) {
+    function joinReward(address payable joinUserAddress) public returns(bool) {
         joinRewardAddress = joinUserAddress;
         require(balanceOf(joinRewardAddress) == initValue);
         transfer(joinRewardAddress,1000);
+        return true;
     }
 }
