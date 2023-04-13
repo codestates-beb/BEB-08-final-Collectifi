@@ -1,16 +1,15 @@
-import { SessionData } from "express-session";
-import express from "express";
+import {SessionData} from 'express-session';
+import express from 'express';
 
 interface User {
   id: number;
   nickname: string;
   address: string;
   token_amount: number;
-  nft_amount: number;
 }
 
 interface MySessionData extends SessionData {
-  user?: User;
+  user?: User | null;
   loggedIn?: boolean;
 }
 

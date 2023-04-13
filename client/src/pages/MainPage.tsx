@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {Suspense} from 'react';
+import {ErrorBoundary} from 'react-error-boundary';
 import Button from '../components/UI/Button';
 import Tab from '../components/UI/Tab';
 import Modal from '../components/UI/Modal';
@@ -74,13 +76,13 @@ const MainPage = () => {
         <div>test2</div>
         <div>test3</div>
       </Tab>
-
-      {/* <Market /> */}
-      {/* <MyPage /> */}
-      {/* <CardDetail /> */}
-      <DummyComponent />
-      <DummyComponent />
-      <DummyComponent />
+      <ErrorBoundary fallback={<div>Error!</div>}>
+        <Suspense>
+          {/* <Market /> */}
+          {/* <MyPage /> */}
+          {/* <CardDetail /> */}
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 };

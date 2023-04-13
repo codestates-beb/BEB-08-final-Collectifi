@@ -14,8 +14,10 @@ export const market_get = async (req: Request, res: Response, next: NextFunction
     const nfts = await db.Nft.findAll({
       where: {isSell: true},
     });
-    res.status(200).send({data: nfts});
+    res.status(200).send({message: 'nft 목록 불러오기 성공', data: nfts});
   } catch (e) {
+    res.status(400).send({message: 'nft 목록 불러오기 실패'});
+
     console.log(e);
   }
 };
@@ -24,11 +26,14 @@ export const market_get = async (req: Request, res: Response, next: NextFunction
 export const market_sell_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     const id = req.session.user?.id;
+    console.log('=====id====', id);
     const nfts = await db.Nft.findAll({
       where: {isSell: false, user_id: id}, //세션 아이디 받아오기
     });
-    res.status(200).send({data: nfts});
+    res.status(200).send({message: '성공', data: nfts});
   } catch (e) {
+    res.status(400).send({message: '실패'});
+
     console.log(e);
   }
 };
@@ -53,8 +58,10 @@ export const market_sell_post = async (req: MyRequest, res: Response, next: Next
       );
     }
 
-    res.status(200).send({message: '성공했습니다'});
+    res.status(200).send({message: '판매 등록 성공했습니다'});
   } catch (e) {
+    res.status(400).send({message: '실패했습니다'});
+
     console.log(e);
   }
 };
@@ -64,21 +71,37 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
   try {
     //판매중인 NFT 정보 받아오기
     const {selling_price, token_id, user_id} = req.body;
+    console.log('=======selling_price, token_id, user_id===', selling_price, token_id, user_id);
     const toUserId = req.session.user?.id;
+    console.log('=======toUserIdd===', toUserId);
+
     const nftOwnerAddress = await erc721Contract.methods.ownerOf(token_id).call();
+    console.log('=======nftOwnerAddress===', nftOwnerAddress);
+
     //구매자의 지갑 주소
     const toAddress = req.session.user?.address;
+    console.log('=======toAddress===', toAddress);
+
     //판매자의 유저 정보 조회
     const seller = await db.User.findOne({
       where: {
         id: user_id,
       },
     });
+    console.log('=======seller===', seller);
+
     const fromAddress = seller.address;
+    console.log('=======fromAddress===', fromAddress);
 
     //구매자의 토큰 잔액이 판매 가격보다 많은지 조회
-    if ((await erc20Contract.methods.balanceOf(toAddress)) >= selling_price) {
+    const balance = await erc20Contract.methods.balanceOf(toAddress).call();
+    console.log(balance);
+    if (balance >= selling_price) {
+      console.log('=======안녕===');
+
       if (nftOwnerAddress == fromAddress) {
+        console.log('=======하이===');
+
         //확인 후 NFT옮기는 권한을 부여한 후 NFT 소유권 이동 및 토큰 수량 업데이트
         await erc721Contract.methods
           .approve(toAddress, token_id)
@@ -108,12 +131,12 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
         });
         const sellerModify = await seller.increment('token_amount', {by: selling_price});
         const buyerModify = await buyer.decrement('token_amount', {by: selling_price});
-        res.status(200).send({message: '성공했습니다'});
+        return res.status(200).send({message: '구매에 성공했습니다'});
       }
     }
-    res.status(400).send({message: '실패했습니다.'});
+    return res.status(400).send({message: '오류가 발생했습니다'});
   } catch (e) {
-    console.log(e);
+    console.log('ERROR:: ', e);
     res.status(400).send({message: '실패했습니다.'});
   }
 };

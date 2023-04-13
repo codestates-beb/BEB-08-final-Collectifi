@@ -31,7 +31,7 @@ const PlayerCardLayout = styled.div<{glow?: Glow; cardWidth?: string;}>`
   //background: black;
 
   & .img-wrapper {
-    max-width: ${props => props.cardWidth || '200px'};
+    max-width: ${props => props.cardWidth || '100%'};
     overflow: hidden;
   }
 
