@@ -19,6 +19,11 @@ export const mypage_get = async (req: MyRequest, res: Response, next: NextFuncti
     if (!user) {
       sendResponse(res, 400, '존재하지 않는 유저입니다');
     }
+
+    // 마이페이지인지, 남의 페이지인지 확인
+    const loggedInUserId = req.session.user?.id;
+    const isOwner = Number(id) == loggedInUserId;
+
     // 3. 해당 유저의 id로 post, nft 불러오기
     const posts = await db.Post.findAll({
       where: {
@@ -36,7 +41,7 @@ export const mypage_get = async (req: MyRequest, res: Response, next: NextFuncti
     //   message: "user profile",
     //   data: { posts, nfts, user },
     // };
-    sendResponse(res, 200, 'user profile', {posts, nfts, user});
+    sendResponse(res, 200, 'user profile', {posts, nfts, user, isOwner});
   } catch (e) {
     console.log(e);
   }

@@ -9,11 +9,20 @@ import {PageLayoutProps} from './PageLayout';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Dropdown from './Dropdown';
+import axios from 'axios';
+
+declare global {
+  interface Window {
+    ethereum?: {
+      request: (args: any) => Promise<any>;
+    };
+  }
+}
 
 const navVariants = {
   top: {
-    // backgroundColor: 'rgba(0, 0, 0, 0)',
-    backgroundColor: '#000',
+    // backgroundColor: 'white',
+    backgroundColor: '#333333',
   },
   scroll: {
     backgroundColor: 'grey',
@@ -22,7 +31,7 @@ const navVariants = {
 };
 
 const Nav = styled(motion.div)`
-  background: '#000';
+  /* background: '#000'; */
   height: 70px;
   /* margin-top: -70px; */
   display: flex;
@@ -46,7 +55,7 @@ const NavbarContainer = styled.div`
   padding: 0 24px;
   max-width: 1100px;
 `;
-const NavLogo = styled(Link)`
+export const NavLogo = styled(Link)`
   color: #fff;
   justify-self: flex-start;
   cursor: pointer;
@@ -107,10 +116,10 @@ const NavBtn = styled.nav`
     display: none;
   }
 `;
-const NavBtnLink = styled(Link)`
+const NavBtnLink = styled.div`
   font-weight: bold;
   border-radius: 50px;
-  background: #01bf71;
+  background: ${props => props.theme.mainColor};
   white-space: nowrap;
   padding: 10px 22px;
   color: #fff;
@@ -127,11 +136,13 @@ const NavBtnLink = styled(Link)`
     color: #010606;
   }
 `;
+const NonBlur = styled.div`
+  /* filter: */
+`;
 
 const Header = ({toggle}: PageLayoutProps) => {
-  // const [click, setClick] = useState(false);
-  // const handleClick = () => setClick(!click);
   const [dropdown, setDropdown] = useState('');
+  const [account, setAccount] = useState('');
 
   const onMouseEnter = (e: string) => {
     if (window.innerWidth < 768) {
@@ -164,8 +175,8 @@ const Header = ({toggle}: PageLayoutProps) => {
       name: 'Play',
       link: '/draw',
       submenu: [
-        {name: 'Draw', link: '/draw'},
-        {name: '강화', link: '/upgrade'},
+        {name: 'Pack', link: '/draw'},
+        {name: 'Upgrade', link: '/upgrade'},
         // {name: '승부', link: '/prediction'},
       ],
     },
@@ -173,14 +184,39 @@ const Header = ({toggle}: PageLayoutProps) => {
       name: 'Earn',
       link: '/staking',
       submenu: [
-        {name: '스테이킹', link: '/staking'},
-        {name: '스왑', link: '/swap'},
+        {name: 'Staking', link: '/staking'},
+        {name: 'Swap', link: '/swap'},
       ],
     },
     {name: 'Market', link: '/market'},
     {name: 'Win', link: '/win'},
     {name: 'Community', link: '/community'},
   ];
+
+  const connectWallet = async () => {
+    if (!window.ethereum) {
+      console.log('Ethereum not detected in browser');
+      return;
+    }
+    await window.ethereum
+      .request({
+        method: 'eth_requestAccounts',
+      })
+      .then(res => {
+        setAccount(res[0]);
+        // setIsLoggedIn(true);
+        // localStorage.setItem('isLoggedIn', res[0]);
+      })
+
+      .catch(e => console.log(e));
+
+    // 백엔드로 로그인 요청
+    await axios
+      .post('http://localhost:8000/login', {address: account}, {withCredentials: true})
+      .then(res => {
+        console.log('login_post success: ', res);
+      });
+  };
 
   return (
     <>
@@ -232,7 +268,13 @@ const Header = ({toggle}: PageLayoutProps) => {
             </NavItem> */}
           </NavMenu>
           <NavBtn>
-            <NavBtnLink to="/">Connect</NavBtnLink>
+            <NavBtnLink
+              onClick={() => {
+                connectWallet();
+              }}
+            >
+              <NonBlur>Connect</NonBlur>
+            </NavBtnLink>
           </NavBtn>
         </NavbarContainer>
       </Nav>

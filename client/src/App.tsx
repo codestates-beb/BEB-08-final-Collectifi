@@ -5,6 +5,7 @@ import {ThemeProvider} from 'styled-components';
 import Sidebar from './components/Sidebar';
 import Router from './Router';
 import ScrollReset from './components/ScrollReset';
+import GlobalStyle from './Styles';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +22,18 @@ function App() {
   //     setScrollNav(false);
   //   }
   // };
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth > 768) {
+        setIsOpen(false);
+      } // 768px보다 크면 true, 작으면 false
+    }
+    handleResize(); // 컴포넌트가 마운트될 때 한번 실행
+    window.addEventListener('resize', handleResize); // 화면 사이즈 변경 시 실행
+    return () => {
+      window.removeEventListener('resize', handleResize); // 컴포넌트가 언마운트될 때 이벤트 리스너 해제
+    };
+  }, []);
   const toggle = (): void => {
     setIsOpen(!isOpen);
   };
@@ -28,11 +41,12 @@ function App() {
   const theme = {
     mainColor: 'rgb(253, 17, 92)',
     lineColor: 'rgb(203, 203, 203)',
-  }
+  };
 
   return (
     <RecoilRoot>
-      <ThemeProvider theme={theme}>      
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
         <BrowserRouter>
           <ScrollReset />
           <Router toggle={toggle} />
