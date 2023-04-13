@@ -72,23 +72,11 @@ contract NFTLootBox is ERC721URIStorage, Ownable {
         return price[tokenId -1];
     }
 
-    
 
-    function approve(address to, uint256 tokenId) public virtual override {
-        address owner = ERC721.ownerOf(tokenId);
-        require(to != owner, "ERC721: approval to current owner");
-
-        require(_msgSender() == owner || isApprovedForAll(owner, _msgSender()),
-            "ERC721: approve caller is not owner nor approved for all"
-        );
-
-        _approve(to, tokenId);
-    }
-
-    function transferNFT(address from, address to, uint256 tokenId) public {
+    function transferNFT(address from, address to, uint256 tokenId, uint256 value) public {
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: transfer caller is not owner nor approved");
-        approve(to, tokenId);
-        _transfer(from, to, tokenId);
+        safeTransferFrom(from,to,tokenId);
+        token.transferFrom(to,from,value);
     }
 
     function setPrice(uint256 tokenId, uint256 newPrice) public onlyOwner{
