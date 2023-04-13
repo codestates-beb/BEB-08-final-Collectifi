@@ -9,6 +9,7 @@ import {PageLayoutProps} from './PageLayout';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Dropdown from './Dropdown';
+import axios from 'axios';
 
 declare global {
   interface Window {
@@ -141,6 +142,7 @@ const NonBlur = styled.div`
 
 const Header = ({toggle}: PageLayoutProps) => {
   const [dropdown, setDropdown] = useState('');
+  const [account, setAccount] = useState('');
 
   const onMouseEnter = (e: string) => {
     if (window.innerWidth < 768) {
@@ -201,12 +203,19 @@ const Header = ({toggle}: PageLayoutProps) => {
         method: 'eth_requestAccounts',
       })
       .then(res => {
-        // setAccount(res[0]);
+        setAccount(res[0]);
         // setIsLoggedIn(true);
-        localStorage.setItem('isLoggedIn', res[0]);
+        // localStorage.setItem('isLoggedIn', res[0]);
       })
 
       .catch(e => console.log(e));
+
+    // 백엔드로 로그인 요청
+    await axios
+      .post('http://localhost:8000/login', {address: account}, {withCredentials: true})
+      .then(res => {
+        console.log('login_post success: ', res);
+      });
   };
 
   return (

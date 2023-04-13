@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {motion} from 'framer-motion';
 import {Link, Route, Routes, useNavigate} from 'react-router-dom';
 import axios from 'axios';
@@ -14,6 +14,8 @@ import BoardListItem from '../components/UI/BoardListItem';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import Tab from '../components/UI/Tab';
+import {darken, lighten} from 'polished';
+
 TimeAgo.addDefaultLocale(en);
 interface PostsAttributes {
   id: number;
@@ -32,14 +34,55 @@ const CommunityLayout = styled.div`
     max-width: 93%;
   }
 `;
+const TabUl = styled.ul`
+  margin-bottom: 40px;
+  border-bottom: solid 1px ${props => props.theme.lineColor || 'rgb(0, 0, 0)'};
+`;
+const TabLi = styled.li`
+  display: inline-flex;
+  margin-right: 40px;
+`;
+const TabButton = styled.button<{selected: boolean}>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(100, 109, 117);
+  cursor: pointer;
+  background: transparent;
+  padding: 0px 0px 12px;
 
+  ${props => {
+    return css`
+      color: ${props.color || 'rgb(0, 0, 0)'};
+      &:hover {
+        color: ${darken(0.2, props.color || 'rgb(0, 0, 0)')};
+      }
+      &:active {
+        color: ${lighten(0.1, props.color || 'rgb(0, 0, 0)')};
+      }
+    `;
+  }}
+
+  ${props => {
+    return (
+      props.selected &&
+      css`
+        color: ${props.theme.mainColor || 'rgb(0, 0, 0)'};
+        box-shadow: 0px 1px 0px 0px ${props.theme.mainColor || 'rgb(0, 0, 0)'};
+      `
+    );
+  }}
+`;
 const Community = () => {
   const navigate = useNavigate();
   const boardSize = '0.3fr 3fr 1fr 1fr 1fr 1fr';
   const [posts, setPosts] = useState<PostsAttributes[]>([]);
+  const [popularPosts, setPopularPosts] = useState<PostsAttributes[]>([]);
   const timeAgo = new TimeAgo('en-US');
-  // const [postLoading, setPostLoading] = useState(false);
-  // const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     // axios
@@ -53,6 +96,7 @@ const Community = () => {
     //   console.error(error);
     // });
     // setCurrentPage()
+
     setPosts(
       data.map(post => {
         return {
@@ -60,6 +104,16 @@ const Community = () => {
           created_at: new Date(post.created_at),
         };
       }),
+    );
+    setPopularPosts(
+      data
+        .filter(item => item.likes >= 50)
+        .map(post => {
+          return {
+            ...post,
+            created_at: new Date(post.created_at),
+          };
+        }),
     );
   }, []);
   // useEffect(() => {
@@ -98,68 +152,55 @@ const Community = () => {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPost = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPopularPost = popularPosts.slice(indexOfFirstPost, indexOfLastPost);
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-
+  const [tabs, setTabs] = useState('General');
+  const clickHandler = (e: string) => {
+    setTabs(e);
+  };
   return (
     <CommunityLayout>
       <Routes>
         <Route path=":id" element={<PostPage setCurrentPage={setCurrentPage} />} />
       </Routes>
 
+      <TabUl>
+        <TabLi>
+          <TabButton
+            onClick={() => clickHandler('General')}
+            selected={tabs === 'General'}
+            color={'rgb(123, 123, 123)'}
+          >
+            General
+          </TabButton>
+        </TabLi>
+        <TabLi>
+          <TabButton
+            onClick={() => clickHandler('Popular')}
+            selected={tabs === 'Popular'}
+            color={'rgb(123, 123, 123)'}
+          >
+            Popular
+          </TabButton>
+        </TabLi>
+      </TabUl>
       <Button onClick={() => navigate('/write')}>글 작성</Button>
-      <Tab title={['General', 'Popular']}>
-        <BoardList
-          title={
-            <BoardTitleItem
-              title={['POST', 'TITLE', 'USER', 'DATE', 'VIEW', 'LIKES']}
-              gridTemplateColumns={boardSize}
-            />
-          }
-        >
-          {currentPost &&
-            currentPost.map(item => {
-              // const before = new Date(new Date().getTime() - item.created_at.getTime()).getTime();
-              // if (new Date().getMonth() - item.created_at.getMonth()) {
-              // }
-              const listItem = [
-                item.id,
-                `${item.title} [${item.likes}]`,
-                item.user_id,
-                // timeAgo.format(item.created_at),
-                // new Date().getMonth(),
-                // item.created_ats.getMonth(),
-                // (new Date() - item.created_at).toString(),
-                item.created_at.toDateString(),
-                // item.created_at.getTime(),
-                // new Date(new Date().getTime() - item.created_at.getTime()).toDateString(),
-                // before,
-                item.views,
-                item.likes,
-              ];
-              return (
-                <BoardListItem
-                  key={item.id}
-                  listItem={listItem}
-                  gridTemplateColumns={boardSize}
-                  linkTo={item.id.toString()}
-                />
-              );
-            })}
-        </BoardList>
-        <BoardList
-          title={
-            <BoardTitleItem
-              title={['POST', 'TITLE', 'USER', 'DATE', 'VIEW', 'LIKES']}
-              gridTemplateColumns={boardSize}
-            />
-          }
-        >
-          {currentPost &&
-            currentPost
-              .filter(item => item.likes >= 50)
-              .map(item => {
+
+      {/* <div>{tabs}</div> */}
+      {tabs == 'General' && (
+        <>
+          <BoardList
+            title={
+              <BoardTitleItem
+                title={['POST', 'TITLE', 'USER', 'DATE', 'VIEW', 'LIKES']}
+                gridTemplateColumns={boardSize}
+              />
+            }
+          >
+            {currentPost &&
+              currentPost.map(item => {
                 // const before = new Date(new Date().getTime() - item.created_at.getTime()).getTime();
                 // if (new Date().getMonth() - item.created_at.getMonth()) {
                 // }
@@ -187,16 +228,68 @@ const Community = () => {
                   />
                 );
               })}
-        </BoardList>
-      </Tab>
-
-      <Pagination
-        dataPerPage={postsPerPage}
-        dataLength={posts.length}
-        paginate={paginate}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+          </BoardList>
+          <Pagination
+            dataPerPage={postsPerPage}
+            dataLength={posts.length}
+            paginate={paginate}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
+      )}
+      {tabs == 'Popular' && (
+        <>
+          <BoardList
+            title={
+              <BoardTitleItem
+                title={['POST', 'TITLE', 'USER', 'DATE', 'VIEW', 'LIKES']}
+                gridTemplateColumns={boardSize}
+              />
+            }
+          >
+            {currentPopularPost &&
+              currentPopularPost.map(item => {
+                // const before = new Date(new Date().getTime() - item.created_at.getTime()).getTime();
+                // if (new Date().getMonth() - item.created_at.getMonth()) {
+                // }
+                const listItem = [
+                  item.id,
+                  `${item.title} [${item.likes}]`,
+                  item.user_id,
+                  // timeAgo.format(item.created_at),
+                  // new Date().getMonth(),
+                  // item.created_ats.getMonth(),
+                  // (new Date() - item.created_at).toString(),
+                  item.created_at.toDateString(),
+                  // item.created_at.getTime(),
+                  // new Date(new Date().getTime() - item.created_at.getTime()).toDateString(),
+                  // before,
+                  item.views,
+                  item.likes,
+                ];
+                return (
+                  <BoardListItem
+                    key={item.id}
+                    listItem={listItem}
+                    gridTemplateColumns={boardSize}
+                    linkTo={item.id.toString()}
+                  />
+                );
+              })}
+          </BoardList>
+          <Pagination
+            dataPerPage={postsPerPage}
+            dataLength={popularPosts.length}
+            paginate={paginate}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
+      )}
+      {/* <Tab title={['General', 'Popular']}>
+        
+      </Tab> */}
     </CommunityLayout>
   );
 };

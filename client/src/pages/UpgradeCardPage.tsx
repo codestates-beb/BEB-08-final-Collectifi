@@ -48,7 +48,7 @@ const UpgradeCardPage = () => {
       </Layout>
 
       <div>나의 카드 리스트</div>
-      <CardList itemWidth="250px" />
+      {/* <CardList itemWidth="250px" /> */}
     </>
   );
 };
