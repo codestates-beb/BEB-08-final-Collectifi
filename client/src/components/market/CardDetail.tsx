@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import PlayerCard, {Glow} from '../UI/PlayerCard';
+import PlayerCard, { Glow } from '../UI/PlayerCard';
 import PageTitle from '../UI/PageTitle';
 import BoardList from '../UI/BoardList';
 import BoardTitleItem from '../UI/BoardTitleItem';
@@ -75,17 +75,16 @@ const CardDetail = () => {
 export default CardDetail;
 
 const CDLayout = styled.div<{width: string}>`
-  max-width: 60%;
+  padding: 0 20px;
+  max-width: 1140px; //1290px;
   margin: 0 auto;
-  @media only screen and (max-width: 1024px) {
-    max-width: 93%;
-  }
 
   & .top {
     display: grid;
     align-items: center;
     //grid-template-columns: repeat(auto-fit, minmax(200px, auto));
-    grid-template-columns: ${props => props.width} auto;
+    //grid-template-columns: ${props => props.width} auto;
+    grid-template-columns: minmax(auto, ${props => props.width}) minmax(300px, auto);
     gap: 40px;    
 
     @media only screen and (max-width: 768px) {

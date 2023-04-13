@@ -4,22 +4,23 @@ import { Link } from 'react-router-dom';
 import PlayerCard from '../UI/PlayerCard';
 
 type Props = {  
-  price?: number;
-  onClick?: () => void;
+  info?: string;
+  linkTo?: string;
+  // onClick?: () => void;
   className?: string;
   children: React.ReactElement<object, typeof PlayerCard>; //React.ReactNode
 }
 
 const CardListItem: React.FC<Props> = (props) => {
   return (   
-    <CardListItemLayout className={props.className} isClick={props.onClick} >
-      <Link to="">
+    <CardListItemLayout className={props.className} linkTo={props.linkTo} >
+      <Link to={props.linkTo || ""}>
         <div className='wrapper'>
           <div className='item-wrapper'>
             {props.children}
           </div>
-          {props.price && <div className='info-wrapper'>
-            <div className='price'>{props.price}</div>
+          {props.info && <div className='info-wrapper'>
+            <div className='price'>{props.info}</div>
           </div>}        
         </div>   
       </Link>    
@@ -29,7 +30,7 @@ const CardListItem: React.FC<Props> = (props) => {
 
 export default CardListItem;
 
-const CardListItemLayout = styled.div<{isClick?: () => void; className?: string;}>`
+const CardListItemLayout = styled.div<{linkTo?: string; className?: string;}>`
   display: inline-block;  
   border-radius: 20px;
   border: 1px solid transparent;
@@ -43,7 +44,7 @@ const CardListItemLayout = styled.div<{isClick?: () => void; className?: string;
     }
     `
   }  
-  ${props => !props.isClick && `pointer-events: none;`}
+  ${props => !props.linkTo && `pointer-events: none;`}
 
   & .wrapper {
     padding: 20px;
