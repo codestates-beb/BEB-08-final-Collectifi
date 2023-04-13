@@ -4,6 +4,7 @@ import db from '../models';
 import Web3 from 'web3';
 import erc20abi from '../abis/erc20Abi';
 import {MyRequest} from '../@types/session';
+import {sendResponse} from './utils';
 
 // 글 목록 페이지
 export const community_get = async (req: MyRequest, res: Response, next: NextFunction) => {
@@ -25,7 +26,6 @@ export const community_get = async (req: MyRequest, res: Response, next: NextFun
         },
         {
           model: db.Post_comment,
-          attributes: ['content'],
         },
       ],
     });
@@ -35,8 +35,9 @@ export const community_get = async (req: MyRequest, res: Response, next: NextFun
       message: 'query posts complete',
       data: {posts},
     };
-    res.status(200).send(result);
+    sendResponse(res, 200, '글 목록 불러오기 성공', posts);
   } catch (e) {
+    sendResponse(res, 400, '글 목록 불러오기 실패!');
     console.log(e);
   }
 };
@@ -47,8 +48,10 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
     // 1. front에서 데이터 받아오기
     const {title, content} = req.body;
     console.log('================title===============', title);
+    console.log('================title===============', title);
     // 2. session에서 user 추출
     const id = req.session.user?.id;
+    console.log('================id=================', id);
     console.log('================id=================', id);
 
     // 3. id로 user 찾기
@@ -73,6 +76,7 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
       const giveToken = await contract.methods
         .transfer(user.address, 1)
         .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+
       if (giveToken) {
         //6. 블록체인에서 토큰을 주었다면, db의 token_amount도 1 올려주기
         const incrementToken = await user.increment('token_amount', {by: 1});
@@ -81,8 +85,9 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
 
     // 8. 프론트에 알려주기
 
-    res.status(200).send('글 등록 성공!');
+    sendResponse(res, 200, '글 등록 성공!');
   } catch (e) {
+    sendResponse(res, 400, '글 등록 실패!');
     console.log(e);
   }
 };
@@ -106,7 +111,6 @@ export const detail_get = async (req: Request, res: Response, next: NextFunction
         },
         {
           model: db.Post_comment,
-          attributes: ['content'],
         },
       ],
     });
@@ -121,9 +125,7 @@ export const detail_get = async (req: Request, res: Response, next: NextFunction
     const result = await post.increment('views', {by: 1});
 
     if (!post) {
-      return res.status(404).json({
-        message: '게시물을 찾을 수 없음',
-      });
+      sendResponse(res, 400, '게시물을 찾을 수 없음');
     }
     //3. 포스트의 user_id로 user 찾기
     const user = await db.User.findOne({
@@ -133,14 +135,9 @@ export const detail_get = async (req: Request, res: Response, next: NextFunction
     });
     const address = user.address;
     //3. 프론트로 user의 address와, post 데이터 보내주기
-    res.status(200).json({
-      message: '게시물을 성공적으로 가져왔습니다.',
-      data: {post, address},
-    });
+    sendResponse(res, 200, '게시물을 성공적으로 가져왔습니다.', {post, address});
   } catch (error) {
-    res.status(500).json({
-      message: '게시물 가져오기에 실패했습니다!',
-    });
+    sendResponse(res, 400, '게시물 가져오기 실패.');
   }
 };
 
@@ -151,7 +148,7 @@ export const like_post = async (req: MyRequest, res: Response, next: NextFunctio
     const user = req.session.user;
     // 1-1. 로그인 안했으면 돌려보냄
     if (!user) {
-      res.status(401).send({message: '로그인하세요!'});
+      sendResponse(res, 400, '로그인을 먼저 하세요');
     }
     // 2. params에 있는 id로 해당 글을 검색
     const {postId} = req.params;
@@ -164,7 +161,7 @@ export const like_post = async (req: MyRequest, res: Response, next: NextFunctio
     // 2. 좋아요 / 싫어요인지 체크
     const {data} = req.body;
     if (!data) {
-      res.status(400).send('요청 실패');
+      sendResponse(res, 400, '요청 실패');
     }
     // 3-1. 좋아요 경우 post의 likes를 1 증가
     if (data === 'likes') {
@@ -188,8 +185,9 @@ export const like_post = async (req: MyRequest, res: Response, next: NextFunctio
 
     //   }
     // }
-    res.status(200).send('성공');
+    sendResponse(res, 200, '좋아요/싫어요 누르기 성공');
   } catch (error) {
+    sendResponse(res, 400, '좋아요/싫어요 누르기 실패');
     console.log(error);
   }
 };
@@ -210,11 +208,13 @@ export const editPost_get = async (req: MyRequest, res: Response, next: NextFunc
     const userId = req.session.user?.id;
     // 2-2. 일치 안하면 돌려보내
     if (post.user_id != userId) {
-      res.status(401).send('you are not authorized');
+      sendResponse(res, 400, '작성자가 아닙니다.');
     }
     // 3. 본래 title, content를 프론트에 전달하기
-    res.status(200).send({message: '성공했습니다.', data: {title, content}});
+    sendResponse(res, 200, '성공했습니다.', {title, content});
   } catch (error) {
+    sendResponse(res, 400, '작성자가 아닙니다.');
+
     console.log(error);
   }
 };
@@ -234,13 +234,14 @@ export const editPost_patch = async (req: MyRequest, res: Response, next: NextFu
     });
     // 아니면 돌려보내기
     if (post.user_id != user?.id) {
-      res.status(401).send('you are not authorized');
+      sendResponse(res, 400, '실패했습니다');
     }
     // 3. db post title, content 내용 업데이트
     const result = await db.Post.update({title, content}, {where: {id: postId}});
     // 4. 프론트에 성공했다 알려주기
-    res.status(200).send('it works!');
+    sendResponse(res, 200, '성공했습니다.');
   } catch (error) {
+    sendResponse(res, 400, '실패했습니다');
     console.log(error);
   }
 };
@@ -261,13 +262,15 @@ export const deletePost_delete = async (req: MyRequest, res: Response, next: Nex
     });
     // 아니면 돌려보내기
     if (post.user_id != user?.id) {
-      res.status(401).send('you are not authorized');
+      sendResponse(res, 400, '실패했습니다');
     }
     // 3. 해당 post 삭제
     const result = await db.Post.destroy({where: {id: postId}});
     // 4. 프론트에 성공했다 알려주기
-    res.status(200).send('it works!');
+    sendResponse(res, 200, '성공했습니다');
   } catch (error) {
+    sendResponse(res, 400, '실패했습니다');
+
     console.log(error);
   }
 };
@@ -281,9 +284,12 @@ export const comment_post = async (req: MyRequest, res: Response, next: NextFunc
       params: {postId},
     } = req;
     console.log('===========req.params==========', req.params);
+    console.log('===========req.params==========', req.params);
     const userId = req.session.user?.id;
     console.log('========id==========', postId);
+    console.log('========id==========', postId);
 
+    console.log(typeof userId, typeof Number(postId), typeof postId, typeof content);
     console.log(typeof userId, typeof Number(postId), typeof postId, typeof content);
 
     // 2. Comment 추가
@@ -296,13 +302,9 @@ export const comment_post = async (req: MyRequest, res: Response, next: NextFunc
     // 4.
 
     //3. 프론트로 post 데이터 보내주기
-    res.status(200).json({
-      message: '댓글 작성완료',
-    });
+    sendResponse(res, 200, '성공했습니다');
   } catch (error) {
-    res.status(500).json({
-      message: '실패',
-    });
+    sendResponse(res, 400, '실패했습니다');
   }
 };
 
@@ -313,19 +315,22 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
     const user = req.session.user;
     // 1-1. 로그인 안했으면 돌려보냄
     if (!user) {
-      res.status(401).send({message: '로그인하세요!'});
+      sendResponse(res, 400, '실패했습니다');
     }
     // 2. front 에서 해당 comment의 id 받아오기
     const {commentId} = req.params;
+    console.log('=====commentId====', commentId);
     const {data} = req.body;
-    const comment = await db.post_comments.findOne({
+    console.log('=====data====', data);
+
+    const comment = await db.Post_comment.findOne({
       where: {
         id: commentId,
       },
     });
     // 2. 좋아요 / 싫어요인지 체크
     if (!data) {
-      res.status(400).send('요청 실패');
+      sendResponse(res, 400, '실패했습니다');
     }
     // 3-1. 좋아요 경우 post의 likes를 1 증가
     if (data === 'likes') {
@@ -335,8 +340,10 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
     else if (data === 'dislikes') {
       const increaseDislike = await comment.increment('dislikes', {by: 1});
     }
-    res.status(200).send('성공');
+    sendResponse(res, 200, '성공했습니다');
   } catch (error) {
+    sendResponse(res, 400, '실패했습니다');
+
     console.log(error);
   }
 };
@@ -345,9 +352,9 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
 
 export const editComment_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
-    // 1. 프론트에서 comment id, 기존 , content 받기
+    // 1. 프론트에서 comment id 받기
     const {commentId} = req.params;
-    const {content} = req.body;
+
     // 2. session의 user와 comment 작성한 user가 일치하는지 확인
     const comment = await db.Post_comment.findOne({
       where: {
@@ -357,11 +364,13 @@ export const editComment_get = async (req: MyRequest, res: Response, next: NextF
     const userId = req.session.user?.id;
     // 2-2. 일치 안하면 돌려보내
     if (comment.user_id != userId) {
-      res.status(401).send('you are not authorized');
+      sendResponse(res, 400, '실패했습니다');
     }
     // 3. 본래 content를 프론트에 전달하기
-    res.status(200).send({data: {content}});
+    sendResponse(res, 200, '성공했습니다', comment.content);
   } catch (error) {
+    sendResponse(res, 400, '실패했습니다');
+
     console.log(error);
   }
 };
@@ -381,13 +390,14 @@ export const editComment_patch = async (req: MyRequest, res: Response, next: Nex
     });
     // 아니면 돌려보내기
     if (comment.user_id != user?.id) {
-      res.status(401).send('you are not authorized');
+      sendResponse(res, 400, '실패했습니다');
     }
     // 3. db comment title, content 내용 업데이트
     const result = await db.Post_comment.update({content}, {where: {id: commentId}});
     // 4. 프론트에 성공했다 알려주기
-    res.status(200).send('it works!');
+    sendResponse(res, 200, '성공했습니다');
   } catch (error) {
+    sendResponse(res, 400, '실패했습니다');
     console.log(error);
   }
 };
@@ -408,13 +418,14 @@ export const deleteComment_delete = async (req: MyRequest, res: Response, next: 
     });
     // 아니면 돌려보내기
     if (comment.user_id != user?.id) {
-      res.status(401).send('you are not authorized');
+      sendResponse(res, 400, '실패했습니다');
     }
     // 3. 해당 post 삭제
-    const result = await db.Post_comment.destroy({where: {commentId}});
+    const result = await db.Post_comment.destroy({where: {id: commentId}});
     // 4. 프론트에 성공했다 알려주기
-    res.status(200).send('it works!');
+    sendResponse(res, 200, '성공했습니다');
   } catch (error) {
+    sendResponse(res, 400, '실패했습니다');
     console.log(error);
   }
 };
