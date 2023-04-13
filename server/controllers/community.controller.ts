@@ -111,6 +111,7 @@ export const detail_get = async (req: MyRequest, res: Response, next: NextFuncti
         },
       ],
     });
+
     // 3. DB에서 해당 포스트의 댓글 불러오기
     // const comments = await db.Post_comment.findAll({
     //   where: {
