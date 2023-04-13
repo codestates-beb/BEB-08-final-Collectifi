@@ -28,7 +28,7 @@ export const drawing_post = async (req: MyRequest, res: Response, next: NextFunc
     //   .setToken(process.env.ERC20_CA)
     //   .send({from: process.env.SERVER_ADDRESS, gas: 500000});
     const mintNftPrice = await erc20Contract.methods
-      .transfer(process.env.SERVER_ADDRESS, card_pack == 0 ? 1500 : card_pack == 1 ? 3000 : 5000)
+      .transfer(process.env.SERVER_ADDRESS, card_pack == 0 ? 150 : card_pack == 1 ? 300 : 500)
       .send({from: address, gas: 500000});
     //성공시 nft발급
     if (mintNftPrice) {
@@ -62,7 +62,7 @@ export const drawing_post = async (req: MyRequest, res: Response, next: NextFunc
           },
         });
         const withdraw = await user.decrement('token_amount', {
-          by: card_pack == 0 ? 1500 : card_pack == 1 ? 3000 : 5000,
+          by: card_pack == 0 ? 150 : card_pack == 1 ? 300 : 500,
         });
         res.status(200).send({message: '민팅 성공', data: {mintedNft}});
       }
