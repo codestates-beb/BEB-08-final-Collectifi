@@ -13,6 +13,10 @@ export const market_get = async (req: Request, res: Response, next: NextFunction
   try {
     const nfts = await db.Nft.findAll({
       where: {isSell: true},
+      include: {
+        model: db.User,
+        attributes: ['nickname'],
+      },
     });
     res.status(200).send({message: 'nft 목록 불러오기 성공', data: nfts});
   } catch (e) {
