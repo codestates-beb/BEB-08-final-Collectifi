@@ -109,6 +109,21 @@ export const dummy_get = async (req: MyRequest, res: Response, next: NextFunctio
         img_url: item.img_url,
       });
     });
+    //판매중인 Nft 데이터 넣기
+    nft_infos.map(item => {
+      const selling_nfts = db.Nft.create({
+        token_id: 1,
+        user_id: 1,
+        player: 'Lionel Messi',
+        season: '2011-2012',
+        team: 'FC Barcelona',
+        card_color: 0,
+        price: 500,
+        selling_price: 500,
+        img_url: item.img_url,
+        isSell: true,
+      });
+    });
 
     sendResponse(res, 200, '데이터 삽입 완료');
   } catch (e) {
