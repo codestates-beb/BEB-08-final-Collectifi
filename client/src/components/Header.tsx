@@ -204,18 +204,17 @@ const Header = ({toggle}: PageLayoutProps) => {
       })
       .then(res => {
         setAccount(res[0]);
+        // 백엔드로 로그인 요청
+        axios
+          .post('http://localhost:8000/login', {address: account}, {withCredentials: true})
+          .then(res => {
+            console.log('login_post success: ', res);
+          });
         // setIsLoggedIn(true);
         // localStorage.setItem('isLoggedIn', res[0]);
       })
 
       .catch(e => console.log(e));
-
-    // 백엔드로 로그인 요청
-    await axios
-      .post('http://localhost:8000/login', {address: account}, {withCredentials: true})
-      .then(res => {
-        console.log('login_post success: ', res);
-      });
   };
 
   return (
