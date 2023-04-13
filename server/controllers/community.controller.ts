@@ -93,7 +93,7 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
 };
 
 // 글 디테일 페이지
-export const detail_get = async (req: Request, res: Response, next: NextFunction) => {
+export const detail_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     //1. URL params에서 post_id 가져오기
     console.log(req.params);
@@ -127,15 +127,18 @@ export const detail_get = async (req: Request, res: Response, next: NextFunction
     if (!post) {
       sendResponse(res, 400, '게시물을 찾을 수 없음');
     }
-    //3. 포스트의 user_id로 user 찾기
-    const user = await db.User.findOne({
-      where: {
-        id: post.user_id,
-      },
-    });
-    const address = user.address;
+    // //3. 포스트의 user_id로 user 찾기
+    // const user = await db.User.findOne({
+    //   where: {
+    //     id: post.user_id,
+    //   },
+    // });
+
+    const isOwner = req.session.user?.id == post.user_id;
+
+    // const address = user.address;
     //3. 프론트로 user의 address와, post 데이터 보내주기
-    sendResponse(res, 200, '게시물을 성공적으로 가져왔습니다.', {post, address});
+    sendResponse(res, 200, '게시물을 성공적으로 가져왔습니다.', {post, isOwner});
   } catch (error) {
     sendResponse(res, 400, '게시물 가져오기 실패.');
   }
