@@ -1,7 +1,5 @@
 import express, {Request, Response, NextFunction} from 'express';
-import {ResponseData} from './controllers';
 import db from '../models';
-import {Session} from 'express-session';
 import {MyRequest} from '../@types/session';
 import {sendResponse} from './utils';
 import Web3 from 'web3';
@@ -19,13 +17,6 @@ export const login_post = async (req: MyRequest, res: Response, next: NextFuncti
     // 1. 프론트에서 메타마스크 연결시 지갑 주소 받아오기
 
     if (!req.body.address) {
-      res.status(400).send({message: 'Metamask login error'});
-    }
-    const {address} = req.body;
-
-    // 2. DB에 같은 address 있는지 확인
-    const exists = await db.User.findOne({
-      attributes: ['address'],
       sendResponse(res, 400, '메타마스크 연결을 확인하세요');
     }
     const {address} = req.body;
@@ -51,12 +42,6 @@ export const login_post = async (req: MyRequest, res: Response, next: NextFuncti
       // 3. session에 해당 user 정보 저장
       req.session.loggedIn = true;
       req.session.user = user;
-      const result: ResponseData = {
-        message: 'Login Complete',
-        data: user,
-      };
-      res.status(200).send(result);
-    }
       return sendResponse(res, 200, '로그인 성공!', user);
     }
     // 3. session에 해당 user 정보 저장
