@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {NavLogo} from '../components/Header';
+import axios from 'axios';
 
 const Wrapper = styled.div`
   max-width: 90%;
@@ -17,7 +18,7 @@ const WriteLogo = styled(NavLogo)`
   font-size: 2.5rem;
 `;
 
-const WriteLabel = styled.label`
+export const WriteLabel = styled.label`
   text-align: left;
   display: block;
 `;
@@ -26,8 +27,8 @@ const Writeh2 = styled.h2`
   color: ${props => props.theme.mainColor};
   margin-bottom: 30px;
 `;
-const WriteForm = styled.form``;
-const WriteInput = styled.input`
+export const WriteForm = styled.form``;
+export const WriteInput = styled.input`
   width: 100%;
   padding: 6px 10px;
   margin: 10px 0;
@@ -35,7 +36,7 @@ const WriteInput = styled.input`
   box-sizing: border-box;
   display: block;
 `;
-const WriteTextarea = styled.textarea`
+export const WriteTextarea = styled.textarea`
   width: 100%;
   padding: 6px 10px;
   margin: 10px 0;
@@ -43,7 +44,7 @@ const WriteTextarea = styled.textarea`
   box-sizing: border-box;
   display: block;
 `;
-const WriteSelect = styled.select`
+export const WriteSelect = styled.select`
   width: 100%;
   padding: 6px 10px;
   margin: 10px 0;
@@ -51,7 +52,7 @@ const WriteSelect = styled.select`
   box-sizing: border-box;
   display: block;
 `;
-const WriteButton = styled.button`
+export const WriteButton = styled.button`
   background: #f1356d;
   color: #fff;
   border: 0;
@@ -61,9 +62,18 @@ const WriteButton = styled.button`
 `;
 const WritePage = () => {
   const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  const [content, setContent] = useState('');
   const [author, setAuthor] = useState('mario');
   const [tag, setTag] = useState('');
+
+  const handleSubmit = () => {
+    axios
+      .post('http://localhost:8000/community/post', {title, content}, {withCredentials: true})
+      .then(res => {
+        console.log(res);
+      });
+  };
+
   return (
     <Wrapper>
       <WriteLogo to="/" style={{color: 'black'}} className="logo">
@@ -79,11 +89,11 @@ const WritePage = () => {
           value={title}
           onChange={e => setTitle(e.target.value)}
         />
-        <WriteLabel>Post body</WriteLabel>
+        <WriteLabel>Post content</WriteLabel>
         <WriteTextarea
           required
-          value={body}
-          onChange={e => setBody(e.target.value)}
+          value={content}
+          onChange={e => setContent(e.target.value)}
         ></WriteTextarea>
         <WriteInput
           placeholder="#태그입력"
@@ -97,7 +107,7 @@ const WritePage = () => {
           <option value="mario">mario</option>
           <option value="yoshi">yoshi</option>
         </WriteSelect> */}
-        <WriteButton>Add Post</WriteButton>
+        <WriteButton onClick={() => handleSubmit()}>Add Post</WriteButton>
       </WriteForm>
     </Wrapper>
   );

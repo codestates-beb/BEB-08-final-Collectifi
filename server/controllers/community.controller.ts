@@ -10,15 +10,11 @@ import {sendResponse} from './utils';
 export const community_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     // 1. db에서 posts 가져오기 (페이지네이션 고려해서)
-    const pages: any = req.query.page;
-    const page = parseInt(pages) || 1;
-    const limit = 20;
-    const offset = (page - 1) * limit;
-    //
+    console.log('id: ', req.session.user);
+
     const posts = await db.Post.findAll({
       order: [['id', 'DESC']],
-      limit,
-      offset,
+
       include: [
         {
           model: db.User,
@@ -96,6 +92,7 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
 export const detail_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     //1. URL params에서 post_id 가져오기
+    console.log(req.session.user?.id);
     console.log(req.params);
     const id = req.params.postId;
     console.log(id);
@@ -133,6 +130,9 @@ export const detail_get = async (req: MyRequest, res: Response, next: NextFuncti
     //     id: post.user_id,
     //   },
     // });
+
+    console.log('=req.session.user?.id=====', req.session.user?.id);
+    console.log('=====post.user_id==', post.user_id);
 
     const isOwner = req.session.user?.id == post.user_id;
 

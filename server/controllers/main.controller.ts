@@ -17,10 +17,10 @@ export const login_post = async (req: MyRequest, res: Response, next: NextFuncti
     // 1. 프론트에서 메타마스크 연결시 지갑 주소 받아오기
 
     if (!req.body.address) {
-      sendResponse(res, 400, '메타마스크 연결을 확인하세요');
+      return sendResponse(res, 400, '메타마스크 연결을 확인하세요');
     }
     const {address} = req.body;
-    console.log('address', address);
+    console.log('========address========', address);
 
     // 2. DB에 같은 address 있는지 확인
     const exists = await db.User.findOne({
@@ -28,8 +28,11 @@ export const login_post = async (req: MyRequest, res: Response, next: NextFuncti
         address,
       },
     });
+    console.log('=====exists====', exists);
     // 2-2.없다면 db에 새로운 user 생성
     if (!exists) {
+      console.log('whyy');
+
       const user = await db.User.create({
         nickname: 'unnamed',
         address,
@@ -38,19 +41,22 @@ export const login_post = async (req: MyRequest, res: Response, next: NextFuncti
       const reward = await erc20Contract.methods
         .joinReward(address)
         .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+      console.log('=====user====', user);
 
       // 3. session에 해당 user 정보 저장
       req.session.loggedIn = true;
       req.session.user = user;
+      console.log('session', req.session.user);
       return sendResponse(res, 200, '로그인 성공!', user);
     }
     // 3. session에 해당 user 정보 저장
     req.session.loggedIn = true;
     req.session.user = exists;
-    sendResponse(res, 200, '로그인 성공!', exists);
+    console.log('세션', req.session.user?.id);
+    return sendResponse(res, 200, '로그인 성공!', exists);
   } catch (e) {
-    sendResponse(res, 400, '로그인에 실패했습니다');
     console.log(e);
+    return sendResponse(res, 400, '로그인에 실패했습니다');
   }
 };
 
