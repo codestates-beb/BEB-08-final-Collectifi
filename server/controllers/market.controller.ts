@@ -83,7 +83,7 @@ export const market_sell_post = async (req: MyRequest, res: Response, next: Next
   }
 };
 
-export const market_apporve_token_get = async (
+export const market_apporve_token_post = async (
   req: MyRequest,
   res: Response,
   next: NextFunction,
@@ -98,7 +98,11 @@ export const market_apporve_token_get = async (
   }
 };
 
-export const market_apporve_nft_get = async (req: MyRequest, res: Response, next: NextFunction) => {
+export const market_apporve_nft_post = async (
+  req: MyRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const {token_id} = req.body;
     const approve = await erc721Contract.methods

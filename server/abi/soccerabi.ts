@@ -4,47 +4,6 @@ const soccerabi: AbiItem[] = [
   {
     inputs: [
       {
-        internalType: 'address payable',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        internalType: 'string',
-        name: 'game',
-        type: 'string',
-      },
-      {
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
-    ],
-    name: 'fund',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'game',
-        type: 'string',
-      },
-      {
-        internalType: 'uint256',
-        name: 'drainage',
-        type: 'uint256',
-      },
-    ],
-    name: 'matchedReward',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'address',
         name: '_tokenAddress',
         type: 'address',
@@ -52,13 +11,6 @@ const soccerabi: AbiItem[] = [
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
-  },
-  {
-    inputs: [],
-    name: 'userAddress',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
   },
   {
     inputs: [],
@@ -148,6 +100,29 @@ const soccerabi: AbiItem[] = [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address payable',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        internalType: 'string',
+        name: 'game',
+        type: 'string',
+      },
+      {
+        internalType: 'uint256',
+        name: 'value',
+        type: 'uint256',
+      },
+    ],
+    name: 'fund',
+    outputs: [],
+    stateMutability: 'payable',
     type: 'function',
   },
   {
@@ -241,6 +216,24 @@ const soccerabi: AbiItem[] = [
     type: 'function',
   },
   {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'game',
+        type: 'string',
+      },
+      {
+        internalType: 'uint256',
+        name: 'drainage',
+        type: 'uint256',
+      },
+    ],
+    name: 'matchedReward',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'owner',
     outputs: [
@@ -287,6 +280,19 @@ const soccerabi: AbiItem[] = [
         internalType: 'uint256',
         name: '',
         type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'userAddress',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
     stateMutability: 'view',
