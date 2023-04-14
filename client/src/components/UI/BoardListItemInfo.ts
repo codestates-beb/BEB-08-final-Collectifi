@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import BoardListItem from './BoardListItem';
 
 const BoardListItemInfo = styled(BoardListItem)<{isLast?:boolean}>`
+  & .title {
+    gap: 10px;
+  }
   & .item {
     padding: 12px 0px;
   }  

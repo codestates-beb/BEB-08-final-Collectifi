@@ -12,7 +12,8 @@ import PlayerCard from '../UI/PlayerCard';
 
 const Market = () => {
   const cardList = useRecoilValue(sellCardListQuery);
-  
+  //console.log(cardList);
+
   return (
     <MarketLayout>
       <PageTitle title='MARKET'/>
@@ -22,8 +23,8 @@ const Market = () => {
             return (
               <CardListItem 
                 key={i}
-                info={`${el.price}`}
-                linkTo={`${el.id}`} 
+                info={`${el.selling_price}`}
+                linkTo={`${el.token_id}`} 
               >
                 <PlayerCard 
                   imgSrc={el.img_url}
@@ -41,7 +42,7 @@ const Market = () => {
 export default Market;
 
 const MarketLayout = styled.div`
-  padding: 0 20px;
+  padding: 20px 20px 10px;
   max-width: 1140px;
   margin: 0 auto;
 `

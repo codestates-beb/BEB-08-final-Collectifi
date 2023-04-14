@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { currDetailCardId, sellCardByIdQuery } from '../../modules/market/atom';
+import { useParams } from 'react-router-dom';
+
 import PlayerCard, { Glow } from '../UI/PlayerCard';
 import PageTitle from '../UI/PageTitle';
 import BoardList from '../UI/BoardList';
@@ -10,27 +14,42 @@ import Button from '../UI/Button';
 import Tab from '../UI/Tab';
 
 const CardDetail = () => {
+  const { id } = useParams();
+  const setCurrDetailCardId = useSetRecoilState(currDetailCardId);
+  useEffect(() => {
+    if(id) {
+      setCurrDetailCardId(parseInt(id));
+    }
+  }, [id, setCurrDetailCardId]);
+
+  const cardInfo = useRecoilValue(sellCardByIdQuery);
+  console.log(cardInfo);
+  if(!cardInfo) return <></>;
+
   const cardWidth = "350px";
+  const infoTitle = ["TEAM", "SEASON", "PRICE"];
+  const infoData = [cardInfo.team, cardInfo.season, cardInfo.isSell && cardInfo.selling_price];
 
   return (<CDLayout width={cardWidth}>
     <section className='top'>
       <div>
         <CDBox>
           <PlayerCard 
-            imgSrc='https://gateway.pinata.cloud/ipfs/QmVGZEoL8pzxfKwfj68GHtBScaGyPkX2REs4KuytewvLJP?filename=1-1.png'
+            imgSrc={cardInfo.img_url}
             cardWidth={cardWidth}
             glow={Glow.orange}
           />
         </CDBox>
       </div>
       <div>
-        <PageTitle title='L.Messi'/>
+        <PageTitle title={cardInfo.player}/>
         <BoardList>
-          {new Array(6).fill(0).map((el, i, arr) => {
-            const listItem = ["test1", "test2"];
+          {infoData.map((el, i, arr) => {
+            if(!el) return <></>;
+            const listItem = [infoTitle[i], el];
             return (<BoardListItemInfo key={i} 
               listItem={listItem} 
-              gridTemplateColumns='1fr 1fr'
+              gridTemplateColumns='1fr 9fr'
               isLast={arr.length === i + 1}
               />)
           })}
@@ -75,7 +94,7 @@ const CardDetail = () => {
 export default CardDetail;
 
 const CDLayout = styled.div<{width: string}>`
-  padding: 0 20px;
+  padding: 60px 20px 40px;
   max-width: 1140px; //1290px;
   margin: 0 auto;
 
@@ -85,15 +104,18 @@ const CDLayout = styled.div<{width: string}>`
     //grid-template-columns: repeat(auto-fit, minmax(200px, auto));
     //grid-template-columns: ${props => props.width} auto;
     grid-template-columns: minmax(auto, ${props => props.width}) minmax(300px, auto);
-    gap: 40px;    
-
-    @media only screen and (max-width: 768px) {
-      grid-template-columns: auto;
-    }
+    gap: 40px;     
   }
 
   & .bottom {
     padding: 60px 0 0;
+  }
+
+  @media only screen and (max-width: 768px) {
+    padding-top: 20px;
+    & .top { 
+      grid-template-columns: auto;
+    }    
   }
 `
 

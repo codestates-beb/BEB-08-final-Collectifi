@@ -6,15 +6,19 @@ import PlayerCard from '../UI/PlayerCard';
 type Props = {  
   info?: string;
   linkTo?: string;
-  // onClick?: () => void;
+  onClick?: () => void;
   className?: string;
   children: React.ReactElement<object, typeof PlayerCard>; //React.ReactNode
 }
 
 const CardListItem: React.FC<Props> = (props) => {
   return (   
-    <CardListItemLayout className={props.className} linkTo={props.linkTo} >
-      <Link to={props.linkTo || ""}>
+    <CardListItemLayout 
+      className={props.className} 
+      linkTo={props.linkTo}
+      isClick={props.onClick}
+    >
+      <Link to={props.linkTo || ""} onClick={props.onClick}>
         <div className='wrapper'>
           <div className='item-wrapper'>
             {props.children}
@@ -30,7 +34,7 @@ const CardListItem: React.FC<Props> = (props) => {
 
 export default CardListItem;
 
-const CardListItemLayout = styled.div<{linkTo?: string; className?: string;}>`
+const CardListItemLayout = styled.div<{isClick?: ()=>void; linkTo?: string; className?: string;}>`
   display: inline-block;  
   border-radius: 20px;
   border: 1px solid transparent;
@@ -44,7 +48,7 @@ const CardListItemLayout = styled.div<{linkTo?: string; className?: string;}>`
     }
     `
   }  
-  ${props => !props.linkTo && `pointer-events: none;`}
+  ${props => (!props.linkTo && !props.isClick) && `pointer-events: none;`}
 
   & .wrapper {
     padding: 20px;

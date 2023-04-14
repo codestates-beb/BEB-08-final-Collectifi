@@ -13,7 +13,9 @@ import MarketPage from './pages/MarketPage';
 import WinPage from './pages/WinPage';
 import PostPage from './pages/PostPage';
 import WritePage from './pages/WritePage';
+import CardDetailPage from './pages/CardDetailPage'
 import SliderTest from './pages/SliderTest';
+
 
 const Router: React.FC<{toggle: () => void}> = props => {
   return (
@@ -25,6 +27,7 @@ const Router: React.FC<{toggle: () => void}> = props => {
         <Route path="/staking" element={<StakingPage />} />
         <Route path="/swap" element={<SwapPage />} />
         <Route path="/market" element={<MarketPage />} />
+        <Route path="/market/:id" element={<CardDetailPage />} />
         <Route path="/win" element={<WinPage />} />
         <Route path="/community/*" element={<Community />} />
       </Route>

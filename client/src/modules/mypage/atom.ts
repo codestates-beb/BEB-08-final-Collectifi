@@ -18,7 +18,7 @@ export const userInfoQuery = selectorFamily({
     if (response.data.error) {
       throw response.data.error;
     }
-    console.log(response.data)
+    //console.log(response.data)
     if ('status' in response && response.status !== 200) {
       throw new Error(`userInfoQuery failed with status code ${response.status}`);
     }
@@ -36,7 +36,6 @@ export const cardListQuery = selector({
   get: ({get}) => {
     const currentUserInfo = get(currentUserInfoQuery);
     return currentUserInfo.data.data.nfts;
-    console.log(22)
   },
 });
 

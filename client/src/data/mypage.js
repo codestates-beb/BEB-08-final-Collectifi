@@ -36,7 +36,7 @@ export const userInfo = {
                     "price": null,
                     "selling_price": null,
                     "img_url": "https://gateway.pinata.cloud/ipfs/QmVo6VHwEbZJcV7HKWFAenpCv9HWhp4XTLMdCzAm9ugXEx?filename=3-3.png",
-                    "isSell": false
+                    "isSell": true
                 },
                 {
                     "id": 2,
@@ -62,7 +62,7 @@ export const userInfo = {
                     "price": null,
                     "selling_price": null,
                     "img_url": "https://gateway.pinata.cloud/ipfs/QmapWhXK9dbx89vZyKZxQ2K7L5myhkG8Ebd9c1MWFeBam9?filename=3-2.png",
-                    "isSell": false
+                    "isSell": true
                 },
                 {
                     "id": 5,

@@ -79,7 +79,7 @@ const MainPage = () => {
       <ErrorBoundary fallback={<div>Error!</div>}>
         <Suspense>
           {/* <Market /> */}
-          {/* <MyPage /> */}
+          <MyPage />
           {/* <CardDetail /> */}
         </Suspense>
       </ErrorBoundary>
