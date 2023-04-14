@@ -13,7 +13,7 @@ import {
 } from '../controllers/market.controller';
 
 router.get('/', market_get);
-router.get('/nft', market_nft_get);
+router.get('/nft/:id', market_nft_get);
 router.get('/sell', market_sell_get);
 router.post('/sell', market_sell_post);
 router.post('/buy', market_buy_post);
