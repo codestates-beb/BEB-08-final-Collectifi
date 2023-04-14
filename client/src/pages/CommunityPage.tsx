@@ -26,6 +26,7 @@ interface PostsAttributes {
   dislikes: number;
   created_at: Date;
   views: number;
+  Post_comments: object[];
 }
 const CommunityLayout = styled.div`
   max-width: 70%;
@@ -85,36 +86,46 @@ const Community = () => {
   const timeAgo = new TimeAgo('en-US');
 
   useEffect(() => {
-    // axios
-    // .get('http://localhost:5500', {params: {page: page}})
-    // .then(response => {
-    //   setPost([...post, ...response.data.data]);
-    //   setPage(page + 1);
-    //   console.log('main_get: ', response.data.data); // Do something with the response
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
-    // setCurrentPage()
+    console.log('posts: ', posts);
+  }, [posts]);
 
-    setPosts(
-      data.map(post => {
-        return {
-          ...post,
-          created_at: new Date(post.created_at),
-        };
-      }),
-    );
-    setPopularPosts(
-      data
-        .filter(item => item.likes >= 50)
-        .map(post => {
-          return {
-            ...post,
-            created_at: new Date(post.created_at),
-          };
-        }),
-    );
+  useEffect(() => {
+    axios
+      .get('http://localhost:8000/community')
+      .then(response => {
+        setPosts(
+          [...posts, ...response.data.data].map(post => {
+            return {
+              ...post,
+              created_at: new Date(post.created_at),
+            };
+          }),
+        );
+
+        // console.log('main_get: ', response.data.data); // Do something with the response
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    //   setPosts(
+    //     data.map(post => {
+    //       return {
+    //         ...post,
+    //         created_at: new Date(post.created_at),
+    //       };
+    //     }),
+    //   );
+    //   setPopularPosts(
+    //     data
+    //       .filter(item => item.likes >= 50)
+    //       .map(post => {
+    //         return {
+    //           ...post,
+    //           created_at: new Date(post.created_at),
+    //         };
+    //       }),
+    //   );
   }, []);
   // useEffect(() => {
   //   window.scrollTo(0, 0);
@@ -160,6 +171,7 @@ const Community = () => {
   const clickHandler = (e: string) => {
     setTabs(e);
   };
+
   return (
     <CommunityLayout>
       <Routes>
@@ -206,7 +218,7 @@ const Community = () => {
                 // }
                 const listItem = [
                   item.id,
-                  `${item.title} [${item.likes}]`,
+                  `${item.title} [${item.Post_comments.length.toString()}]`,
                   item.user_id,
                   // timeAgo.format(item.created_at),
                   // new Date().getMonth(),

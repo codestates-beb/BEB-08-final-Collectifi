@@ -42,6 +42,19 @@ export const market_sell_get = async (req: MyRequest, res: Response, next: NextF
   }
 };
 
+export const market_nft_get = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    const token_id = Number(req.params.id);
+    const nft = await db.Nft.findOne({
+      where: {token_id},
+    });
+    return res.status(200).send({message: '성공', data: {nft}});
+  } catch (e) {
+    console.log('ERROR:: ', e);
+    res.status(400).send({message: '실패했습니다.'});
+  }
+};
+
 //보유하고 있는 NFT 판매 상태로 만들기(판매 등록)
 export const market_sell_post = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
