@@ -17,7 +17,7 @@ import Tab from '../components/UI/Tab';
 import {darken, lighten} from 'polished';
 
 TimeAgo.addDefaultLocale(en);
-interface PostsAttributes {
+export interface PostsAttributes {
   id: number;
   user_id: number;
   title: string;
@@ -86,10 +86,7 @@ const Community = () => {
   const timeAgo = new TimeAgo('en-US');
 
   useEffect(() => {
-    console.log('posts: ', posts);
-  }, [posts]);
-
-  useEffect(() => {
+    // 모든 게시글을 불러옴
     axios
       .get('http://localhost:8000/community')
       .then(response => {
@@ -101,8 +98,6 @@ const Community = () => {
             };
           }),
         );
-
-        // console.log('main_get: ', response.data.data); // Do something with the response
       })
       .catch(error => {
         console.error(error);
@@ -175,7 +170,10 @@ const Community = () => {
   return (
     <CommunityLayout>
       <Routes>
-        <Route path=":id" element={<PostPage setCurrentPage={setCurrentPage} />} />
+        <Route
+          path=":id"
+          element={<PostPage setCurrentPage={setCurrentPage} setPosts={setPosts} posts={posts} />}
+        />
       </Routes>
 
       <TabUl>

@@ -167,6 +167,8 @@ export const like_post = async (req: MyRequest, res: Response, next: NextFunctio
         id: postId,
       },
     });
+    // 해당 유저가 좋아요/싫어요를 누른 적이 있는지 체크
+    
 
     // 2. 좋아요 / 싫어요인지 체크
     const {data} = req.body;
@@ -195,7 +197,7 @@ export const like_post = async (req: MyRequest, res: Response, next: NextFunctio
 
     //   }
     // }
-    sendResponse(res, 200, '좋아요/싫어요 누르기 성공');
+    sendResponse(res, 200, '좋아요/싫어요 누르기 성공',{data});
   } catch (error) {
     sendResponse(res, 400, '좋아요/싫어요 누르기 실패');
     console.log(error);

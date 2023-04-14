@@ -41,6 +41,7 @@ const ItemLink = styled(Link)`
   text-decoration: none;
   color: black;
   padding: 16px;
+  font-weight: 600;
   border-radius: 5px 5px 5px 5px;
   &:hover {
     background: rgb(241, 241, 241);

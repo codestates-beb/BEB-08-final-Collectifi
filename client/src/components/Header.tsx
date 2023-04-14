@@ -95,8 +95,10 @@ const NavItem = styled(Link)`
   height: 80px;
 `;
 const NavLink = styled.div`
+  font-weight: 600;
   color: #fff;
   display: flex;
+  gap: 5px;
   align-items: center;
   text-decoration: none;
   padding: 0 1rem;

@@ -5,8 +5,15 @@ import axios from 'axios';
 import styled from 'styled-components';
 import {data} from '../data/data';
 import {WriteButton, WriteForm, WriteInput, WriteLabel, WriteTextarea} from './WritePage';
+import {PostsAttributes} from './CommunityPage';
 
-interface PostAttributes {
+interface PostProps {
+  setCurrentPage: (value: number) => void;
+  setPosts: (value: PostsAttributes[]) => void;
+  posts: PostsAttributes[];
+}
+
+interface Post {
   user_id: number;
   title: string;
   content: string;
@@ -31,32 +38,38 @@ interface Post_comment {
   User: User;
 }
 
+const PostForm = styled.form``;
+
 const Comment_likes = styled.span``;
 
-const PostPage = ({setCurrentPage}: {setCurrentPage: (value: number) => void}) => {
+const PostTextarea = styled.textarea`
+  width: 100%;
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  display: block;
+  resize: none;
+  height: 15vh;
+`;
+
+const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
   const navigate = useNavigate();
   const {id} = useParams<{id: string}>();
-  const [post, setPost] = useState<PostAttributes | null>(null);
+  const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Post_comment[]>([]);
-  // const [addedCommnet, setAddedCommnet] = useState<Post_comment[]>([]);
-
-  // useEffect(() => {
-  //   console.log('post: ', post);
-  // }, [post]);
-
-  // 1. 전체 댓글을 불러 온다 post_get
-  // 2. 댓글을 추가로 작성한다 comment_post
-  // 3. DB는 추가 된 상태이므로 다시 post_get요청을 한다
-  // 4. 어떻게?
-
-  // 바로 가져와서 comments 스테이트에 추가하나
+  const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
+    // 포스트 디테일을 불러옴
     axios.get(`http://localhost:8000/community/${id}`, {withCredentials: true}).then(res => {
       setPost(res.data.data.post);
       setComments(res.data.data.comments);
-      // setComments(prev => [...prev, res.data.data.comments]);
-
+      setIsOwner(res.data.data.isOwner);
+      setLike(res.data.data.post.likes);
+      setdislike(res.data.data.post.dislikes);
+      setPostTitle(res.data.data.post.title);
+      setPostContent(res.data.data.post.content);
       console.log('res: ', res);
     });
 
@@ -65,8 +78,74 @@ const PostPage = ({setCurrentPage}: {setCurrentPage: (value: number) => void}) =
     //   setCurrentPage(Math.ceil(parseInt(id) / 20));
     // }
   }, [id]);
+  // 게시글 수정 관련
+  const [postTitle, setPostTitle] = useState('');
+  const [postContent, setPostContent] = useState('');
+  const handleEdit = () => {
+    axios
+      .get(`http://localhost:8000/community/${id}/edit`, {withCredentials: true})
+      .then(res => {
+        console.log('게시글 수정 요청: ', res);
+        navigate('/edit', {state: {title: postTitle, content: postContent, id: id}});
+      })
+      .catch(err => console.log('게시글 수정 err: ', err));
+  };
+  // 게시글 삭제 관련
+  const handleDelete = () => {
+    console.log('글을 삭제하시겠습니까?');
+    axios
+      .delete(`http://localhost:8000/community/${id}/delete`, {withCredentials: true})
+      .then(res => {
+        console.log('글삭제 요청 결과2: ', res);
+        // 글삭제 성공시 글목록 다시 불러오기
+        axios
+          .get('http://localhost:8000/community')
+          .then(response => {
+            setPosts(
+              [...response.data.data].map(post => {
+                return {
+                  ...post,
+                  created_at: new Date(post.created_at),
+                };
+              }),
+            );
+          })
+          .catch(error => {
+            console.error(error);
+          });
+
+        alert('글을 삭제하였습니다.');
+        navigate('/community', {replace: true});
+      })
+      .catch(err => {
+        console.log('글삭제 실패', err);
+      });
+  };
+
+  // 좋아요 관련
+  const [like, setLike] = useState(0);
+  const [dislike, setdislike] = useState(0);
+  const handleLikes = (data: string) => {
+    axios
+      .post(`http://localhost:8000/community/${id}/like`, {data}, {withCredentials: true})
+      .then(res => {
+        //ToDo 토스트메세지: 좋아요 or 싫어요
+        console.log('좋아요: ', res);
+        if (data == 'likes') {
+          setLike(prev => prev + 1);
+        } else if (data == 'dislikes') {
+          setdislike(prev => prev + 1);
+        }
+      })
+      .catch(err => {
+        console.log('좋아요를 이미 눌렀습니다');
+        alert('Recommendations are only available once a day.');
+      });
+  };
+
   // 댓글 기능 관련
   const [comment, setCommnet] = useState('');
+  //ToDo 최소 글자 수 제한
   const handleSubmit = (e: any) => {
     e.preventDefault();
     axios
@@ -81,6 +160,9 @@ const PostPage = ({setCurrentPage}: {setCurrentPage: (value: number) => void}) =
         // 댓글 입력창 공백으로
         setCommnet('');
         //todo 토스트 메세지로 작성 완료 알림
+      })
+      .catch(err => {
+        console.log('error: ', err);
       });
   };
 
@@ -95,13 +177,21 @@ const PostPage = ({setCurrentPage}: {setCurrentPage: (value: number) => void}) =
         <>
           <div>
             번호: {id} 작성자: {post.user_id} 날짜: {post.created_at}
+            {isOwner && (
+              <>
+                {' '}
+                <WriteButton onClick={() => handleEdit()}>Edit</WriteButton>{' '}
+                <WriteButton onClick={handleDelete}>Delete</WriteButton>
+              </>
+            )}
           </div>
-          <span>제목: {post.title}</span> <span>조회수: {post.views}</span>
-          <div>내용: {post.content}</div>
+          <span>제목: {postTitle}</span> <span>조회수: {post.views}</span>
+          <div>내용: {postContent}</div>
           <div>
-            {post.likes}
-            <span>Likes</span> <span>DisLikes</span>
-            {post.dislikes}
+            {like}
+            <WriteButton onClick={() => handleLikes('likes')}>Likes</WriteButton>
+            <WriteButton onClick={() => handleLikes('dislikes')}>DisLikes</WriteButton>
+            {dislike}
           </div>
           <Button onClick={() => navigate('/community')}>목록</Button>
           <div>
@@ -117,22 +207,19 @@ const PostPage = ({setCurrentPage}: {setCurrentPage: (value: number) => void}) =
                 </Comment_likes>
               </div>
             ))}
-            {/* 눈속임 댓글 */}
-            {/* {addedCommnet.map((item, idx) => (
-              <div key={idx}></div>
-            ))} */}
           </div>
         </>
       )}
-      <WriteForm>
-        <WriteTextarea
+      {/* 댓글 작성 태그 */}
+      <PostForm>
+        <PostTextarea
           required
           value={comment}
           onChange={e => setCommnet(e.target.value)}
-        ></WriteTextarea>
+        ></PostTextarea>
 
         <WriteButton onClick={e => handleSubmit(e)}>Add Comment</WriteButton>
-      </WriteForm>
+      </PostForm>
     </div>
   );
 };
