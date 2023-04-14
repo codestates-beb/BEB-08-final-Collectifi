@@ -83,13 +83,13 @@ export const market_sell_post = async (req: MyRequest, res: Response, next: Next
   }
 };
 
-export const market_apporve_token_post = async (
+export const market_apporve_token_get = async (
   req: MyRequest,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const {balance} = req.body;
+    const balance = req.params.balance;
     const approve = await erc20Contract.methods.approve(process.env.ERC721_CA, balance).encode();
     return res.status(200).send({message: '성공', data: {approve, erc20ca: process.env.ERC20_CA}});
   } catch (e) {
@@ -98,13 +98,9 @@ export const market_apporve_token_post = async (
   }
 };
 
-export const market_apporve_nft_post = async (
-  req: MyRequest,
-  res: Response,
-  next: NextFunction,
-) => {
+export const market_apporve_nft_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
-    const {token_id} = req.body;
+    const token_id = req.params.id;
     const approve = await erc721Contract.methods
       .approve(process.env.SERVER_ADDRESS, token_id)
       .encode();
