@@ -4,6 +4,8 @@ import {DummyComponent, Layout} from '../Styles';
 import Button from '../components/UI/Button';
 import Modal from '../components/UI/Modal';
 import axios from 'axios';
+import testImg from '../data/7-1.png';
+import {useNavigate} from 'react-router-dom';
 
 const Selected = styled.div`
   background: grey;
@@ -66,21 +68,69 @@ const Pack = styled.div`
   margin-bottom: 20px;
 `;
 
+export const CardContainer = styled.div`
+  background-color: rgba(0, 0, 0, 0.1);
+
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const CardComment = styled.div`
+  font-size: 60px;
+  font-weight: 600;
+  opacity: 1;
+`;
+
+const Card = styled.img`
+  width: 500px;
+  height: 700px;
+  z-index: 1;
+  opacity: 1;
+`;
+
+interface CardAttributes {
+  token_id: number;
+  user_id: number;
+  player: string;
+  season: string;
+  team: string;
+  card_color: number;
+  price: number;
+  selling_price: number;
+  img_url: string;
+  isSell: boolean;
+}
+
+type PackAttributes = number;
+
 const DrawCardPage = () => {
-  const [selectedPack, setSelectedPack] = useState(0);
-  const [packAmount, setPackAmount] = useState(10);
-  const balance = 10;
-  // useEffect(()=>{
+  const [selectedPack, setSelectedPack] = useState<PackAttributes>(0);
+  const navigate = useNavigate();
 
-  // },[])
+  const [card, setCard] = useState<CardAttributes>();
+  const handleButtonClick = () => {
+    navigate('/');
+  };
 
-  const handleSubmit = async (e: Event) => {
-    e.preventDefault();
+  useEffect(() => {
+    console.log('He');
+  }, [card]);
+
+  const handleSubmit = async (e: any) => {
+    console.log(e);
+    setSelectedPack(e);
+    console.log(selectedPack);
+
     if (confirm('정말 구매하시겠습니까?')) {
       axios
-        .post('http://localhost:8000/drawing', {card_pack: selectedPack}, {withCredentials: true})
+        .post('http://localhost:8000/drawing', {card_pack: e}, {withCredentials: true})
         .then((res: any) => {
-          console.log(res.data.data.mintedNft);
+          setCard(res.data.data.mintedNft);
         });
 
       console.log('yes');
@@ -90,46 +140,56 @@ const DrawCardPage = () => {
   };
 
   return (
-    <Layout>
-      <DummyComponent />
-      {/* <Selected>{selectedPack}</Selected> */}
-      <Description>Draw your favorite football player Card on NFT!</Description>
-
-      <PackList>
-        <PackListItem>
-          <PackLabel>Normal Class</PackLabel>
-          <Pack
-            onClick={(e: any) => {
-              setSelectedPack(0);
-              setPackAmount(10);
-              handleSubmit(e);
-            }}
-          ></Pack>
-          <PackPrice>500 TKI</PackPrice>
-        </PackListItem>
-        <PackListItem>
-          <PackLabel>High Class</PackLabel>
-          <Pack
-            onClick={() => {
-              setSelectedPack(1);
-              setPackAmount(25);
-            }}
-          ></Pack>
-          <PackPrice>1000 TKI</PackPrice>
-        </PackListItem>
-        <PackListItem>
-          <PackLabel>World Class</PackLabel>
-          <Pack
-            onClick={() => {
-              setSelectedPack(2);
-              setPackAmount(50);
-            }}
-          ></Pack>
-          <PackPrice>5000 TKI</PackPrice>
-        </PackListItem>
-      </PackList>
-      <DummyComponent />
-    </Layout>
+    <>
+      {card ? (
+        <CardContainer>
+          <CardComment>Congratulations!!!</CardComment>
+          <Card src={card.img_url} />
+          <button onClick={handleButtonClick}>Check on MyPage</button>
+        </CardContainer>
+      ) : (
+        <Layout>
+          <DummyComponent />
+          {/* <Selected>{selectedPack}</Selected> */}
+          <Description>Draw your favorite football player Card on NFT!</Description>
+          {
+            <>
+              <PackList>
+                <PackListItem>
+                  <PackLabel>Normal Class</PackLabel>
+                  <Pack
+                    onClick={(e: any) => {
+                      handleSubmit(0);
+                    }}
+                  ></Pack>
+                  <PackPrice>500 TKI</PackPrice>
+                </PackListItem>
+                <PackListItem>
+                  <PackLabel>High Class</PackLabel>
+                  <Pack
+                    onClick={(e: any) => {
+                      handleSubmit(1);
+                    }}
+                  ></Pack>
+                  <PackPrice>1000 TKI</PackPrice>
+                </PackListItem>
+                <PackListItem>
+                  <PackLabel>World Class</PackLabel>
+                  <Pack
+                    onClick={(e: any) => {
+                      handleSubmit(2);
+                    }}
+                  ></Pack>
+                  <PackPrice>5000 TKI</PackPrice>
+                  {selectedPack}
+                </PackListItem>
+              </PackList>
+            </>
+          }
+          <DummyComponent />
+        </Layout>
+      )}
+    </>
   );
 };
 
