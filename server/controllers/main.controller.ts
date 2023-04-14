@@ -76,33 +76,33 @@ export const logout_post = async (req: MyRequest, res: Response, next: NextFunct
 export const dummy_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     // 더미 User 10개 만들고 넣기
-    for (let i = 0; i < 10; i++) {
-      let users = await db.User.create({
-        nickname: `user${i}`,
-        address: `xdf3234${i}`,
-        token_amount: 1000,
-      });
-    }
+    // for (let i = 0; i < 10; i++) {
+    //   let users = await db.User.create({
+    //     nickname: `user${i}`,
+    //     address: `xdf3234${i}`,
+    //     token_amount: 1000,
+    //   });
+    // }
 
-    // Post 더미 데이터 200개 넣기
-    data.map(item => {
-      const posts = db.Post.create({
-        user_id: Math.floor(Math.random() * 10 + 1),
-        title: item.title,
-        content: item.content,
-      });
-    });
+    // // Post 더미 데이터 200개 넣기
+    // data.map(item => {
+    //   const posts = db.Post.create({
+    //     user_id: Math.floor(Math.random() * 10 + 1),
+    //     title: item.title,
+    //     content: item.content,
+    //   });
+    // });
 
-    // Post_comment 더미 데이터 10개 넣기
-    for (let i = 0; i < 5; i++) {
-      let users = await db.Post_comment.create({
-        user_id: Math.floor(Math.random() * 10 + 1),
-        post_id: 200,
-        content: 'hello testttt',
-        likes: 50,
-        dislikes: 50,
-      });
-    }
+    // // Post_comment 더미 데이터 5개 넣기
+    // for (let i = 0; i < 5; i++) {
+    //   let users = await db.Post_comment.create({
+    //     user_id: Math.floor(Math.random() * 10 + 1),
+    //     post_id: 200,
+    //     content: 'hello testttt',
+    //     likes: 50,
+    //     dislikes: 50,
+    //   });
+    // }
 
     // Nft_info 데이터 넣기
     nft_infos.map(item => {
@@ -115,21 +115,21 @@ export const dummy_get = async (req: MyRequest, res: Response, next: NextFunctio
         img_url: item.img_url,
       });
     });
-    //판매중인 Nft 데이터 넣기
-    nft_infos.map(item => {
-      const selling_nfts = db.Nft.create({
-        token_id: 1,
-        user_id: 1,
-        player: 'Lionel Messi',
-        season: '2011-2012',
-        team: 'FC Barcelona',
-        card_color: 0,
-        price: 500,
-        selling_price: 500,
-        img_url: item.img_url,
-        isSell: true,
-      });
-    });
+    //판매중인 Nft 데이터 넣기 (마켓 테스트 위한)
+    // nft_infos.map(item => {
+    //   const selling_nfts = db.Nft.create({
+    //     token_id: 1,
+    //     user_id: 1,
+    //     player: 'Lionel Messi',
+    //     season: '2011-2012',
+    //     team: 'FC Barcelona',
+    //     card_color: 0,
+    //     price: 500,
+    //     selling_price: 500,
+    //     img_url: item.img_url,
+    //     isSell: true,
+    //   });
+    // });
 
     sendResponse(res, 200, '데이터 삽입 완료');
   } catch (e) {

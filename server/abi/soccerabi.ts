@@ -21,7 +21,7 @@ const soccerabi: AbiItem[] = [
     ],
     name: 'fund',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -55,9 +55,15 @@ const soccerabi: AbiItem[] = [
   },
   {
     inputs: [],
-    name: 'userAddress',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    name: 'arrayAddress',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -76,6 +82,25 @@ const soccerabi: AbiItem[] = [
   {
     inputs: [],
     name: 'drawAmount',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'drawBalance',
     outputs: [
       {
         internalType: 'uint256',
@@ -166,6 +191,25 @@ const soccerabi: AbiItem[] = [
   {
     inputs: [],
     name: 'loseAmount',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'loseBalance',
     outputs: [
       {
         internalType: 'uint256',
@@ -294,6 +338,19 @@ const soccerabi: AbiItem[] = [
   },
   {
     inputs: [],
+    name: 'userAddress',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'win',
     outputs: [
       {
@@ -308,6 +365,25 @@ const soccerabi: AbiItem[] = [
   {
     inputs: [],
     name: 'winAmount',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'winBalance',
     outputs: [
       {
         internalType: 'uint256',
