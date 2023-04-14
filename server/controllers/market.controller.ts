@@ -42,6 +42,19 @@ export const market_sell_get = async (req: MyRequest, res: Response, next: NextF
   }
 };
 
+export const market_nft_get = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    const token_id = Number(req.params.id);
+    const nft = await db.Nft.findOne({
+      where: {token_id},
+    });
+    return res.status(200).send({message: '성공', data: {nft}});
+  } catch (e) {
+    console.log('ERROR:: ', e);
+    res.status(400).send({message: '실패했습니다.'});
+  }
+};
+
 //보유하고 있는 NFT 판매 상태로 만들기(판매 등록)
 export const market_sell_post = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
@@ -76,8 +89,8 @@ export const market_apporve_token_get = async (
   next: NextFunction,
 ) => {
   try {
-    const {balance} = req.body;
-    const approve = await erc20Contract.methods.approve(process.env.ERC721_CA, balance).encode();
+    const balance = req.params.balance;
+    const approve = await erc20Contract.methods.approve(process.env.ERC721_CA, balance).encodeABI();
     return res.status(200).send({message: '성공', data: {approve, erc20ca: process.env.ERC20_CA}});
   } catch (e) {
     console.log('ERROR:: ', e);
@@ -87,10 +100,10 @@ export const market_apporve_token_get = async (
 
 export const market_apporve_nft_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
-    const {token_id} = req.body;
+    const token_id = req.params.id;
     const approve = await erc721Contract.methods
       .approve(process.env.SERVER_ADDRESS, token_id)
-      .encode();
+      .encodeABI();
     return res
       .status(200)
       .send({message: '성공', data: {approve, erc721ca: process.env.ERC721_CA}});

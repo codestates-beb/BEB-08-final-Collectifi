@@ -1,15 +1,57 @@
-import React from 'react';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import Confetti from '../components/UI/Confetti';
-import CardList from '../components/market/CardList';
-import CardListItem from '../components/market/CardListItem';
-import PlayerCard from '../components/UI/PlayerCard';
-import {Layout} from '../Styles';
 
-const TargetCard = styled.div`
+import CardListItem from '../components/market/CardListItem';
+
+import {Layout} from '../Styles';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
+import {AnimatePresence} from 'framer-motion';
+
+const AppContainer = styled.div`
+  background-color: #000;
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  place-content: center;
+`;
+
+const NeonBox = styled.div<{shadow: string; border: string}>`
+  border: 5px solid ${({border}) => border};
+
+  box-shadow: ${({shadow}) => shadow};
+  transition: all 1s ease-in-out;
+`;
+
+const chargeAnimation = keyframes`
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.1);
+  }
+`;
+
+// const LightningCharge = styled<{ text: string }>`
+//   font-size: 6rem;
+//   color: ${({ text }) => text};
+//   transition: all 1s ease-in-out;
+//   animation: ${chargeAnimation} 1s alternate infinite;
+// `;
+
+const Title = styled.div`
+  margin: 25px 0px;
+  font-size: 60px;
+  font-weight: 600;
+`;
+
+const TargetCard = styled(NeonBox)`
   display: flex;
   justify-content: center;
   /* background: yellow; */
+  width: 700px;
   margin: 10px;
   padding: 10px;
   gap: 10px;
@@ -20,35 +62,222 @@ const CardInfo = styled.div`
   margin: 10px;
 `;
 
+const MyCardsContainer = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+`;
+
+interface StyledDivProps {
+  bgImage: string;
+  // 다른 props 추가 가능
+}
+interface Card {
+  token_id: number;
+  user_id: number;
+  player: string;
+  season: string;
+  team: string;
+  card_color: number;
+  price: number;
+  selling_price: number;
+  img_url: string;
+  isSell: boolean;
+}
+
+const Card = styled.div<StyledDivProps>`
+  background-image: ${({bgImage}) => `url(${bgImage})`};
+  background-position: center;
+  background-size: cover;
+  width: 320px;
+  height: 300px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const MyCardsText = styled.div`
+  font-size: 40px;
+  font-weight: 600;
+  margin: 30px 30px;
+`;
+
+const UpgradeText = styled.div`
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 15px;
+`;
+
+export const CardContainer = styled.div`
+  background-color: rgba(0, 0, 0, 0.1);
+
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const CardComment = styled.div`
+  font-size: 60px;
+  font-weight: 600;
+  opacity: 1;
+`;
+
+const floatAnimation = keyframes`
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+`;
+
+const FloatingDiv = styled.div`
+  position: relative;
+  animation-name: ${floatAnimation};
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+`;
+
 const UpgradeCardPage = () => {
+  const [myCards, setMyCards] = useState<Card[]>([]);
+  const [myTokens, setMyTokens] = useState('');
+  const [target, setTarget] = useState<Card | null>();
+  const [upgradeCard, setUpgradeCard] = useState<Card>();
+  const totalCards = myCards.length - 1;
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/upgrade', {withCredentials: true}).then((res: any) => {
+      setMyCards(res.data.data.nfts);
+      setMyTokens(res.data.data.token_amount);
+      console.log(res.data.data);
+    });
+
+    console.log('hi');
+  }, []);
+
+  const handleUpgrade = async (e: Event) => {
+    e.preventDefault();
+    if (confirm('정말 강화 하시겠습니까?')) {
+      axios
+        .post('http://localhost:8000/upgrade', {nft: target}, {withCredentials: true})
+        .then((res: any) => {
+          setUpgradeCard(res.data.data.mintedNft);
+          console.log(res);
+        });
+
+      console.log('yes');
+    } else {
+      console.log('no');
+    }
+  };
+
+  const navigate = useNavigate();
+  const handleButtonClick = () => {
+    navigate('/');
+  };
+
+  const [index, setIndex] = useState(0);
+  const neonTypeColors = [
+    {
+      shadow: '0 0 10px #ff1be6, 0 0 20px #ff1be6, 0 0 30px #ff1be6',
+      border: '#ff1be6',
+      text: '#ff1be6',
+    },
+    {
+      shadow: '0 0 10px #1bcaff, 0 0 20px #1bcaff, 0 0 30px #1bcaff',
+      border: '#1bcaff',
+      text: '#1bcaff',
+    },
+    {
+      shadow: '0 0 10px #fffc00, 0 0 20px #fffc00, 0 0 30px #fffc00',
+      border: '#fffc00',
+      text: '#fffc00',
+    },
+    {
+      shadow: '0 0 10px #1bcaff, 0 0 20px #ff1be6, 0 0 30px #fffc00',
+      border: '#ff1be6',
+      text: '#fffc00',
+    },
+  ];
+
+  useEffect(() => {
+    const loop = setInterval(() => {
+      if (index >= 3) {
+        setIndex(0);
+      } else {
+        setIndex(index + 1);
+      }
+    }, 2000);
+    return () => {
+      clearInterval(loop);
+    };
+  }, [index]);
+
+  const {shadow, text, border} = neonTypeColors[index];
+
   return (
     <>
-      <Layout>
-        <h2>Upgrade Card</h2>
-        <label>Select your target Card</label>
-        <div>강화할 카드</div>
-        <TargetCard>
-          <CardListItem>
-            <PlayerCard
-              imgSrc="https://gateway.pinata.cloud/ipfs/QmVGZEoL8pzxfKwfj68GHtBScaGyPkX2REs4KuytewvLJP?filename=1-1.png"
-              cardWidth={'200px'}
-            />
-          </CardListItem>
-          <CardInfo>
-            <div>카드명: Lionel Messi </div>
-            <div>시즌: 2011 - 2012</div>
-            <div>73 Goals / 29 Assists</div>
-            <div>강화 성공률: 25%</div>
-            <div>강화 비용: 150 ETH</div>
-            <div>보유 ETH: 0.00031 ETH</div>
-            <button>강화하기</button>
-            <Confetti innerText={'성공'} />
-          </CardInfo>
-        </TargetCard>
-      </Layout>
+      {upgradeCard ? (
+        <CardContainer>
+          <CardComment>Congratulations!!!</CardComment>
+          <Card bgImage={upgradeCard.img_url} />
+          <button onClick={handleButtonClick}>Check on MyPage</button>
+        </CardContainer>
+      ) : (
+        <div>
+          <Layout>
+            <Title>Upgrade Your Card</Title>
 
-      <div>나의 카드 리스트</div>
-      {/* <CardList itemWidth="250px" /> */}
+            <TargetCard shadow={shadow} border={border}>
+              <CardListItem>
+                <FloatingDiv>
+                  <Card bgImage={target ? target.img_url : ''}></Card>
+                </FloatingDiv>
+              </CardListItem>
+              <CardInfo>
+                <UpgradeText>
+                  강화 비용:{' '}
+                  {target && target.card_color == 0
+                    ? '150 '
+                    : target && target.card_color == 1
+                    ? '300 '
+                    : '????'}
+                  COL
+                </UpgradeText>
+                <UpgradeText>보유 COL: {myTokens}</UpgradeText>
+
+                <button
+                  onClick={(e: any) => {
+                    handleUpgrade(e);
+                  }}
+                >
+                  강화하기
+                </button>
+                <Confetti innerText={'성공'} />
+              </CardInfo>
+            </TargetCard>
+          </Layout>
+
+          <MyCardsText>My Cards</MyCardsText>
+          <MyCardsContainer>
+            {myCards
+              ? myCards.map(card => (
+                  <React.Fragment key={card.token_id}>
+                    <Card onClick={() => setTarget(card)} bgImage={card.img_url}></Card>
+                  </React.Fragment>
+                ))
+              : null}
+          </MyCardsContainer>
+        </div>
+      )}
     </>
   );
 };
