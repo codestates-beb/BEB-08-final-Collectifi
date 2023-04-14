@@ -44,7 +44,7 @@ export const market_sell_get = async (req: MyRequest, res: Response, next: NextF
 
 export const market_nft_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
-    const {token_id} = req.body;
+    const token_id = Number(req.params.id);
     const nft = await db.Nft.findOne({
       where: {token_id},
     });
