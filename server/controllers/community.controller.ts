@@ -113,12 +113,18 @@ export const detail_get = async (req: MyRequest, res: Response, next: NextFuncti
     });
 
     // 3. DB에서 해당 포스트의 댓글 불러오기
-    // const comments = await db.Post_comment.findAll({
-    //   where: {
-    //     post_id: id,
-    //   },
+    const comments = await db.Post_comment.findAll({
+      where: {
+        post_id: id,
+      },
+      include: [
+        {model: db.User,
+        attributes: ['nickname'],
+      },
 
-    // });
+      ]
+
+    });
     // 조회수 증가
     const result = await post.increment('views', {by: 1});
 
@@ -139,7 +145,7 @@ export const detail_get = async (req: MyRequest, res: Response, next: NextFuncti
 
     // const address = user.address;
     //3. 프론트로 user의 address와, post 데이터 보내주기
-    sendResponse(res, 200, '게시물을 성공적으로 가져왔습니다.', {post, isOwner});
+    sendResponse(res, 200, '게시물을 성공적으로 가져왔습니다.', {post, isOwner, comments});
   } catch (error) {
     sendResponse(res, 400, '게시물 가져오기 실패.');
   }
@@ -304,9 +310,16 @@ export const comment_post = async (req: MyRequest, res: Response, next: NextFunc
     });
     console.log(comment);
     // 4.
-
+    const result = await db.Post_comment.findOne({
+      where: {id: comment.id},
+      include:  [{
+        model: db.User,
+        attributes: ['nickname'],
+      }],
+      
+    })
     //3. 프론트로 post 데이터 보내주기
-    sendResponse(res, 200, '성공했습니다');
+    sendResponse(res, 200, '성공했습니다',{result});
   } catch (error) {
     sendResponse(res, 400, '실패했습니다');
   }
