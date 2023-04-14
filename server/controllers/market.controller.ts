@@ -42,6 +42,19 @@ export const market_sell_get = async (req: MyRequest, res: Response, next: NextF
   }
 };
 
+export const market_nft_get = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    const token_id = Number(req.params.id);
+    const nft = await db.Nft.findOne({
+      where: {token_id},
+    });
+    return res.status(200).send({message: '성공', data: {nft}});
+  } catch (e) {
+    console.log('ERROR:: ', e);
+    res.status(400).send({message: '실패했습니다.'});
+  }
+};
+
 //보유하고 있는 NFT 판매 상태로 만들기(판매 등록)
 export const market_sell_post = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
@@ -67,6 +80,36 @@ export const market_sell_post = async (req: MyRequest, res: Response, next: Next
     res.status(400).send({message: '실패했습니다'});
 
     console.log(e);
+  }
+};
+
+export const market_apporve_token_get = async (
+  req: MyRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const balance = req.params.balance;
+    const approve = await erc20Contract.methods.approve(process.env.ERC721_CA, balance).encodeABI();
+    return res.status(200).send({message: '성공', data: {approve, erc20ca: process.env.ERC20_CA}});
+  } catch (e) {
+    console.log('ERROR:: ', e);
+    res.status(400).send({message: '실패했습니다.'});
+  }
+};
+
+export const market_apporve_nft_get = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    const token_id = req.params.id;
+    const approve = await erc721Contract.methods
+      .approve(process.env.SERVER_ADDRESS, token_id)
+      .encodeABI();
+    return res
+      .status(200)
+      .send({message: '성공', data: {approve, erc721ca: process.env.ERC721_CA}});
+  } catch (e) {
+    console.log('ERROR:: ', e);
+    res.status(400).send({message: '실패했습니다.'});
   }
 };
 
@@ -96,6 +139,7 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
 
     const fromAddress = seller.address;
     console.log('=======fromAddress===', fromAddress);
+    console.log('=======toAddress', nftOwnerAddress);
 
     //구매자의 토큰 잔액이 판매 가격보다 많은지 조회
     const balance = await erc20Contract.methods.balanceOf(toAddress).call();
@@ -107,15 +151,12 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
         console.log('=======하이===');
 
         //확인 후 NFT옮기는 권한을 부여한 후 NFT 소유권 이동 및 토큰 수량 업데이트
-        await erc721Contract.methods
-          .approve(toAddress, token_id)
-          .send({from: fromAddress, gas: 500000});
-        await erc721Contract.methods
-          .transferNFT(fromAddress, toAddress, token_id)
-          .send({from: fromAddress, gas: 500000});
-        await erc20Contract.methods
-          .transfer(fromAddress, selling_price)
-          .send({from: toAddress, gas: 500000});
+        const safeTransferFrom = await erc721Contract.methods
+          .transferNFT(fromAddress, toAddress, token_id, selling_price)
+          .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+
+        console.log('=========safe============', safeTransferFrom);
+
         const nftModify = await db.Nft.update(
           {
             isSell: false,
