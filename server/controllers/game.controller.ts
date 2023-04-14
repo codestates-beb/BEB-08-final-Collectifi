@@ -104,12 +104,17 @@ export const game_fund_get = async (req: MyRequest, res: Response, next: NextFun
     const loseDiainage = (totalToken / loseToken).toFixed(1);
     const drawDiainage = (totalToken / drawToken).toFixed(1);
 
-    return res
-      .status(200)
-      .send({
-        message: '성공',
-        data: {winDiainage: winDiainage, loseDiainage: loseDiainage, drawDiainage: drawDiainage},
-      });
+    return res.status(200).send({
+      message: '성공',
+      data: {
+        winDiainage: winDiainage,
+        loseDiainage: loseDiainage,
+        drawDiainage: drawDiainage,
+        winToken: winToken,
+        loseToken: loseToken,
+        drawToken: drawToken,
+      },
+    });
   } catch (e) {
     console.log(e);
   }
