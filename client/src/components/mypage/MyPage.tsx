@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import {useRecoilValue} from 'recoil';
-import {postListQuery, cardListQuery} from '../../modules/mypage/atom';
+import { useRecoilValue } from 'recoil';
+import { postListQuery, cardListQuery } from '../../modules/mypage/atom';
 
-import {nft, post} from '../../modules/type';
+import { nft, post } from '../../modules/type';
 import PageTitle from '../UI/PageTitle';
 import Tab from '../UI/Tab';
 import CardList from '../market/CardList';
-import PlayerCard, {Glow} from '../UI/PlayerCard';
+import PlayerCard, { Glow } from '../UI/PlayerCard';
 import CardListItem from '../market/CardListItem';
 import BoardList from '../UI/BoardList';
 import BoardTitleItem from '../UI/BoardTitleItem';
@@ -16,8 +16,8 @@ import BoardListItem from '../UI/BoardListItem';
 const MyPage = () => {
   const cardList = useRecoilValue(cardListQuery);
   const postList = useRecoilValue(postListQuery);
-  //console.log(cardList, postList);
-  const cardWidth = '250px';
+  console.log(cardList, postList);
+  const cardWidth = '250px';  
 
   return (
     <MyPageLayout>
@@ -28,8 +28,8 @@ const MyPage = () => {
             return (
               <CardListItem
                 key={i}
-                //info={`${el.price}`}
-                linkTo="aa"
+                info={el.isSell ? 'FOR SAIL':undefined}
+                linkTo={`/market/${el.token_id}`} 
               >
                 <PlayerCard
                   imgSrc={el.img_url}
@@ -43,19 +43,21 @@ const MyPage = () => {
         <BoardList
           title={
             <BoardTitleItem
-              title={['POST1', 'POST2', <div key={0}>POST3</div>]}
-              gridTemplateColumns="1fr 2fr 1fr"
+              title={['NO', 'TITLE', 'DATE', 'VIEW', 'LIKE']}
+              gridTemplateColumns="1fr 3fr 1fr 1fr 1fr"
             />
           }
         >
-          {new Array(10).fill(0).map((el, i) => {
-            const listItem = ['test1', 'test2', <div key={i}>test3</div>];
+          {postList.map((el: post, i: number) => {
+            const date = new Date(el.created_at);
+            const formattedDate = date.toLocaleDateString();
+            const listItem = [el.id, el.title, formattedDate, el.views, el.likes];
             return (
               <BoardListItem
                 key={i}
                 listItem={listItem}
-                gridTemplateColumns="1fr 2fr 1fr"
-                linkTo={`${i}`}
+                gridTemplateColumns="1fr 3fr 1fr 1fr 1fr"
+                linkTo={`/community/detail/${el.id}`}
               />
             );
           })}

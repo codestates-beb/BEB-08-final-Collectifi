@@ -1,14 +1,15 @@
 import React from 'react';
-import {DummyComponent} from '../Styles';
+import {Suspense} from 'react';
+import {ErrorBoundary} from 'react-error-boundary';
+import Market from '../components/market/Market';
 
 const MarketPage = () => {
   return (
-    <div>
-      MarketPage
-      <DummyComponent />
-      <DummyComponent />
-      <DummyComponent />
-    </div>
+    <ErrorBoundary fallback={<div>Error!</div>}>
+      <Suspense>
+        <Market />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
