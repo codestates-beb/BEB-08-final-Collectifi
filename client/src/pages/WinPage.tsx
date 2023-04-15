@@ -14,7 +14,7 @@ const WinLayout = styled.div`
   /* background-color: beige; */
   display: flex;
   flex-direction: column;
-  height: 120vh;
+  height: 100%;
 `;
 
 const BigBox = styled.div`
