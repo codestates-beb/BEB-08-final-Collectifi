@@ -298,6 +298,7 @@ export const comment_post = async (req: MyRequest, res: Response, next: NextFunc
     console.log('===========req.params==========', req.params);
     console.log('===========req.params==========', req.params);
     const userId = req.session.user?.id;
+    const userAddress = req.session.user?.address;
     console.log('========id==========', postId);
     console.log('========id==========', postId);
 
@@ -320,7 +321,13 @@ export const comment_post = async (req: MyRequest, res: Response, next: NextFunc
       }],
       
     })
-    //3. 프론트로 post 데이터 보내주기
+    // 3. 작성자의 address를 post_comment_liked에 추가
+    const commentLiked = await db.Post_comment_liked.create({
+      post_comment_id: Number(comment.id),
+      address: userAddress
+    })
+
+    //4. 프론트로 post 데이터 보내주기
     sendResponse(res, 200, '성공했습니다',{result});
   } catch (error) {
     sendResponse(res, 400, '실패했습니다');
@@ -341,7 +348,8 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
     console.log('=====commentId====', commentId);
     const {data} = req.body;
     console.log('=====data====', data);
-
+    
+    const userAddress = req.session.user?.address;
     const comment = await db.Post_comment.findOne({
       where: {
         id: commentId,
@@ -349,8 +357,19 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
     });
     // 2. 좋아요 / 싫어요인지 체크
     if (!data) {
-      sendResponse(res, 400, '실패했습니다');
+      return sendResponse(res, 400, '실패했습니다');
     }
+    // post_comment_liked에서 address가 있는지 필터링 후 없을 때 실행.
+    const commentLikedFind = await db.Post_comment_liked.findOne({
+      where: {
+        post_comment_id: commentId,
+        address: userAddress
+      },
+    });
+    if( commentLikedFind) {
+      return sendResponse(res, 200, '좋아요/싫어요는 한번만 가능합니다');
+    }
+    
     // 3-1. 좋아요 경우 post의 likes를 1 증가
     if (data === 'likes') {
       const increaseLike = await comment.increment('likes', {by: 1});
@@ -359,7 +378,17 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
     else if (data === 'dislikes') {
       const increaseDislike = await comment.increment('dislikes', {by: 1});
     }
-    sendResponse(res, 200, '성공했습니다');
+    
+
+    // 지갑 주소를 post_comment_likeds에 추가
+    const commentLiked = await db.Post_comment_liked.create({
+      post_comment_id: Number(comment.id),
+      address: userAddress
+    })
+
+
+
+    sendResponse(res, 200, '성공했습니다',{data});
   } catch (error) {
     sendResponse(res, 400, '실패했습니다');
 

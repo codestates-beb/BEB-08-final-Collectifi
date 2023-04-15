@@ -26,7 +26,7 @@ const GlobalStyle = createGlobalStyle`
   margin: 0;
   padding: 0;  
   font-family: 'Encode Sans Expanded', 'sans-serif';
-  line-height: 1;
+  line-height: 0;
 }
 
 ol, ul {

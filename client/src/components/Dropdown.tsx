@@ -19,12 +19,13 @@ interface SubmenuItem {
 const DropdownMenu = styled.ul`
   width: 10rem;
   position: absolute;
-  top: 70px;
+  top: 69px;
   list-style: none;
   text-align: start;
   overflow: hidden;
   border-radius: 10px 10px 10px 10px;
   box-shadow: 3px 3px 3px #f3f3f3;
+  margin-left: -25px;
 `;
 
 const Item = styled.li`
@@ -39,7 +40,7 @@ const ItemLink = styled(Link)`
   width: 100%;
   height: 100%;
   text-decoration: none;
-  color: black;
+  color: #404040;
   padding: 16px;
   font-weight: 600;
   border-radius: 5px 5px 5px 5px;

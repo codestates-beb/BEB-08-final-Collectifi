@@ -167,8 +167,31 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
   };
 
   // 댓글 좋아요 기능 관련
-  const handleCommentLikes = (e: string) => {
-    alert(e);
+  const handleCommentLikes = (e: number, like: string) => {
+    console.log('라이크: ', like);
+    axios // localhost:8000/community/2/comment/3/like
+      .post(
+        `http://localhost:8000/community/${id}/comment/${e}/like`,
+        {data: like},
+        {withCredentials: true},
+      )
+      .then(res => {
+        //ToDo 토스트메세지: 좋아요 or 싫어요
+        console.log('좋아요: ', res);
+        if (res.data.data == 'likes') {
+          console.log('set likes: ', res.data.data);
+          setLike(prev => prev + 1);
+        } else if (res.data.data == 'dislikes') {
+          setdislike(prev => prev + 1);
+          console.log('set dislikes: ', res.data.data);
+        } else {
+          alert('Recommendations are only available once a day.');
+        }
+      })
+      .catch(err => {
+        console.log('좋아요를 이미 눌렀습니다');
+        alert('Recommendations are only available once a day. ' + err);
+      });
   };
 
   return (
@@ -199,10 +222,10 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
             {comments?.map(comment => (
               <div key={comment.id}>
                 {comment.User.nickname}: {comment.content}{' '}
-                <Comment_likes onClick={() => handleCommentLikes('b')}>
+                <Comment_likes onClick={() => handleCommentLikes(comment.id, 'likes')}>
                   b: {comment.likes}
                 </Comment_likes>{' '}
-                <Comment_likes onClick={() => handleCommentLikes('q')}>
+                <Comment_likes onClick={() => handleCommentLikes(comment.id, 'dislikes')}>
                   q:{comment.dislikes}
                 </Comment_likes>
               </div>
