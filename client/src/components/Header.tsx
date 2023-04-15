@@ -230,7 +230,7 @@ const Header = ({toggle}: PageLayoutProps) => {
       <Nav variants={navVariants} animate={headerAnimation} initial={'top'}>
         <NavbarContainer>
           {/* <LogImg src="/logo/logo4.png" /> */}
-          <LogImg />
+          {/* <LogImg /> */}
           <NavLogo to="/">Collectifi</NavLogo>
           <MobileIcon onClick={toggle}>
             <FaBars />
