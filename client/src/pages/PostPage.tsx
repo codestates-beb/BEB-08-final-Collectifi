@@ -6,7 +6,9 @@ import styled from 'styled-components';
 import {data} from '../data/data';
 import {WriteButton, WriteForm, WriteInput, WriteLabel, WriteTextarea} from './WritePage';
 import {PostsAttributes} from './CommunityPage';
-
+import {faThumbsUp, faThumbsDown} from '@fortawesome/free-regular-svg-icons';
+import {faCrow, faCrown} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 interface PostProps {
   setCurrentPage: (value: number) => void;
   setPosts: (value: PostsAttributes[]) => void;
@@ -22,6 +24,7 @@ interface Post {
   created_at: string;
   views: number;
   Post_comments: Post_comment[];
+  User?: User;
 }
 interface User {
   nickname: string;
@@ -38,9 +41,111 @@ interface Post_comment {
   User: User;
 }
 
-const PostForm = styled.form``;
+const PostLayout = styled.div`
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
-const Comment_likes = styled.span``;
+const Title = styled.span`
+  width: 100%;
+  margin-top: 5px;
+  border-top: 1px solid #d4d4d4;
+  border-bottom: 1px solid #d4d4d4;
+  align-self: flex-start;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 15px;
+`;
+const WriterDate = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #d4d4d4;
+  padding: 4px;
+  margin-bottom: 15px;
+`;
+const WriteContent = styled.div`
+  margin-top: 10px;
+  margin-bottom: 30px;
+  line-height: 1.2;
+`;
+const Writer = styled.span`
+  padding: 10px;
+`;
+const DateS = styled.span`
+  display: flex;
+  padding: 10px;
+  gap: 30px;
+`;
+const PostForm = styled.form`
+  width: 100%;
+`;
+const PostLikeDiv = styled.div`
+  margin-bottom: 12px;
+`;
+const LikeCount = styled.span`
+  color: ${props => props.theme.mainColor};
+  margin-right: 5px;
+`;
+const DisLikeCount = styled.span`
+  margin-left: 5px;
+`;
+
+const IsOwner = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin: 10px;
+`;
+const OwnersBtn = styled.div`
+  /* background: #f1356d; */
+  color: black;
+  white-space: nowrap;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 1px solid #cacaca;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+  margin-right: 7px;
+  margin-left: 7px;
+`;
+
+// 댓글 컴포넌트
+const CommentContainer = styled.div`
+  width: 100%;
+  /* background: #dcdcdc; */
+  padding: 10px;
+`;
+const Comment = styled.div`
+  padding: 7px;
+  margin: 10px 10px 10px 10px;
+  border: 1px solid #b5b5b5;
+  border-radius: 10px;
+  /* background: green; */
+`;
+const CommentUser = styled.div`
+  padding: 5px;
+`;
+const CrownIcon = styled(FontAwesomeIcon)`
+  margin-left: 10px;
+  color: #e9e900;
+`;
+const CommentContent = styled.div`
+  padding: 5px;
+`;
+const LieksContainer = styled.div`
+  /* background: green; */
+  text-align: end;
+  margin-right: 30px;
+`;
+const Comment_likes = styled.span`
+  margin-right: 5px;
+`;
 
 const PostTextarea = styled.textarea`
   width: 100%;
@@ -52,7 +157,14 @@ const PostTextarea = styled.textarea`
   resize: none;
   height: 15vh;
 `;
-
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+const Thumbs = styled.span`
+  cursor: pointer;
+  margin-right: 5px;
+`;
 const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
   const navigate = useNavigate();
   const {id} = useParams<{id: string}>();
@@ -195,55 +307,82 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
   };
 
   return (
-    <div>
+    <PostLayout>
       {post && (
         <>
-          <div>
-            번호: {id} 작성자: {post.user_id} 날짜: {post.created_at}
-            {isOwner && (
-              <>
-                {' '}
-                <WriteButton onClick={() => handleEdit()}>Edit</WriteButton>{' '}
-                <WriteButton onClick={handleDelete}>Delete</WriteButton>
-              </>
-            )}
-          </div>
-          <span>제목: {postTitle}</span> <span>조회수: {post.views}</span>
-          <div>내용: {postContent}</div>
-          <div>
-            {like}
-            <WriteButton onClick={() => handleLikes('likes')}>Likes</WriteButton>
-            <WriteButton onClick={() => handleLikes('dislikes')}>DisLikes</WriteButton>
-            {dislike}
-          </div>
-          <Button onClick={() => navigate('/community')}>목록</Button>
-          <div>
+          <Title>{postTitle}</Title>
+
+          <WriterDate>
+            <Writer>Writer: {post.User?.nickname}</Writer>
+            <DateS>
+              <div>View: {post.views}</div>
+              <div> {post.created_at.split('T')[0]}</div>
+            </DateS>
+          </WriterDate>
+          <WriteContent>{postContent}</WriteContent>
+          <PostLikeDiv>
+            <LikeCount>{like}</LikeCount>
+            <WriteButton onClick={() => handleLikes('likes')}>
+              <FontAwesomeIcon icon={faThumbsUp} />
+            </WriteButton>
+            <WriteButton onClick={() => handleLikes('dislikes')}>
+              <FontAwesomeIcon icon={faThumbsDown} />
+            </WriteButton>
+            <DisLikeCount>{dislike}</DisLikeCount>
+          </PostLikeDiv>
+          {/* <Button onClick={() => navigate('/community')}>목록</Button> */}
+
+          {isOwner && (
+            <IsOwner>
+              <OwnersBtn onClick={() => handleEdit()}>Edit</OwnersBtn>
+              <OwnersBtn onClick={handleDelete}>Delete</OwnersBtn>
+            </IsOwner>
+          )}
+
+          <CommentContainer>
             {/* 댓글 뿌려주는 부분 */}
             {comments?.map(comment => (
-              <div key={comment.id}>
-                {comment.User.nickname}: {comment.content}{' '}
-                <Comment_likes onClick={() => handleCommentLikes(comment.id, 'likes')}>
-                  b: {comment.likes}
-                </Comment_likes>{' '}
-                <Comment_likes onClick={() => handleCommentLikes(comment.id, 'dislikes')}>
-                  q:{comment.dislikes}
-                </Comment_likes>
-              </div>
+              <Comment key={comment.id}>
+                <CommentUser>
+                  {comment.User.nickname}
+                  <CrownIcon icon={faCrown} />
+                </CommentUser>
+
+                <CommentContent>{comment.content}</CommentContent>
+
+                <LieksContainer>
+                  <Comment_likes onClick={() => handleCommentLikes(comment.id, 'likes')}>
+                    <Thumbs>
+                      <FontAwesomeIcon icon={faThumbsUp} />
+                    </Thumbs>
+                    {comment.likes}
+                  </Comment_likes>
+                  <Comment_likes onClick={() => handleCommentLikes(comment.id, 'dislikes')}>
+                    <Thumbs>
+                      <FontAwesomeIcon icon={faThumbsDown} />
+                    </Thumbs>
+                    {comment.dislikes}
+                  </Comment_likes>
+                </LieksContainer>
+              </Comment>
             ))}
-          </div>
+          </CommentContainer>
         </>
       )}
+
       {/* 댓글 작성 태그 */}
       <PostForm>
         <PostTextarea
+          maxLength={1000}
           required
           value={comment}
           onChange={e => setCommnet(e.target.value)}
         ></PostTextarea>
-
-        <WriteButton onClick={e => handleSubmit(e)}>Add Comment</WriteButton>
+        <ButtonContainer>
+          <WriteButton onClick={e => handleSubmit(e)}>Add Comment</WriteButton>
+        </ButtonContainer>
       </PostForm>
-    </div>
+    </PostLayout>
   );
 };
 

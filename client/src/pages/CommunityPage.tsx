@@ -27,7 +27,12 @@ export interface PostsAttributes {
   created_at: Date;
   views: number;
   Post_comments: object[];
+  User?: User;
 }
+interface User {
+  nickname: string;
+}
+
 const CommunityLayout = styled.div`
   max-width: 70%;
   margin: 0 auto;
@@ -78,9 +83,15 @@ const TabButton = styled.button<{selected: boolean}>`
     );
   }}
 `;
+const PostButtonDiv = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px;
+`;
+
 const Community = () => {
   const navigate = useNavigate();
-  const boardSize = '0.3fr 3fr 1fr 1fr 1fr 1fr';
+  const boardSize = '0.3fr 3.5fr 1fr 1fr 0.5fr 0.5fr';
   const [posts, setPosts] = useState<PostsAttributes[]>([]);
   const [popularPosts, setPopularPosts] = useState<PostsAttributes[]>([]);
   const timeAgo = new TimeAgo('en-US');
@@ -196,8 +207,9 @@ const Community = () => {
           </TabButton>
         </TabLi>
       </TabUl>
-      <Button onClick={() => navigate('/write')}>글 작성</Button>
-
+      <PostButtonDiv>
+        <Button onClick={() => navigate('/write')}>Post</Button>
+      </PostButtonDiv>
       {/* <div>{tabs}</div> */}
       {tabs == 'General' && (
         <>
@@ -217,7 +229,7 @@ const Community = () => {
                 const listItem = [
                   item.id,
                   `${item.title} [${item.Post_comments.length.toString()}]`,
-                  item.user_id,
+                  item.User?.nickname,
                   // timeAgo.format(item.created_at),
                   // new Date().getMonth(),
                   // item.created_ats.getMonth(),

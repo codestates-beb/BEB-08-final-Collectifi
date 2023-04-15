@@ -66,7 +66,9 @@ const MainButton = styled.div`
   cursor: pointer;
   transform: translate(-40%, -50%);
 `;
-
+const Section = styled.div`
+  line-height: 0;
+`;
 const Section2Image = styled.img`
   /* background-size: cover; */
   width: 100%;
@@ -151,8 +153,10 @@ const MainPage = () => {
         <MainBack />
         <MainButton>Get Player NFT</MainButton>
       </ImagWrapper>
-      <Section2Image src="/trophy.png" />
-      <Section2Image src="/upgrade.png" />
+      <Section>
+        <Section2Image src="/trophy.png" />
+        <Section2Image src="/upgrade.png" />
+      </Section>
       <DummyComponent />
       <DummyComponent />
       <DummyComponent />

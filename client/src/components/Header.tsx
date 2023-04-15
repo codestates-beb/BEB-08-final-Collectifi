@@ -198,6 +198,7 @@ const Header = ({toggle}: PageLayoutProps) => {
     {name: 'Market', link: '/market'},
     {name: 'Win', link: '/win'},
     {name: 'Community', link: '/community'},
+    {name: 'Event', link: '/event'},
   ];
 
   const connectWallet = async () => {

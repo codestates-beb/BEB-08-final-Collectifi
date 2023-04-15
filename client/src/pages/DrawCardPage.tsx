@@ -7,6 +7,12 @@ import axios from 'axios';
 import testImg from '../data/7-1.png';
 import {useNavigate} from 'react-router-dom';
 
+const DrawLayout = styled(Layout)`
+  height: 100%;
+  width: 100%;
+  /* background: url('/stadium.png'); */
+`;
+
 const Selected = styled.div`
   background: grey;
   font-size: 70px;
@@ -81,6 +87,7 @@ export const CardContainer = styled.div`
 `;
 
 export const CardComment = styled.div`
+  margin-top: 50px;
   font-size: 60px;
   font-weight: 600;
   opacity: 1;
@@ -127,12 +134,25 @@ const DrawCardPage = () => {
     console.log(selectedPack);
 
     if (confirm('정말 구매하시겠습니까?')) {
-      axios
-        .post('http://localhost:8000/drawing', {card_pack: e}, {withCredentials: true})
-        .then((res: any) => {
-          setCard(res.data.data.mintedNft);
-        });
+      // axios
+      //   .post('http://localhost:8000/drawing', {card_pack: e}, {withCredentials: true})
+      //   .then((res: any) => {
+      //     setCard(res.data.data.mintedNft);
+      //   });
 
+      // 테스트용
+      setCard({
+        token_id: 1,
+        user_id: 1,
+        player: 'Test',
+        season: '2023',
+        team: 'team1',
+        card_color: 1,
+        price: 5,
+        selling_price: 10,
+        img_url: '/7-1.png',
+        isSell: false,
+      });
       console.log('yes');
     } else {
       console.log('no');
@@ -148,7 +168,7 @@ const DrawCardPage = () => {
           <button onClick={handleButtonClick}>Check on MyPage</button>
         </CardContainer>
       ) : (
-        <Layout>
+        <DrawLayout>
           <DummyComponent />
           {/* <Selected>{selectedPack}</Selected> */}
           <Description>Draw your favorite football player Card on NFT!</Description>
@@ -187,7 +207,7 @@ const DrawCardPage = () => {
             </>
           }
           <DummyComponent />
-        </Layout>
+        </DrawLayout>
       )}
     </>
   );

@@ -79,19 +79,21 @@ const WriteNav = styled.div`
   bottom: 0;
   z-index: 10;
 `;
+
 export const WriteButton = styled.button`
   background: #f1356d;
   color: #fff;
   white-space: nowrap;
   border: 0;
-  padding: 14px 32px;
-  border-radius: 24px;
+  padding: 14px 30px;
+  border-radius: 12px;
   outline: none;
   border: none;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 11px;
   font-weight: bold;
-  margin-right: 30px;
+  margin-right: 10px;
+  margin-left: 10px;
 `;
 const WritePage = () => {
   const [title, setTitle] = useState('');
@@ -124,6 +126,7 @@ const WritePage = () => {
         <WriteForm>
           <WriteLabel>title</WriteLabel>
           <WriteInput
+            maxLength={60}
             placeholder="제목을 입력하세요"
             type="text"
             required
