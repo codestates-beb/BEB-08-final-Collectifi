@@ -15,6 +15,9 @@ import PostPage from './pages/PostPage';
 import WritePage from './pages/WritePage';
 import CardDetailPage from './pages/CardDetailPage';
 import SliderTest from './pages/SliderTest';
+import Event from './pages/Event';
+import EditPage from './pages/EditPage';
+import SliderTest2 from './pages/SliderTest2';
 
 const Router: React.FC<{toggle: () => void}> = props => {
   return (
