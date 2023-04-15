@@ -35,15 +35,15 @@ const CommunityLayout = styled.div`
     max-width: 93%;
   }
 `;
-const TabUl = styled.ul`
+export const TabUl = styled.ul`
   margin-bottom: 40px;
   border-bottom: solid 1px ${props => props.theme.lineColor || 'rgb(0, 0, 0)'};
 `;
-const TabLi = styled.li`
+export const TabLi = styled.li`
   display: inline-flex;
   margin-right: 40px;
 `;
-const TabButton = styled.button<{selected: boolean}>`
+export const TabButton = styled.button<{selected: boolean}>`
   display: inline-flex;
   align-items: center;
   justify-content: center;

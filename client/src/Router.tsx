@@ -13,9 +13,9 @@ import MarketPage from './pages/MarketPage';
 import WinPage from './pages/WinPage';
 import PostPage from './pages/PostPage';
 import WritePage from './pages/WritePage';
-import CardDetailPage from './pages/CardDetailPage'
+import CardDetailPage from './pages/CardDetailPage';
 import SliderTest from './pages/SliderTest';
-
+import Event from './pages/Event';
 
 const Router: React.FC<{toggle: () => void}> = props => {
   return (
@@ -30,6 +30,7 @@ const Router: React.FC<{toggle: () => void}> = props => {
         <Route path="/market/:id" element={<CardDetailPage />} />
         <Route path="/win" element={<WinPage />} />
         <Route path="/community/*" element={<Community />} />
+        <Route path="/event/*" element={<Event />} />
       </Route>
       <Route path="/write" element={<WritePage />} />
       <Route path="*" element={<NotFound />} />
