@@ -100,9 +100,9 @@ export const game_fund_get = async (req: MyRequest, res: Response, next: NextFun
     const loseToken = await soccerContract.methods.loseToken().call();
     const drawToken = await soccerContract.methods.drawToken().call();
 
-    const winDiainage = (totalToken / winToken).toFixed(1);
-    const loseDiainage = (totalToken / loseToken).toFixed(1);
-    const drawDiainage = (totalToken / drawToken).toFixed(1);
+    const winDiainage = (totalToken / winToken).toFixed(2);
+    const loseDiainage = (totalToken / loseToken).toFixed(2);
+    const drawDiainage = (totalToken / drawToken).toFixed(2);
 
     return res.status(200).send({
       message: '성공',
@@ -113,6 +113,7 @@ export const game_fund_get = async (req: MyRequest, res: Response, next: NextFun
         winToken: winToken,
         loseToken: loseToken,
         drawToken: drawToken,
+        totalToken,
       },
     });
   } catch (e) {
