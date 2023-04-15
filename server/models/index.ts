@@ -5,6 +5,8 @@ import Nft_info from "./nft_info";
 import Post from "./post";
 import Post_comment from "./post_comment";
 import User from "./user";
+import Post_liked from "./post_liked";
+import Post_comment_liked from "./post_comment_liked";
 
 const env: string = process.env.NODE_ENV || 'development';
 const config = config_dev;
@@ -18,17 +20,24 @@ db.Nft = Nft;
 db.Nft_info = Nft_info;
 db.Post = Post;
 db.Post_comment = Post_comment;
+db.Post_liked = Post_liked;
+db.Post_comment_liked = Post_comment_liked;
 
 User.initModel(sequelize);
 Nft.initModel(sequelize);
 Post.initModel(sequelize);
 Post_comment.initModel(sequelize);
 Nft_info.initModel(sequelize);
+Post_liked.initModel(sequelize);
+Post_comment_liked.initModel(sequelize);
 
 //관계를 설정 해 준다.
 User.associate(db);
 Nft.associate(db);
 Post.associate(db);
 Post_comment.associate(db);
+Post_liked.associate(db);
+Post_comment_liked.associate(db);
+
 
 export default db;
