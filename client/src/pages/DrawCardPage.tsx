@@ -9,8 +9,17 @@ import {useNavigate} from 'react-router-dom';
 
 const DrawLayout = styled(Layout)`
   height: 100%;
+  max-width: 100%;
+  /* width: 100%; */
+
+  background: url('/stadium.jpg');
+  background-size: cover;
+`;
+const NonOpacity = styled.div`
   width: 100%;
-  /* background: url('/stadium.png'); */
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
 `;
 
 const Selected = styled.div`
@@ -24,6 +33,8 @@ const Selected = styled.div`
 `;
 
 const Description = styled.div`
+  margin: 15px;
+  color: white;
   font-size: 40px;
   font-weight: 600;
   margin-bottom: 60px;
@@ -46,7 +57,6 @@ const PackListItem = styled.div`
 const PackLabel = styled.div`
   font-size: 25px;
   margin: 5px;
-  background: yellow;
   text-align: center;
   font-weight: 600;
   margin-bottom: 15px;
@@ -169,44 +179,44 @@ const DrawCardPage = () => {
         </CardContainer>
       ) : (
         <DrawLayout>
-          <DummyComponent />
           {/* <Selected>{selectedPack}</Selected> */}
-          <Description>Draw your favorite football player Card on NFT!</Description>
-          {
-            <>
-              <PackList>
-                <PackListItem>
-                  <PackLabel>Normal Class</PackLabel>
-                  <Pack
-                    onClick={(e: any) => {
-                      handleSubmit(0);
-                    }}
-                  ></Pack>
-                  <PackPrice>500 TKI</PackPrice>
-                </PackListItem>
-                <PackListItem>
-                  <PackLabel>High Class</PackLabel>
-                  <Pack
-                    onClick={(e: any) => {
-                      handleSubmit(1);
-                    }}
-                  ></Pack>
-                  <PackPrice>1000 TKI</PackPrice>
-                </PackListItem>
-                <PackListItem>
-                  <PackLabel>World Class</PackLabel>
-                  <Pack
-                    onClick={(e: any) => {
-                      handleSubmit(2);
-                    }}
-                  ></Pack>
-                  <PackPrice>5000 TKI</PackPrice>
-                  {selectedPack}
-                </PackListItem>
-              </PackList>
-            </>
-          }
-          <DummyComponent />
+          <NonOpacity>
+            <Description>Draw your favorite football player Card on NFT!</Description>
+            {
+              <>
+                <PackList>
+                  <PackListItem>
+                    <PackLabel>Normal Class</PackLabel>
+                    <Pack
+                      onClick={(e: any) => {
+                        handleSubmit(0);
+                      }}
+                    ></Pack>
+                    <PackPrice>500 TKI</PackPrice>
+                  </PackListItem>
+                  <PackListItem>
+                    <PackLabel>High Class</PackLabel>
+                    <Pack
+                      onClick={(e: any) => {
+                        handleSubmit(1);
+                      }}
+                    ></Pack>
+                    <PackPrice>1000 TKI</PackPrice>
+                  </PackListItem>
+                  <PackListItem>
+                    <PackLabel>World Class</PackLabel>
+                    <Pack
+                      onClick={(e: any) => {
+                        handleSubmit(2);
+                      }}
+                    ></Pack>
+                    <PackPrice>5000 TKI</PackPrice>
+                    {selectedPack}
+                  </PackListItem>
+                </PackList>
+              </>
+            }
+          </NonOpacity>
         </DrawLayout>
       )}
     </>
