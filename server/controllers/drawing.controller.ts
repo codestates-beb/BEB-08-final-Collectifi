@@ -25,9 +25,9 @@ export const drawing_post = async (req: MyRequest, res: Response, next: NextFunc
       order: db.sequelize.random(),
     });
     //card_pack에 따라 토큰 받아오기
-    // const setToken = await erc721Contract.methods
-    //   .setToken(process.env.ERC20_CA)
-    //   .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+    const setToken = await erc721Contract.methods
+      .setToken(process.env.ERC20_CA)
+      .send({from: process.env.SERVER_ADDRESS, gas: 500000});
     const mintNftPrice = await erc20Contract.methods
       .transfer(process.env.SERVER_ADDRESS, card_pack == 0 ? 150 : card_pack == 1 ? 300 : 500)
       .send({from: address, gas: 500000});

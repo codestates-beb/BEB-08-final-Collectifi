@@ -82,6 +82,12 @@ class Post extends Model<PostAttributes> {
       onDelete: "cascade",
       onUpdate: "cascade",
     });
+    db.Post.hasMany(db.Post_liked, {
+      foreignKey: "post_id",
+      sourceKey: "id",
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
   }
   
 }

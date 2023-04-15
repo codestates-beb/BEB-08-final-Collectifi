@@ -21,17 +21,14 @@ declare global {
 
 const navVariants = {
   top: {
-    // backgroundColor: 'white',
-    backgroundColor: '#333333',
+    backgroundColor: 'transparent', // 'white', '#333333',
   },
   scroll: {
-    backgroundColor: 'grey',
-    // backgroundColor: 'white',
+    backgroundColor: 'white',
   },
 };
 
 const Nav = styled(motion.div)`
-  /* background: '#000'; */
   height: 70px;
   /* margin-top: -70px; */
   display: flex;
@@ -40,7 +37,7 @@ const Nav = styled(motion.div)`
   position: sticky;
   top: 0;
   z-index: 10;
-
+  align-items: center;
   @media screen and (max-width: 960px) {
     transition: 0.8s all ease;
   }
@@ -54,15 +51,23 @@ const NavbarContainer = styled.div`
   width: 100%;
   padding: 0 24px;
   max-width: 1100px;
+  margin-top: 10px;
 `;
+const LogImg = styled.div`
+  background: url('/logo/logo2.png');
+  background-size: contain;
+  width: 50px;
+  height: 50px;
+`;
+
 export const NavLogo = styled(Link)`
-  color: #fff;
+  color: black;
   justify-self: flex-start;
   cursor: pointer;
   font-size: 1.5rem;
   display: flex;
   align-items: center;
-  margin-left: 24px;
+  /* margin-left: 24px; */
   font-weight: bold;
   text-decoration: none;
 `;
@@ -77,7 +82,7 @@ const MobileIcon = styled.div`
     transform: translate(-100%, 60%);
     font-size: 1.8rem;
     cursor: pointer;
-    color: #fff;
+    color: #404040;
   }
 `;
 const NavMenu = styled.ul`
@@ -86,26 +91,31 @@ const NavMenu = styled.ul`
   list-style: none;
   text-align: center;
   margin-right: -22px;
+  margin-top: 5px;
+  padding: 6px;
 
   @media screen and (max-width: 768px) {
     display: none;
   }
 `;
 const NavItem = styled(Link)`
-  height: 80px;
+  /* height: 80px; */
+  height: 100%;
+  margin: 3px;
+  &:hover {
+    background: rgb(241, 241, 241);
+    border-radius: 20px 20px 20px 20px;
+  }
 `;
 const NavLink = styled.div`
-  color: #fff;
+  font-weight: 600;
+  color: #616161;
   display: flex;
+  gap: 5px;
   align-items: center;
   text-decoration: none;
   padding: 0 1rem;
   height: 100%;
-  cursor: pointer;
-
-  &.active {
-    border-bottom: 3px solid #01bf71;
-  }
 `;
 
 const NavBtn = styled.nav`
@@ -121,7 +131,7 @@ const NavBtnLink = styled.div`
   border-radius: 50px;
   background: ${props => props.theme.mainColor};
   white-space: nowrap;
-  padding: 10px 22px;
+  padding: 13px 22px;
   color: #fff;
   font-size: 16px;
   outline: none;
@@ -135,9 +145,6 @@ const NavBtnLink = styled.div`
     background: #fff;
     color: #010606;
   }
-`;
-const NonBlur = styled.div`
-  /* filter: */
 `;
 
 const Header = ({toggle}: PageLayoutProps) => {
@@ -191,6 +198,7 @@ const Header = ({toggle}: PageLayoutProps) => {
     {name: 'Market', link: '/market'},
     {name: 'Win', link: '/win'},
     {name: 'Community', link: '/community'},
+    {name: 'Event', link: '/event'},
   ];
 
   const connectWallet = async () => {
@@ -220,9 +228,9 @@ const Header = ({toggle}: PageLayoutProps) => {
   return (
     <>
       <Nav variants={navVariants} animate={headerAnimation} initial={'top'}>
-        {/* <Nav scrollNav={scrollNav}> */}
         <NavbarContainer>
-          {/* <NavLogo to="/">COLLECTIFI</NavLogo> */}
+          {/* <LogImg src="/logo/logo4.png" /> */}
+          {/* <LogImg /> */}
           <NavLogo to="/">Collectifi</NavLogo>
           <MobileIcon onClick={toggle}>
             <FaBars />
@@ -248,23 +256,6 @@ const Header = ({toggle}: PageLayoutProps) => {
                 </NavLink>
               </NavItem>
             ))}
-
-            {/* <NavItem to="" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-              <NavLink>
-                Earn
-                <FontAwesomeIcon icon={faCaretDown} />
-                {dropdown && <Dropdown dropdown={dropdown} setDropdown={setDropdown} />}
-              </NavLink>
-            </NavItem>
-            <NavItem to="">
-              <NavLink>Market</NavLink>
-            </NavItem>
-            <NavItem to="">
-              <NavLink>Win</NavLink>
-            </NavItem>
-            <NavItem to="">
-              <NavLink>Community</NavLink>
-            </NavItem> */}
           </NavMenu>
           <NavBtn>
             <NavBtnLink
@@ -272,7 +263,7 @@ const Header = ({toggle}: PageLayoutProps) => {
                 connectWallet();
               }}
             >
-              <NonBlur>Connect</NonBlur>
+              Connect
             </NavBtnLink>
           </NavBtn>
         </NavbarContainer>

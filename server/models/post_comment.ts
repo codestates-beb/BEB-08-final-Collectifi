@@ -74,6 +74,12 @@ class Post_comment extends Model<Post_commentAttributes> {
       onDelete: "cascade",
       onUpdate: "cascade",
     });
+    db.Post_comment.hasMany(db.Post_comment_liked, {
+      foreignKey: "post_comment_id",
+      sourceKey: "id",
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
   }
 }
 

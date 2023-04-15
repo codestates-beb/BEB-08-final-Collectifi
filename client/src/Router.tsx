@@ -15,7 +15,6 @@ import PostPage from './pages/PostPage';
 import WritePage from './pages/WritePage';
 import CardDetailPage from './pages/CardDetailPage';
 import SliderTest from './pages/SliderTest';
-import Event from './pages/Event';
 
 const Router: React.FC<{toggle: () => void}> = props => {
   return (
@@ -33,8 +32,9 @@ const Router: React.FC<{toggle: () => void}> = props => {
         <Route path="/event/*" element={<Event />} />
       </Route>
       <Route path="/write" element={<WritePage />} />
+      <Route path="/edit" element={<EditPage />} />
       <Route path="*" element={<NotFound />} />
-      {/* <Route path="/slidertest" element={<SliderTest />} /> */}
+      <Route path="/slidertest" element={<SliderTest2 />} />
     </Routes>
   );
 };
