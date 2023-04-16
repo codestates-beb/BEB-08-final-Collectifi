@@ -1,48 +1,62 @@
 import { atom, selector, selectorFamily } from "recoil";
-import { userInfo } from "./api";
-//import { userId } from "../atom";
+import { userInfo, editNickname } from "./api";
+import { userId, userNickname } from "../atom";
 
 export const currentUserId = atom<number>({
   key: 'CurrentUserId',
   default: 0,
 });
 
-export const userNickname = atom<string>({
-  key: 'UserNickname',
-});
-
 export const userInfoQuery = selectorFamily({
   key: 'UserInfoQuery',
-  get: (id: number) => async () => {
+  get: (id: number) => async ({get}) => {
+    get(userId);
     const response = await userInfo(id);
-    if (response.data.error) {
-      throw response.data.error;
-    }
-    //console.log(response.data)
-    if ('status' in response && response.status !== 200) {
-      throw new Error(`userInfoQuery failed with status code ${response.status}`);
-    }
     return response;
   },
 });
 
-export const currentUserInfoQuery = selector({
-  key: 'CurrentUserInfoQuery',
-  get: ({get}) => get(userInfoQuery(get(currentUserId))),
+export const editNicknameQuery = selectorFamily({
+  key: 'EditNicknameQuery',
+  get: (newNickname: string) => async ({get}) => {
+    get(userNickname);
+    const response = await editNickname(newNickname);
+    return response;
+  }, 
 });
 
-export const cardListQuery = selector({
-  key: 'CardListQuery',
+export const getUserInfoQuery = selector({
+  key: 'GetUserInfoQuery',
   get: ({get}) => {
-    const currentUserInfo = get(currentUserInfoQuery);
+    const userInfo = get(userInfoQuery(get(currentUserId)))
+    if(!userInfo) return null;
+    return userInfo;
+  },
+});
+
+export const getUserQuery = selector({
+  key: 'GtUserQuery',
+  get: ({get}) => {
+    const userInfo = get(getUserInfoQuery)
+    if(!userInfo) return null;
+    return {user: userInfo.data.data.user, isOwner: userInfo.data.data.isOwner};
+  },
+});
+
+export const getCardListQuery = selector({
+  key: 'GetCardListQuery',
+  get: ({get}) => {
+    const currentUserInfo = get(getUserInfoQuery);
+    if(!currentUserInfo) return null;
     return currentUserInfo.data.data.nfts;
   },
 });
 
-export const postListQuery = selector({
-  key: 'PostListQuery',
+export const getPostListQuery = selector({
+  key: 'GetPostListQuery',
   get: ({get}) => {
-    const currentUserInfo = get(currentUserInfoQuery);
+    const currentUserInfo = get(getUserInfoQuery);
+    if(!currentUserInfo) return null;
     return currentUserInfo.data.data.posts;
   },
 });
