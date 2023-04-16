@@ -6,9 +6,10 @@ import styled from 'styled-components';
 import {data} from '../data/data';
 import {WriteButton, WriteForm, WriteInput, WriteLabel, WriteTextarea} from './WritePage';
 import {PostsAttributes} from './CommunityPage';
-import {faThumbsUp, faThumbsDown} from '@fortawesome/free-regular-svg-icons';
-import {faCrow, faCrown} from '@fortawesome/free-solid-svg-icons';
+import {faThumbsUp, faThumbsDown, faEdit} from '@fortawesome/free-regular-svg-icons';
+import {faCrown, faDeleteLeft, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {toast} from 'react-toastify';
 interface PostProps {
   setCurrentPage: (value: number) => void;
   setPosts: (value: PostsAttributes[]) => void;
@@ -39,6 +40,10 @@ interface Post_comment {
   dislikes: number;
   created_at: Date;
   User: User;
+  Post_comment_likeds: Post_comment_likeds[];
+}
+interface Post_comment_likeds {
+  user_id?: number;
 }
 
 const PostLayout = styled.div`
@@ -130,11 +135,23 @@ const Comment = styled.div`
 `;
 const CommentUser = styled.div`
   padding: 5px;
+  display: flex;
+  justify-content: space-between;
 `;
 const CrownIcon = styled(FontAwesomeIcon)`
   margin-left: 10px;
   color: #e9e900;
 `;
+const EditButton = styled(FontAwesomeIcon)`
+  margin-right: 5px;
+  cursor: pointer;
+`;
+const DeleteButton = styled(FontAwesomeIcon)`
+  margin-left: 10px;
+  margin-right: 20px;
+  cursor: pointer;
+`;
+
 const CommentContent = styled.div`
   padding: 5px;
 `;
@@ -171,6 +188,7 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
   const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Post_comment[]>([]);
   const [isOwner, setIsOwner] = useState(false);
+  const [userId, setUserId] = useState(0);
 
   useEffect(() => {
     // 포스트 디테일을 불러옴
@@ -182,6 +200,7 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
       setdislike(res.data.data.post.dislikes);
       setPostTitle(res.data.data.post.title);
       setPostContent(res.data.data.post.content);
+      setUserId(res.data.data.userId);
       console.log('res: ', res);
     });
 
@@ -205,6 +224,7 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
   // 게시글 삭제 관련
   const handleDelete = () => {
     console.log('글을 삭제하시겠습니까?');
+    if (!confirm('Are you sure you want to delete the post?')) return;
     axios
       .delete(`http://localhost:8000/community/${id}/delete`, {withCredentials: true})
       .then(res => {
@@ -223,10 +243,12 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
             );
           })
           .catch(error => {
-            console.error(error);
+            console.error('글 불러오기 실패: ', error);
           });
 
-        alert('글을 삭제하였습니다.');
+        // alert('글을 삭제하였습니다.');
+        toast.info('Deleted post successfully.');
+
         navigate('/community', {replace: true});
       })
       .catch(err => {
@@ -234,30 +256,31 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
       });
   };
 
-  // 좋아요 관련
+  // 게시글 좋아요 관련
   const [like, setLike] = useState(0);
   const [dislike, setdislike] = useState(0);
   const handleLikes = (data: string) => {
     axios
       .post(`http://localhost:8000/community/${id}/like`, {data}, {withCredentials: true})
       .then(res => {
-        //ToDo 토스트메세지: 좋아요 or 싫어요
         console.log('좋아요: ', res);
         if (data == 'likes') {
           setLike(prev => prev + 1);
+          toast.info('Like it!');
         } else if (data == 'dislikes') {
           setdislike(prev => prev + 1);
+          toast.info('Dislike it!');
         }
       })
       .catch(err => {
-        console.log('좋아요를 이미 눌렀습니다');
-        alert('Recommendations are only available once a day.');
+        console.log('좋아요를 이미 눌렀습니다', err);
+        // alert('Recommendations are only available once a day.');
+        toast.error(err.response.data.error);
       });
   };
 
   // 댓글 기능 관련
   const [comment, setCommnet] = useState('');
-  //ToDo 최소 글자 수 제한
   const handleSubmit = (e: any) => {
     e.preventDefault();
     axios
@@ -271,10 +294,12 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
         setComments(prev => [...prev, res.data.data.result]);
         // 댓글 입력창 공백으로
         setCommnet('');
-        //todo 토스트 메세지로 작성 완료 알림
+        toast.success('finished writing comments!');
+        console.log('new comments: ', res.data.data.result);
       })
       .catch(err => {
         console.log('error: ', err);
+        toast.error('Failed to write: ', err);
       });
   };
 
@@ -288,21 +313,44 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
         {withCredentials: true},
       )
       .then(res => {
-        //ToDo 토스트메세지: 좋아요 or 싫어요
         console.log('좋아요: ', res);
-        if (res.data.data == 'likes') {
-          console.log('set likes: ', res.data.data);
+        if (res.data.data.data == 'likes') {
+          console.log('set likes: ', res.data.data.data);
           setLike(prev => prev + 1);
-        } else if (res.data.data == 'dislikes') {
+          toast.info('Like it!');
+        } else if (res.data.data.data == 'dislikes') {
           setdislike(prev => prev + 1);
-          console.log('set dislikes: ', res.data.data);
+          console.log('set dislikes: ', res.data.data.data);
+          toast.info('Disike it!');
         } else {
-          alert('Recommendations are only available once a day.');
+          // alert('Recommendations are only available once a day.');
+          console.log(res.data.data.data);
+          toast.warning('Recommendations are only available once a day.');
         }
       })
       .catch(err => {
-        console.log('좋아요를 이미 눌렀습니다');
-        alert('Recommendations are only available once a day. ' + err);
+        console.log('좋아요를 이미 눌렀습니다', err.response.data.message);
+        // alert('Recommendations are only available once a day. ' + err);
+        toast.error(err.response.data.message);
+      });
+  };
+  const editComment = (e: number) => {
+    console.log('댓글을 수정하시겠습니까?');
+  };
+  const deleteComment = (e: number) => {
+    console.log('댓글을 삭제하시겠습니까?');
+    if (!confirm('Are you sure you want to delete the comment?')) return;
+    axios
+      .delete(`http://localhost:8000/community/${id}/comment/${e}`, {withCredentials: true})
+      .then(res => {
+        console.log('댓글삭제 요청 결과: ', res);
+        toast.info('Deleted comment successfully.');
+        // 프론트 변경
+        setComments(prev => prev.filter(comment => comment.id !== e));
+      })
+      .catch(err => {
+        console.log('글삭제 실패', err);
+        toast.error('Error deleting comment');
       });
   };
 
@@ -334,7 +382,7 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
 
           {isOwner && (
             <IsOwner>
-              <OwnersBtn onClick={() => handleEdit()}>Edit</OwnersBtn>
+              <OwnersBtn onClick={handleEdit}>Edit</OwnersBtn>
               <OwnersBtn onClick={handleDelete}>Delete</OwnersBtn>
             </IsOwner>
           )}
@@ -344,8 +392,18 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
             {comments?.map(comment => (
               <Comment key={comment.id}>
                 <CommentUser>
-                  {comment.User.nickname}
-                  <CrownIcon icon={faCrown} />
+                  <div>
+                    {comment.User.nickname}
+                    <CrownIcon icon={faCrown} />
+                  </div>
+                  {comment.Post_comment_likeds[0]?.user_id == userId ? (
+                    <div>
+                      <EditButton onClick={() => editComment(comment.id)} icon={faEdit} />
+                      <DeleteButton onClick={() => deleteComment(comment.id)} icon={faTrash} />
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
                 </CommentUser>
 
                 <CommentContent>{comment.content}</CommentContent>
@@ -373,6 +431,7 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
       {/* 댓글 작성 태그 */}
       <PostForm>
         <PostTextarea
+          minLength={5}
           maxLength={1000}
           required
           value={comment}

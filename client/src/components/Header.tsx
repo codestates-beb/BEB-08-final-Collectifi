@@ -10,7 +10,7 @@ import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Dropdown from './Dropdown';
 import axios from 'axios';
-
+import {toast} from 'react-toastify';
 declare global {
   interface Window {
     ethereum?: {
@@ -227,12 +227,16 @@ const Header = ({toggle}: PageLayoutProps) => {
           .post('http://localhost:8000/login', {address: res[0]}, {withCredentials: true})
           .then(res => {
             console.log('login_post success: ', res);
+            toast.success('logged in successfully! 🎉');
           });
         // setIsLoggedIn(true);
         // localStorage.setItem('isLoggedIn', res[0]);
       })
 
-      .catch(e => console.log(e));
+      .catch(e => {
+        console.log(e);
+        toast.error('logged in failed');
+      });
   };
 
   return (
