@@ -30,6 +30,7 @@ const MainImg = styled.img`
   z-index: 1;
 `;
 const MainBack = styled.div`
+  background-size: contain;
   background: linear-gradient(
       to bottom,
       rgba(255, 255, 255, 0.2) 10%,
@@ -38,7 +39,7 @@ const MainBack = styled.div`
       rgba(255, 255, 255, 0.9) 70%,
       rgba(255, 255, 255, 1) 100%
     ),
-    url('/main1.png');
+    url('/main1.png') no-repeat;
   width: 100%;
   height: 100%;
   position: absolute;

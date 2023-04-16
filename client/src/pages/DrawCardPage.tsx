@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import {DummyComponent, Layout} from '../Styles';
 import Button from '../components/UI/Button';
 import Modal from '../components/UI/Modal';
@@ -19,7 +19,9 @@ const NonOpacity = styled.div`
   width: 100%;
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
 `;
 
 const Selected = styled.div`
@@ -42,6 +44,9 @@ const Description = styled.div`
 
 const Amount = styled.div`
   width: 300px;
+`;
+const PackLayout = styled.div`
+  margin-bottom: 20px;
 `;
 const PackList = styled.div`
   display: flex;
@@ -66,20 +71,35 @@ const PackPrice = styled.div`
   font-size: 25px;
   font-weight: 600;
 `;
+const rotate = keyframes`
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+`;
+interface Src {
+  src: string;
+}
 
-const Pack = styled.div`
-  background: white;
-  width: 300px;
-  height: 500px;
-  border-radius: 7%;
+const Pack = styled.div<Src>`
+  background-size: cover;
+  background-image: ${({src}) => `url(${src})`};
+  /* background: #eaea04; */
+  width: 260px;
+  height: 370px;
+  /* border-radius: 7%; */
   /* border: 1px solid black; */
   color: black;
   text-align: center;
   box-shadow: 5px 5px 5px grey;
   &:hover {
     cursor: pointer;
-    transform: translateY(-5px); /* 마우스를 올렸을 때 위로 이동 */
-    transition: transform 0.5s ease; /* transition 속성 추가 */
+    transform: rotateZ(0deg);
+    /* transform: translateY(-5px); 
+    transition: transform 0.5s ease; */
+    animation: ${rotate} 3s linear infinite;
   }
   margin-bottom: 20px;
 `;
@@ -183,11 +203,12 @@ const DrawCardPage = () => {
           <NonOpacity>
             <Description>Draw your favorite football player Card on NFT!</Description>
             {
-              <>
+              <PackLayout>
                 <PackList>
                   <PackListItem>
                     <PackLabel>Normal Class</PackLabel>
                     <Pack
+                      src={'/bronze-pack.png'}
                       onClick={(e: any) => {
                         handleSubmit(0);
                       }}
@@ -197,6 +218,7 @@ const DrawCardPage = () => {
                   <PackListItem>
                     <PackLabel>High Class</PackLabel>
                     <Pack
+                      src={'/silver-pack.png'}
                       onClick={(e: any) => {
                         handleSubmit(1);
                       }}
@@ -206,15 +228,15 @@ const DrawCardPage = () => {
                   <PackListItem>
                     <PackLabel>World Class</PackLabel>
                     <Pack
+                      src={'/gold-pack.png'}
                       onClick={(e: any) => {
                         handleSubmit(2);
                       }}
                     ></Pack>
                     <PackPrice>5000 TKI</PackPrice>
-                    {selectedPack}
                   </PackListItem>
                 </PackList>
-              </>
+              </PackLayout>
             }
           </NonOpacity>
         </DrawLayout>
