@@ -28,7 +28,17 @@ const GlobalStyle = createGlobalStyle`
   font-family: 'Encode Sans Expanded', 'sans-serif';
   line-height: 1;
 }
-
+:root {
+  --toastify-color-progress-light: linear-gradient(
+    to right,
+    #ff2d55,
+    #ff2d55,
+    #ff2d55,
+    rgb(253, 17, 92),
+    rgb(253, 17, 92),
+    rgb(253, 17, 92)
+  );
+}
 ol, ul {
   list-style: none;
 }

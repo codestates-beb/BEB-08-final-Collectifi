@@ -11,6 +11,7 @@ import MyPage from '../components/mypage/MyPage';
 import CardDetail from '../components/market/CardDetail';
 import {DummyComponent} from '../Styles';
 import styled from 'styled-components';
+import {toast} from 'react-toastify';
 
 const ImagWrapper = styled.div`
   width: 100%;
@@ -91,7 +92,9 @@ const MainPage = () => {
     setError2(null);
     setError3(null);
   };
-
+  const Toast = () => {
+    toast('first notification');
+  };
   return (
     <>
       {/* <Button
@@ -152,7 +155,7 @@ const MainPage = () => {
       <ImagWrapper>
         <MainImg src="/main1.png" />
         <MainBack />
-        <MainButton>Get Player NFT</MainButton>
+        <MainButton onClick={Toast}>Get Player NFT</MainButton>
       </ImagWrapper>
       <Section>
         <Section2Image src="/trophy.png" />
