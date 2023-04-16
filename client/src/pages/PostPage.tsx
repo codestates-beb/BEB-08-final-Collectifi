@@ -5,8 +5,17 @@ import axios from 'axios';
 import styled from 'styled-components';
 import {data} from '../data/data';
 import {WriteButton, WriteForm, WriteInput, WriteLabel, WriteTextarea} from './WritePage';
+import {PostsAttributes} from './CommunityPage';
+import {faThumbsUp, faThumbsDown} from '@fortawesome/free-regular-svg-icons';
+import {faCrow, faCrown} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+interface PostProps {
+  setCurrentPage: (value: number) => void;
+  setPosts: (value: PostsAttributes[]) => void;
+  posts: PostsAttributes[];
+}
 
-interface PostAttributes {
+interface Post {
   user_id: number;
   title: string;
   content: string;
@@ -15,6 +24,7 @@ interface PostAttributes {
   created_at: string;
   views: number;
   Post_comments: Post_comment[];
+  User?: User;
 }
 interface User {
   nickname: string;
@@ -31,32 +41,147 @@ interface Post_comment {
   User: User;
 }
 
-const Comment_likes = styled.span``;
+const PostLayout = styled.div`
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
-const PostPage = ({setCurrentPage}: {setCurrentPage: (value: number) => void}) => {
+const Title = styled.span`
+  width: 100%;
+  margin-top: 5px;
+  border-top: 1px solid #d4d4d4;
+  border-bottom: 1px solid #d4d4d4;
+  align-self: flex-start;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 15px;
+`;
+const WriterDate = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #d4d4d4;
+  padding: 4px;
+  margin-bottom: 15px;
+`;
+const WriteContent = styled.div`
+  margin-top: 10px;
+  margin-bottom: 30px;
+  line-height: 1.2;
+`;
+const Writer = styled.span`
+  padding: 10px;
+`;
+const DateS = styled.span`
+  display: flex;
+  padding: 10px;
+  gap: 30px;
+`;
+const PostForm = styled.form`
+  width: 100%;
+`;
+const PostLikeDiv = styled.div`
+  margin-bottom: 12px;
+`;
+const LikeCount = styled.span`
+  color: ${props => props.theme.mainColor};
+  margin-right: 5px;
+`;
+const DisLikeCount = styled.span`
+  margin-left: 5px;
+`;
+
+const IsOwner = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin: 10px;
+`;
+const OwnersBtn = styled.div`
+  /* background: #f1356d; */
+  color: black;
+  white-space: nowrap;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 1px solid #cacaca;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+  margin-right: 7px;
+  margin-left: 7px;
+`;
+
+// 댓글 컴포넌트
+const CommentContainer = styled.div`
+  width: 100%;
+  /* background: #dcdcdc; */
+  padding: 10px;
+`;
+const Comment = styled.div`
+  padding: 7px;
+  margin: 10px 10px 10px 10px;
+  border: 1px solid #b5b5b5;
+  border-radius: 10px;
+  /* background: green; */
+`;
+const CommentUser = styled.div`
+  padding: 5px;
+`;
+const CrownIcon = styled(FontAwesomeIcon)`
+  margin-left: 10px;
+  color: #e9e900;
+`;
+const CommentContent = styled.div`
+  padding: 5px;
+`;
+const LieksContainer = styled.div`
+  /* background: green; */
+  text-align: end;
+  margin-right: 30px;
+`;
+const Comment_likes = styled.span`
+  margin-right: 5px;
+`;
+
+const PostTextarea = styled.textarea`
+  width: 100%;
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  display: block;
+  resize: none;
+  height: 15vh;
+`;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+const Thumbs = styled.span`
+  cursor: pointer;
+  margin-right: 5px;
+`;
+const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
   const navigate = useNavigate();
   const {id} = useParams<{id: string}>();
-  const [post, setPost] = useState<PostAttributes | null>(null);
+  const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Post_comment[]>([]);
-  // const [addedCommnet, setAddedCommnet] = useState<Post_comment[]>([]);
-
-  // useEffect(() => {
-  //   console.log('post: ', post);
-  // }, [post]);
-
-  // 1. 전체 댓글을 불러 온다 post_get
-  // 2. 댓글을 추가로 작성한다 comment_post
-  // 3. DB는 추가 된 상태이므로 다시 post_get요청을 한다
-  // 4. 어떻게?
-
-  // 바로 가져와서 comments 스테이트에 추가하나
+  const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
+    // 포스트 디테일을 불러옴
     axios.get(`http://localhost:8000/community/${id}`, {withCredentials: true}).then(res => {
       setPost(res.data.data.post);
       setComments(res.data.data.comments);
-      // setComments(prev => [...prev, res.data.data.comments]);
-
+      setIsOwner(res.data.data.isOwner);
+      setLike(res.data.data.post.likes);
+      setdislike(res.data.data.post.dislikes);
+      setPostTitle(res.data.data.post.title);
+      setPostContent(res.data.data.post.content);
       console.log('res: ', res);
     });
 
@@ -65,8 +190,74 @@ const PostPage = ({setCurrentPage}: {setCurrentPage: (value: number) => void}) =
     //   setCurrentPage(Math.ceil(parseInt(id) / 20));
     // }
   }, [id]);
+  // 게시글 수정 관련
+  const [postTitle, setPostTitle] = useState('');
+  const [postContent, setPostContent] = useState('');
+  const handleEdit = () => {
+    axios
+      .get(`http://localhost:8000/community/${id}/edit`, {withCredentials: true})
+      .then(res => {
+        console.log('게시글 수정 요청: ', res);
+        navigate('/edit', {state: {title: postTitle, content: postContent, id: id}});
+      })
+      .catch(err => console.log('게시글 수정 err: ', err));
+  };
+  // 게시글 삭제 관련
+  const handleDelete = () => {
+    console.log('글을 삭제하시겠습니까?');
+    axios
+      .delete(`http://localhost:8000/community/${id}/delete`, {withCredentials: true})
+      .then(res => {
+        console.log('글삭제 요청 결과2: ', res);
+        // 글삭제 성공시 글목록 다시 불러오기
+        axios
+          .get('http://localhost:8000/community')
+          .then(response => {
+            setPosts(
+              [...response.data.data].map(post => {
+                return {
+                  ...post,
+                  created_at: new Date(post.created_at),
+                };
+              }),
+            );
+          })
+          .catch(error => {
+            console.error(error);
+          });
+
+        alert('글을 삭제하였습니다.');
+        navigate('/community', {replace: true});
+      })
+      .catch(err => {
+        console.log('글삭제 실패', err);
+      });
+  };
+
+  // 좋아요 관련
+  const [like, setLike] = useState(0);
+  const [dislike, setdislike] = useState(0);
+  const handleLikes = (data: string) => {
+    axios
+      .post(`http://localhost:8000/community/${id}/like`, {data}, {withCredentials: true})
+      .then(res => {
+        //ToDo 토스트메세지: 좋아요 or 싫어요
+        console.log('좋아요: ', res);
+        if (data == 'likes') {
+          setLike(prev => prev + 1);
+        } else if (data == 'dislikes') {
+          setdislike(prev => prev + 1);
+        }
+      })
+      .catch(err => {
+        console.log('좋아요를 이미 눌렀습니다');
+        alert('Recommendations are only available once a day.');
+      });
+  };
+
   // 댓글 기능 관련
   const [comment, setCommnet] = useState('');
+  //ToDo 최소 글자 수 제한
   const handleSubmit = (e: any) => {
     e.preventDefault();
     axios
@@ -81,59 +272,117 @@ const PostPage = ({setCurrentPage}: {setCurrentPage: (value: number) => void}) =
         // 댓글 입력창 공백으로
         setCommnet('');
         //todo 토스트 메세지로 작성 완료 알림
+      })
+      .catch(err => {
+        console.log('error: ', err);
       });
   };
 
   // 댓글 좋아요 기능 관련
-  const handleCommentLikes = (e: string) => {
-    alert(e);
+  const handleCommentLikes = (e: number, like: string) => {
+    console.log('라이크: ', like);
+    axios // localhost:8000/community/2/comment/3/like
+      .post(
+        `http://localhost:8000/community/${id}/comment/${e}/like`,
+        {data: like},
+        {withCredentials: true},
+      )
+      .then(res => {
+        //ToDo 토스트메세지: 좋아요 or 싫어요
+        console.log('좋아요: ', res);
+        if (res.data.data == 'likes') {
+          console.log('set likes: ', res.data.data);
+          setLike(prev => prev + 1);
+        } else if (res.data.data == 'dislikes') {
+          setdislike(prev => prev + 1);
+          console.log('set dislikes: ', res.data.data);
+        } else {
+          alert('Recommendations are only available once a day.');
+        }
+      })
+      .catch(err => {
+        console.log('좋아요를 이미 눌렀습니다');
+        alert('Recommendations are only available once a day. ' + err);
+      });
   };
 
   return (
-    <div>
+    <PostLayout>
       {post && (
         <>
-          <div>
-            번호: {id} 작성자: {post.user_id} 날짜: {post.created_at}
-          </div>
-          <span>제목: {post.title}</span> <span>조회수: {post.views}</span>
-          <div>내용: {post.content}</div>
-          <div>
-            {post.likes}
-            <span>Likes</span> <span>DisLikes</span>
-            {post.dislikes}
-          </div>
-          <Button onClick={() => navigate('/community')}>목록</Button>
-          <div>
+          <Title>{postTitle}</Title>
+
+          <WriterDate>
+            <Writer>Writer: {post.User?.nickname}</Writer>
+            <DateS>
+              <div>View: {post.views}</div>
+              <div> {post.created_at.split('T')[0]}</div>
+            </DateS>
+          </WriterDate>
+          <WriteContent>{postContent}</WriteContent>
+          <PostLikeDiv>
+            <LikeCount>{like}</LikeCount>
+            <WriteButton onClick={() => handleLikes('likes')}>
+              <FontAwesomeIcon icon={faThumbsUp} />
+            </WriteButton>
+            <WriteButton onClick={() => handleLikes('dislikes')}>
+              <FontAwesomeIcon icon={faThumbsDown} />
+            </WriteButton>
+            <DisLikeCount>{dislike}</DisLikeCount>
+          </PostLikeDiv>
+          {/* <Button onClick={() => navigate('/community')}>목록</Button> */}
+
+          {isOwner && (
+            <IsOwner>
+              <OwnersBtn onClick={() => handleEdit()}>Edit</OwnersBtn>
+              <OwnersBtn onClick={handleDelete}>Delete</OwnersBtn>
+            </IsOwner>
+          )}
+
+          <CommentContainer>
             {/* 댓글 뿌려주는 부분 */}
             {comments?.map(comment => (
-              <div key={comment.id}>
-                {comment.User.nickname}: {comment.content}{' '}
-                <Comment_likes onClick={() => handleCommentLikes('b')}>
-                  b: {comment.likes}
-                </Comment_likes>{' '}
-                <Comment_likes onClick={() => handleCommentLikes('q')}>
-                  q:{comment.dislikes}
-                </Comment_likes>
-              </div>
+              <Comment key={comment.id}>
+                <CommentUser>
+                  {comment.User.nickname}
+                  <CrownIcon icon={faCrown} />
+                </CommentUser>
+
+                <CommentContent>{comment.content}</CommentContent>
+
+                <LieksContainer>
+                  <Comment_likes onClick={() => handleCommentLikes(comment.id, 'likes')}>
+                    <Thumbs>
+                      <FontAwesomeIcon icon={faThumbsUp} />
+                    </Thumbs>
+                    {comment.likes}
+                  </Comment_likes>
+                  <Comment_likes onClick={() => handleCommentLikes(comment.id, 'dislikes')}>
+                    <Thumbs>
+                      <FontAwesomeIcon icon={faThumbsDown} />
+                    </Thumbs>
+                    {comment.dislikes}
+                  </Comment_likes>
+                </LieksContainer>
+              </Comment>
             ))}
-            {/* 눈속임 댓글 */}
-            {/* {addedCommnet.map((item, idx) => (
-              <div key={idx}></div>
-            ))} */}
-          </div>
+          </CommentContainer>
         </>
       )}
-      <WriteForm>
-        <WriteTextarea
+
+      {/* 댓글 작성 태그 */}
+      <PostForm>
+        <PostTextarea
+          maxLength={1000}
           required
           value={comment}
           onChange={e => setCommnet(e.target.value)}
-        ></WriteTextarea>
-
-        <WriteButton onClick={e => handleSubmit(e)}>Add Comment</WriteButton>
-      </WriteForm>
-    </div>
+        ></PostTextarea>
+        <ButtonContainer>
+          <WriteButton onClick={e => handleSubmit(e)}>Add Comment</WriteButton>
+        </ButtonContainer>
+      </PostForm>
+    </PostLayout>
   );
 };
 

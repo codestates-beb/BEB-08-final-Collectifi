@@ -2,11 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {NavLogo} from '../components/Header';
 import axios from 'axios';
-import {useNavigate} from 'react-router';
-
-interface Height {
-  height: number;
-}
+import {useLocation, useNavigate, useParams} from 'react-router';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -79,41 +75,59 @@ const WriteNav = styled.div`
   bottom: 0;
   z-index: 10;
 `;
-
 export const WriteButton = styled.button`
   background: #f1356d;
   color: #fff;
   white-space: nowrap;
   border: 0;
-  padding: 14px 30px;
-  border-radius: 12px;
+  padding: 14px 32px;
+  border-radius: 24px;
   outline: none;
   border: none;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 16px;
   font-weight: bold;
-  margin-right: 10px;
-  margin-left: 10px;
+  margin-right: 30px;
 `;
-const WritePage = () => {
+const EditPage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [id, setid] = useState('');
   const [author, setAuthor] = useState('mario');
   const [tag, setTag] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state.title && location.state.content) {
+      console.log('location.state.title: ', location.state.title);
+      console.log('location.state.content: ', location.state.content);
+      setTitle(location.state.title);
+      setContent(location.state.content);
+      setid(location.state.id);
+    }
+    console.log('location: ', location);
+  }, []);
 
   const handleSubmit = () => {
+    console.log('id 파라미터:', id);
     axios
-      .post('http://localhost:8000/community/post', {title, content}, {withCredentials: true})
+      .patch(
+        `http://localhost:8000/community/${id}/edit`,
+        {title, content},
+        {withCredentials: true},
+      )
       .then(res => {
-        console.log(res);
+        console.log('게시글 수정patch: ', res);
         navigate('/community');
         //ToDo 토스트메세지: You have successfully written
       })
       .catch(err => {
+        console.log('게시글 수정 err: ', err);
         alert('Please log in again.');
         navigate('/community');
       });
+    axios;
   };
 
   return (
@@ -122,11 +136,10 @@ const WritePage = () => {
         <WriteLogo to="/" style={{color: 'black'}} className="logo">
           Collectifi
         </WriteLogo>
-        <Writeh2>Add a New Post</Writeh2>
+        <Writeh2>Edit Post as.. </Writeh2>
         <WriteForm>
           <WriteLabel>title</WriteLabel>
           <WriteInput
-            maxLength={60}
             placeholder="제목을 입력하세요"
             type="text"
             required
@@ -154,10 +167,10 @@ const WritePage = () => {
         </WriteForm>
       </Wrapper>
       <WriteNav>
-        <WriteButton onClick={() => handleSubmit()}>Post</WriteButton>
+        <WriteButton onClick={() => handleSubmit()}>Edit</WriteButton>
       </WriteNav>
     </>
   );
 };
 
-export default WritePage;
+export default EditPage;

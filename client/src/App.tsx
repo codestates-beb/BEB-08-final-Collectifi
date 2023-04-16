@@ -40,6 +40,7 @@ function App() {
 
   const theme = {
     mainColor: 'rgb(253, 17, 92)',
+    mainColor2: '#e52e93',
     lineColor: 'rgb(203, 203, 203)',
   };
 

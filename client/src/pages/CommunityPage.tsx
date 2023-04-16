@@ -17,7 +17,7 @@ import Tab from '../components/UI/Tab';
 import {darken, lighten} from 'polished';
 
 TimeAgo.addDefaultLocale(en);
-interface PostsAttributes {
+export interface PostsAttributes {
   id: number;
   user_id: number;
   title: string;
@@ -27,7 +27,12 @@ interface PostsAttributes {
   created_at: Date;
   views: number;
   Post_comments: object[];
+  User?: User;
 }
+interface User {
+  nickname: string;
+}
+
 const CommunityLayout = styled.div`
   max-width: 70%;
   margin: 0 auto;
@@ -35,15 +40,15 @@ const CommunityLayout = styled.div`
     max-width: 93%;
   }
 `;
-const TabUl = styled.ul`
+export const TabUl = styled.ul`
   margin-bottom: 40px;
   border-bottom: solid 1px ${props => props.theme.lineColor || 'rgb(0, 0, 0)'};
 `;
-const TabLi = styled.li`
+export const TabLi = styled.li`
   display: inline-flex;
   margin-right: 40px;
 `;
-const TabButton = styled.button<{selected: boolean}>`
+export const TabButton = styled.button<{selected: boolean}>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -78,18 +83,21 @@ const TabButton = styled.button<{selected: boolean}>`
     );
   }}
 `;
+const PostButtonDiv = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px;
+`;
+
 const Community = () => {
   const navigate = useNavigate();
-  const boardSize = '0.3fr 3fr 1fr 1fr 1fr 1fr';
+  const boardSize = '0.3fr 3.5fr 1fr 1fr 0.5fr 0.5fr';
   const [posts, setPosts] = useState<PostsAttributes[]>([]);
   const [popularPosts, setPopularPosts] = useState<PostsAttributes[]>([]);
   const timeAgo = new TimeAgo('en-US');
 
   useEffect(() => {
-    console.log('posts: ', posts);
-  }, [posts]);
-
-  useEffect(() => {
+    // 모든 게시글을 불러옴
     axios
       .get('http://localhost:8000/community')
       .then(response => {
@@ -101,8 +109,6 @@ const Community = () => {
             };
           }),
         );
-
-        // console.log('main_get: ', response.data.data); // Do something with the response
       })
       .catch(error => {
         console.error(error);
@@ -175,7 +181,10 @@ const Community = () => {
   return (
     <CommunityLayout>
       <Routes>
-        <Route path=":id" element={<PostPage setCurrentPage={setCurrentPage} />} />
+        <Route
+          path=":id"
+          element={<PostPage setCurrentPage={setCurrentPage} setPosts={setPosts} posts={posts} />}
+        />
       </Routes>
 
       <TabUl>
@@ -198,8 +207,9 @@ const Community = () => {
           </TabButton>
         </TabLi>
       </TabUl>
-      <Button onClick={() => navigate('/write')}>글 작성</Button>
-
+      <PostButtonDiv>
+        <Button onClick={() => navigate('/write')}>Post</Button>
+      </PostButtonDiv>
       {/* <div>{tabs}</div> */}
       {tabs == 'General' && (
         <>
@@ -219,7 +229,7 @@ const Community = () => {
                 const listItem = [
                   item.id,
                   `${item.title} [${item.Post_comments.length.toString()}]`,
-                  item.user_id,
+                  item.User?.nickname,
                   // timeAgo.format(item.created_at),
                   // new Date().getMonth(),
                   // item.created_ats.getMonth(),

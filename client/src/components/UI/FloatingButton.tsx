@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 const Floating = styled.div`
   position: fixed;
-  bottom: 16px;
-  right: 16px;
+  bottom: 100px;
+  right: 32px;
   border: 0;
   border-radius: 50%;
   /* background: rgb(255, 192, 203); */
