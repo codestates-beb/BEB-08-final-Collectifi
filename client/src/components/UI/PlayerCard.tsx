@@ -3,20 +3,25 @@ import styled, { css } from 'styled-components';
 
 type Props = {
   imgSrc: string;
+  className?: string;
   cardWidth?: string;
   glow?: Glow;
 }
 
 export enum Glow {
-  orange = 'orange',
-  brown = 'brown',
-  black = 'black',
-  beige = 'beige'
+  orange = '243,146,0',
+  brown = '132,91,65',
+  black = '42,50,61',
+  beige = '248,252,248'
 }
 
 const PlayerCard: React.FC<Props> = (props) => {
   return (
-  <PlayerCardLayout className='player-card' glow={props.glow} cardWidth={props.cardWidth}>
+  <PlayerCardLayout 
+    className={`player-card ${props.className || ""}`} 
+    glow={props.glow} 
+    cardWidth={props.cardWidth}
+  >
     <div className='img-wrapper'>
       <img src={props.imgSrc} alt='playerCard'/>
     </div>
@@ -44,14 +49,6 @@ const PlayerCardLayout = styled.div<{glow?: Glow; cardWidth?: string;}>`
   ${props => {
     if(!props.glow) return;
 
-    const glowColors = {
-      orange: '243,146,0',
-      brown: '132,91,65',
-      black: '42,50,61',
-      beige: '248,252,248'
-    };
-    const selectedGlow = glowColors[props.glow];  
-
     return css`
     & .img-wrapper {
       animation: card-glow 3s infinite;
@@ -59,10 +56,10 @@ const PlayerCardLayout = styled.div<{glow?: Glow; cardWidth?: string;}>`
 
     @keyframes card-glow {
       0%, 100% {
-          filter: drop-shadow(1px -3px 15px rgba(${selectedGlow},0.2));
+          filter: drop-shadow(1px -3px 15px rgba(${props.glow},0.2));
       }
       50% {
-          filter: drop-shadow(1px -3px 15px rgba(${selectedGlow},0.8));
+          filter: drop-shadow(1px -3px 15px rgba(${props.glow},0.8));
       }
     }
     `
