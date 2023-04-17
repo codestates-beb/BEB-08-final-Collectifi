@@ -6,7 +6,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState, useRecoilCallback, u
 import { currDetailCardId, sellPrice, getSellCardByIdQuery, getSellApproveQuery, getSellRegiQuery, getBuyApproveQuery, getBuyCardQuery } from '../../modules/market/atom';
 import { userAddr, userAmount } from '../../modules/atom';
 
-import { sendTx } from '../../modules/wallet';
+import { sendTx, getTransactionCount } from '../../modules/wallet';
 import PlayerCard, { Glow } from '../UI/PlayerCard';
 import PageTitle from '../UI/PageTitle';
 import BoardList from '../UI/BoardList';
@@ -50,12 +50,13 @@ const CardDetail = () => {
     } 
     //approve 요청
     const approve = await snapshot.getPromise(getSellApproveQuery);
-    const approveResult = await sendTx(userAddress, approve.erc721ca, approve.approve);
+    const nonce = await getTransactionCount(userAddress);
+    const approveResult = await sendTx(nonce, userAddress, approve.erc721ca, approve.approve);
     //const approveResult = await sendTx('0xc777aD18732279642E0f806f1aaBA232DF18d345', approve.erc721ca, approve.approve);
     if(!approveResult) { 
-      openModal("판매등록 실패", "Approve 요청에 실패 했어요.");
-      return;
-    }
+     openModal("판매등록 실패", "Approve 요청에 실패 했어요.");
+     return;
+   }
     //판매등록 요청    
     const sellRegi = await snapshot.getPromise(getSellRegiQuery);
     if(!sellRegi) {
@@ -77,7 +78,8 @@ const CardDetail = () => {
     }
     //approve 요청
     const approve = await snapshot.getPromise(getBuyApproveQuery(priceAsNumber));
-    const approveResult = await sendTx(userAddress, approve.erc20ca, approve.approve);
+    const nonce = await getTransactionCount(userAddress);
+    const approveResult = await sendTx(nonce, userAddress, approve.erc20ca, approve.approve);
     //const approveResult = await sendTx('0xc777aD18732279642E0f806f1aaBA232DF18d345', approve.erc20ca, approve.approve);
     //console.log(approve, userTokenAmount);
     if(!approveResult) { 

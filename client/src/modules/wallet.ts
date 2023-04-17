@@ -1,4 +1,4 @@
-export const sendTx = async (from: string, to: string, data: string)=> {  
+export const sendTx = async (nonce: string, from: string, to: string, data: string)=> {  
   if(!window.ethereum) return null;
   //await window.ethereum.request({ method: 'eth_requestAccounts' });
   try {
@@ -7,7 +7,8 @@ export const sendTx = async (from: string, to: string, data: string)=> {
       params: [{
         from: from,
         to: to,      
-        data: data
+        data: data,
+        nonce: nonce
       }],
     });    
     return result;
@@ -15,4 +16,18 @@ export const sendTx = async (from: string, to: string, data: string)=> {
     console.log("sendTx err:", e);
     return null;
   }  
+}
+
+export const getTransactionCount = async (address: string) => {
+  if (!window.ethereum) return null;
+  try {
+    const result = await window.ethereum.request({
+      method: 'eth_getTransactionCount',
+      params: [address, 'latest'],
+    });
+    return result;
+  } catch (e) {
+    console.log("getTransactionCount err:", e);
+    return null;
+  }
 }

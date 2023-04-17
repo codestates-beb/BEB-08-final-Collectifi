@@ -47,7 +47,7 @@ const Market = () => {
 export default Market;
 
 const MarketLayout = styled.div`
-  padding: 20px 20px 10px;
+  padding: 40px 20px 30px;
   max-width: 1140px;
   margin: 0 auto;
 `
