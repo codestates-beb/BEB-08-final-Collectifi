@@ -1,6 +1,9 @@
-export const sendTx = async (nonce: string, from: string, to: string, data: string)=> {  
+export const sendTx = async (from: string, to: string, data: string)=> {  
   if(!window.ethereum) return null;
   //await window.ethereum.request({ method: 'eth_requestAccounts' });
+  const nonce = await getTransactionCount(from);
+  if(!nonce) return null;
+  
   try {
     const result = await window.ethereum.request({
       method: 'eth_sendTransaction',

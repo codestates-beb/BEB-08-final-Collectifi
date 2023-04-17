@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
 import { useRecoilState, useRecoilValue, useSetRecoilState, useRecoilCallback, useRecoilRefresher_UNSTABLE } from 'recoil';
-import { currDetailCardId, sellPrice, getSellCardByIdQuery, getSellApproveQuery, getSellRegiQuery, getBuyApproveQuery, getBuyCardQuery } from '../../modules/market/atom';
+import { currDetailCardId, sellPrice, cardByIdQuery, txByIdQuery, getSellApproveQuery, getSellRegiQuery, getBuyApproveQuery, buyCardQuery } from '../../modules/market/atom';
 import { userAddr, userAmount } from '../../modules/atom';
+import { tx } from '../../modules/market/type';
 
 import { sendTx, getTransactionCount } from '../../modules/wallet';
 import PlayerCard, { Glow } from '../UI/PlayerCard';
@@ -18,12 +19,15 @@ import Tab from '../UI/Tab';
 import ModalAlert from '../UI/ModalAlert';
 import Input from '../UI/Input';
 
-const CardDetail = () => {
+const CardDetail = () => { 
   const { id } = useParams();
+  if(!id) return <></>;
+
   const priceInputRef = useRef<HTMLInputElement>(null);
   //refresh
   const sellRefresh = useRecoilRefresher_UNSTABLE(getSellRegiQuery); 
-  const cardInfoRefresh = useRecoilRefresher_UNSTABLE(getSellCardByIdQuery);
+  const cardInfoRefresh = useRecoilRefresher_UNSTABLE(cardByIdQuery(parseInt(id)));
+  const txListRefresh = useRecoilRefresher_UNSTABLE(txByIdQuery(parseInt(id)));
   //modal 변수
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -33,9 +37,11 @@ const CardDetail = () => {
   const [userTokenAmount, setUserTokenAmount] = useRecoilState(userAmount); //user 보유 토큰
   const setCardId = useSetRecoilState(currDetailCardId); //토큰 id 
   //const [CardId, setCardId] = useRecoilState(currDetailCardId); //토큰 id 
-  const setInputSellPrice = useSetRecoilState(sellPrice); //구매자가 입력한 가격  
-  const cardInfo = useRecoilValue(getSellCardByIdQuery);   
-
+  const setInputSellPrice = useSetRecoilState(sellPrice); //구매자가 입력한 가격
+  const txList = useRecoilValue(txByIdQuery(parseInt(id))).data.data;
+  const cardById = useRecoilValue(cardByIdQuery(parseInt(id))).data.data; 
+  const cardInfo = cardById.nft;
+  
   const handleSellClick = useRecoilCallback(({ snapshot }) => async () => {
     //판매가 유효성 검사
     if(!priceInputRef.current) return;
@@ -50,8 +56,7 @@ const CardDetail = () => {
     } 
     //approve 요청
     const approve = await snapshot.getPromise(getSellApproveQuery);
-    const nonce = await getTransactionCount(userAddress);
-    const approveResult = await sendTx(nonce, userAddress, approve.erc721ca, approve.approve);
+    const approveResult = await sendTx(userAddress, approve.erc721ca, approve.approve);
     //const approveResult = await sendTx('0xc777aD18732279642E0f806f1aaBA232DF18d345', approve.erc721ca, approve.approve);
     if(!approveResult) { 
      openModal("판매등록 실패", "Approve 요청에 실패 했어요.");
@@ -62,11 +67,16 @@ const CardDetail = () => {
     if(!sellRegi) {
       openModal("판매등록 실패", "판매등록에 실패 했어요.");
       return;
-    }
-    openModal("판매등록 성공", "판매등록에 성공 했어요.");    
+    }    
+    cardInfoRefresh(); 
+    openModal("판매등록 성공", "판매등록에 성공 했어요.");
   });
 
   const handleBuyClick = useRecoilCallback(({ snapshot }) => async () => {
+    if(userAddress === "") {
+      openModal("구매 실패", "로그인이 필요해요.");
+      return;
+    }
     if(!cardInfo.selling_price) return;
     const priceAsNumber = Number(cardInfo.selling_price);
     if (isNaN(priceAsNumber)) {
@@ -74,12 +84,11 @@ const CardDetail = () => {
       return;
     } else if ( (Number(userTokenAmount) < priceAsNumber)) {
       openModal("구매 실패", "판매가격 보다 높은금액이 필요해요.");
-      return;  
+      return;
     }
     //approve 요청
     const approve = await snapshot.getPromise(getBuyApproveQuery(priceAsNumber));
-    const nonce = await getTransactionCount(userAddress);
-    const approveResult = await sendTx(nonce, userAddress, approve.erc20ca, approve.approve);
+    const approveResult = await sendTx(userAddress, approve.erc20ca, approve.approve);
     //const approveResult = await sendTx('0xc777aD18732279642E0f806f1aaBA232DF18d345', approve.erc20ca, approve.approve);
     //console.log(approve, userTokenAmount);
     if(!approveResult) { 
@@ -87,12 +96,14 @@ const CardDetail = () => {
       return;
     }
     //구매 요청    
-    const buCardResult = await snapshot.getPromise(getBuyCardQuery(priceAsNumber));
+    const buCardResult = await snapshot.getPromise(buyCardQuery({price: priceAsNumber, ownerId: cardInfo.user_id}));
     if(!buCardResult) {
       openModal("구매 실패", "구매에 실패 했어요.");
       return;
     }
     setUserTokenAmount(prev => prev - priceAsNumber);
+    cardInfoRefresh();
+    txListRefresh();
     openModal("구매 성공", "구매에 성공 했어요.");  
   });
 
@@ -117,18 +128,20 @@ const CardDetail = () => {
 
   useEffect(() => {
     if(id) setCardId(parseInt(id));
-    cardInfoRefresh();
+    //cardInfoRefresh();
+    //txListRefresh();
   }, [id]);
 
-  console.log(cardInfo);
-  if(!cardInfo) return <></>;
-
-  const isOwner = false;
+  const isOwner = cardById.isOwner;
+  //const isOwner = false;
   const cardWidth = "350px";
-  const infoTitle = ["TEAM", "SEASON", "PRICE"];
-  const infoData = [cardInfo.team, cardInfo.season, cardInfo.isSell && cardInfo.selling_price]; 
-  
-
+  const infoTitle = ["TEAM", "SEASON", "OWNER", "PRICE"];
+  const infoData = [cardInfo.team, 
+    cardInfo.season, 
+    cardInfo.user_id,
+    cardInfo.isSell && cardInfo.selling_price
+  ];   
+  console.log(cardInfo, txList, isOwner);
   return (<CDLayout width={cardWidth}>
     {isOpen && (
       <ModalAlert
@@ -157,12 +170,13 @@ const CardDetail = () => {
               listItem={listItem} 
               gridTemplateColumns='1fr 9fr'
               isLast={arr.length === i + 1}
+              linkTo={(infoTitle[i] === 'OWNER') ? `/user/${el}`: undefined}
               />)
           })}
         </BoardList>
         <div className='btn-wrapper'>
           {(cardInfo.isSell && !isOwner) && <CDButton onClick={handleBuyClick}>BUY</CDButton>}          
-          {(!cardInfo.isSell && isOwner) && <div>
+          {(!cardInfo.isSell && isOwner && userAddress !== "") && <div>
             <label htmlFor="price-input" />
             <Input id="price-input" placeholder="INPUT SELL PRICE" ref={priceInputRef} onChange={handleInputChange}/>
             <CDButton onClick={handleSellClick}>SELL</CDButton>
@@ -174,15 +188,17 @@ const CardDetail = () => {
       <div>
         <Tab title={["TX HISTORY", "OFFER"]}>
           <BoardList 
-            title={<BoardTitleItem title={["HISTORY1", "HISTORY2", "HISTORY3"]} 
-            gridTemplateColumns='1fr 2fr 1fr'/>
+            title={<BoardTitleItem title={["FROM", "TO", "PRICE", "DATE"]} 
+            gridTemplateColumns='2fr 2fr 1fr 1fr'/>
           }
           >
-            {new Array(4).fill(0).map((el, i) => {
-              const listItem = ["test1", "test2", <div key={i}>test3</div>];
+            {txList.map((el: tx, i: number) => {
+              const date = new Date(el.created_at);
+              const formattedDate = date.toLocaleDateString();
+              const listItem = [el.from_address, el.to_address, el.price, formattedDate];
               return (<BoardListItem key={i} 
                 listItem={listItem} 
-                gridTemplateColumns='1fr 2fr 1fr'/>)
+                gridTemplateColumns='2fr 2fr 1fr 1fr'/>)
             })}
           </BoardList>
           <BoardList 

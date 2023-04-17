@@ -3,6 +3,7 @@ import { SERVERURL, ISCONNECT } from "../atom";
 import { sellCard  as sellCardData } from "../../data/market";
 
 export const sellCard = async () => {
+  console.log("sellcard")
   if(!ISCONNECT) return sellCardData;
   const options = {
     method: 'GET',
@@ -22,6 +23,17 @@ export const cardById = async (id: number) => {
   const options = {
     method: 'GET',
     url: `${SERVERURL}/market/nft/${id}`,
+    headers: {accept: 'application/json'},
+    withCredentials: true,    
+  };
+
+  return await axios(options);
+}
+
+export const txById = async (id: number) => {
+  const options = {
+    method: 'GET',
+    url: `${SERVERURL}/market/nft/record/${id}`,
     headers: {accept: 'application/json'},
     withCredentials: true,    
   };
