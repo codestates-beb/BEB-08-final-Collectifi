@@ -40,15 +40,15 @@ const CommunityLayout = styled.div`
     max-width: 93%;
   }
 `;
-export const TabUl = styled.ul`
+const TabUl = styled.ul`
   margin-bottom: 40px;
   border-bottom: solid 1px ${props => props.theme.lineColor || 'rgb(0, 0, 0)'};
 `;
-export const TabLi = styled.li`
+const TabLi = styled.li`
   display: inline-flex;
   margin-right: 40px;
 `;
-export const TabButton = styled.button<{selected: boolean}>`
+const TabButton = styled.button<{selected: boolean}>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -180,7 +180,7 @@ const Community = () => {
 
   // 필터 관련
   const [filterText, setFilterText] = useState('latest');
-
+  let filteredPosts;
   const filterSelected = (e: any) => {
     setFilterText(e.target.value);
   };
@@ -226,7 +226,7 @@ const Community = () => {
             <option value="likes">Likes</option>
             <option value="oldest">Oldest</option>
           </select>
-          {filterText}
+
           <BoardList
             title={
               <BoardTitleItem
