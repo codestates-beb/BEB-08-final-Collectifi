@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRecoilValue, useSetRecoilState, useRecoilRefresher_UNSTABLE } from 'recoil';
 import { currentUserId, getUserQuery, getCardListQuery, getPostListQuery } from '../../modules/mypage/atom';
-import { userNickname } from '../../modules/atom';
+import { userNickname, userAmount, userId } from '../../modules/atom';
 
 import { nft, post } from '../../modules/type';
 import PageTitle from '../UI/PageTitle';
@@ -26,13 +26,18 @@ const MyPage = () => {
   const postRefresh = useRecoilRefresher_UNSTABLE(getPostListQuery);
   //recoil
   const nickname = useRecoilValue(userNickname);
+  //const usrId = useRecoilValue(userId);
   const setCurrId = useSetRecoilState(currentUserId);
+  const setAmount = useSetRecoilState(userAmount);
   const userInfo = useRecoilValue(getUserQuery);
   const cardList = useRecoilValue(getCardListQuery);
   const postList = useRecoilValue(getPostListQuery);  
 
   useEffect(() => {
-    if(id) setCurrId(parseInt(id));
+    if(id) 
+      setCurrId(parseInt(id));      
+    if(userInfo && userInfo.user.token_amount) 
+      setAmount(userInfo.user.token_amount);
     userRefresh();
     cardRefresh();
     postRefresh();
@@ -40,7 +45,7 @@ const MyPage = () => {
 
   if(!userInfo || !cardList || !postList) return <></>
   console.log(userInfo, cardList, postList);
-  const cardWidth = '250px';  
+  const cardWidth = '250px'; 
 
   const infoTitle = ["ADDRESS", "TOKEN AMOUNT", "NICKNAME"];
   const infoData = [userInfo.user.address.slice(0, 10), 
@@ -50,7 +55,7 @@ const MyPage = () => {
 
   return (
     <MyPageLayout>      
-      <PageTitle title={userInfo.isOwner ? 'MY Page' : `${userInfo.user.nickname}'s PAGE`} />
+      <PageTitle title={userInfo.isOwner ? 'MY PAGE' : `${userInfo.user.nickname}'s PAGE`} />
       <div className='top'>
         <BoardList>
           {infoData.map((el, i, arr) => {
@@ -71,7 +76,7 @@ const MyPage = () => {
         userInfo.isOwner ? 'MY POST' : 'POST',
         userInfo.isOwner && 'GET OFFER']}
       >
-        <CardList itemWidth={cardWidth}>
+        <CardList itemWidth={cardWidth} key={0}>
           {cardList.map((el: nft, i: number) => {
             return (
               <CardListItem
@@ -89,6 +94,7 @@ const MyPage = () => {
           })}
         </CardList>
         <BoardList
+          key={1}
           title={
             <BoardTitleItem
               title={['NO', 'TITLE', 'DATE', 'VIEW', 'LIKE']}
@@ -111,6 +117,7 @@ const MyPage = () => {
           })}
         </BoardList>
         {userInfo.isOwner && <BoardList
+          key={2}
           title={
             <BoardTitleItem
               title={['OFFER1', 'OFFER2', 'OFFER3', 'OFFER4', 'OFFER5']}
@@ -138,7 +145,7 @@ const MyPage = () => {
 export default MyPage;
 
 const MyPageLayout = styled.div`
-  padding: 20px 20px 10px;
+  padding: 40px 20px 30px;
   max-width: 1140px;
   margin: 0 auto;
 

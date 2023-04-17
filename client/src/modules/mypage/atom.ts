@@ -11,6 +11,7 @@ export const userInfoQuery = selectorFamily({
   key: 'UserInfoQuery',
   get: (id: number) => async ({get}) => {
     get(userId);
+    //get(userNickname);
     const response = await userInfo(id);
     return response;
   },
@@ -35,7 +36,7 @@ export const getUserInfoQuery = selector({
 });
 
 export const getUserQuery = selector({
-  key: 'GtUserQuery',
+  key: 'GetUserQuery',
   get: ({get}) => {
     const userInfo = get(getUserInfoQuery)
     if(!userInfo) return null;
