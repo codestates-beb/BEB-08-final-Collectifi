@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { postListQuery, cardListQuery } from '../../modules/mypage/atom';
+import { useRecoilState, useRecoilValue, useSetRecoilState, useRecoilRefresher_UNSTABLE } from 'recoil';
+import { currentUserId, getUserQuery, getCardListQuery, getPostListQuery } from '../../modules/mypage/atom';
+import { userNickname, userAmount, userId } from '../../modules/atom';
 
 import { nft, post } from '../../modules/type';
 import PageTitle from '../UI/PageTitle';
@@ -12,23 +14,74 @@ import CardListItem from '../market/CardListItem';
 import BoardList from '../UI/BoardList';
 import BoardTitleItem from '../UI/BoardTitleItem';
 import BoardListItem from '../UI/BoardListItem';
+import BoardListItemInfo from '../UI/BoardListItemInfo';
+import EditInfo from './EditInfo';
+
 
 const MyPage = () => {
-  const cardList = useRecoilValue(cardListQuery);
-  const postList = useRecoilValue(postListQuery);
-  console.log(cardList, postList);
-  const cardWidth = '250px';  
+  const { id } = useParams();
+  //refresh
+  const userRefresh = useRecoilRefresher_UNSTABLE(getUserQuery); 
+  const cardRefresh = useRecoilRefresher_UNSTABLE(getCardListQuery);
+  const postRefresh = useRecoilRefresher_UNSTABLE(getPostListQuery);
+  //recoil
+  const nickname = useRecoilValue(userNickname);
+  //const usrId = useRecoilValue(userId);
+  const setCurrId = useSetRecoilState(currentUserId);
+  const [amount, setAmount] = useRecoilState(userAmount);
+  const userInfo = useRecoilValue(getUserQuery);
+  const cardList = useRecoilValue(getCardListQuery);
+  const postList = useRecoilValue(getPostListQuery);  
+
+  useEffect(() => {
+    if(id) 
+      setCurrId(parseInt(id));      
+    if(userInfo && userInfo.user.token_amount) 
+      setAmount(userInfo.user.token_amount);
+    userRefresh();
+    cardRefresh();
+    postRefresh();
+  }, [id]);
+
+  console.log(userInfo, cardList, postList);
+  if(!userInfo || !cardList || !postList) return <></>  
+  const cardWidth = '250px'; 
+
+  const infoTitle = ["ADDRESS", "TOKEN AMOUNT", "NICKNAME"];
+  const infoData = [userInfo.user.address.slice(0, 10), 
+    userInfo.isOwner ? amount :userInfo.user.token_amount, 
+    userInfo.isOwner ? nickname : userInfo.user.nickname,
+  ];
 
   return (
-    <MyPageLayout>
-      <PageTitle title="MY PAGE" />
-      <Tab title={['MY CARD', 'MY POST', 'GET OFFER']}>
-        <CardList itemWidth={cardWidth}>
+    <MyPageLayout>      
+      <PageTitle title={userInfo.isOwner ? 'MY PAGE' : `${userInfo.user.nickname}'s PAGE`} />
+      <div className='top'>
+        <BoardList>
+          {infoData.map((el, i, arr) => {
+            if(!el) return <></>;
+            const listItem = [infoTitle[i], el];
+            return (<BoardListItemInfo key={i} 
+              listItem={listItem} 
+              gridTemplateColumns='1fr 1fr'
+              isLast={arr.length === i + 1}
+              />)
+          })}
+        </BoardList>
+        {userInfo.isOwner && <div className='edit-wrap'>
+          <EditInfo />
+        </div>}
+      </div>      
+      <Tab title={[userInfo.isOwner ? 'MY CARD' : 'CARD',
+        userInfo.isOwner ? 'MY POST' : 'POST',
+        userInfo.isOwner && 'GET OFFER']}
+      >
+        <CardList itemWidth={cardWidth} key={0}>
           {cardList.map((el: nft, i: number) => {
             return (
               <CardListItem
                 key={i}
-                info={el.isSell ? 'FOR SAIL':undefined}
+                info={el.isSell ? 'FOR SAIL': undefined}
                 linkTo={`/market/${el.token_id}`} 
               >
                 <PlayerCard
@@ -41,6 +94,7 @@ const MyPage = () => {
           })}
         </CardList>
         <BoardList
+          key={1}
           title={
             <BoardTitleItem
               title={['NO', 'TITLE', 'DATE', 'VIEW', 'LIKE']}
@@ -62,7 +116,8 @@ const MyPage = () => {
             );
           })}
         </BoardList>
-        <BoardList
+        {userInfo.isOwner && <BoardList
+          key={2}
           title={
             <BoardTitleItem
               title={['OFFER1', 'OFFER2', 'OFFER3', 'OFFER4', 'OFFER5']}
@@ -81,7 +136,7 @@ const MyPage = () => {
               />
             );
           })}
-        </BoardList>
+        </BoardList>}
       </Tab>
     </MyPageLayout>
   );
@@ -90,7 +145,20 @@ const MyPage = () => {
 export default MyPage;
 
 const MyPageLayout = styled.div`
-  padding: 0 20px;
+  padding: 40px 20px 30px;
   max-width: 1140px;
   margin: 0 auto;
+
+  & .top {
+    margin-bottom: 40px;
+    //display: grid;
+    //grid-template-columns: minmax(auto, 400px) auto;
+    max-width: 400px;    
+  }
+
+  // @media only screen and (max-width:560px) {
+  //   & .top { 
+  //     grid-template-columns: auto;
+  //   }    
+  // }
 `;

@@ -52,7 +52,7 @@ export const login_post = async (req: MyRequest, res: Response, next: NextFuncti
     // 3. session에 해당 user 정보 저장
     req.session.loggedIn = true;
     req.session.user = exists;
-    console.log('세션', req.session.user?.id);
+    console.log('세션', req.session.user?.id);  
     return sendResponse(res, 200, '로그인 성공!', exists);
   } catch (e) {
     console.log(e);
@@ -68,6 +68,24 @@ export const logout_post = async (req: MyRequest, res: Response, next: NextFunct
     sendResponse(res, 200, '로그아웃 성공');
   } catch (e) {
     sendResponse(res, 400, '로그아웃 실패');
+    console.log(e);
+  }
+};
+
+//로그인 확인
+export const checklogin_get = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    if(!req.session.user) 
+      throw new Error(`not login`);
+    const id = req.session.user.id;
+    const result = await db.User.findOne({
+      where: {
+        id,
+      },
+    });      
+    sendResponse(res, 200, '로그인 상태', result);
+  } catch (e) {
+    sendResponse(res, 400, '로그인 상태X');
     console.log(e);
   }
 };
