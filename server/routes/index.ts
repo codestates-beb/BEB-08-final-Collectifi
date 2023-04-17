@@ -9,6 +9,7 @@ import community from './community.route';
 import drawing from './drawing.routes';
 import upgrade from './upgrade.route';
 import game from './game.route';
+import donation from './donation.route';
 
 router.use('/', main);
 router.use('/user', user);
@@ -17,5 +18,6 @@ router.use('/drawing', drawing);
 router.use('/community', community);
 router.use('/upgrade', upgrade);
 router.use('/game', game);
+router.use('/donation', donation);
 
 export default router;

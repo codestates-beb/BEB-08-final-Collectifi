@@ -18,6 +18,7 @@ import SliderTest from './pages/SliderTest';
 import Event from './pages/Event';
 import EditPage from './pages/EditPage';
 import SliderTest2 from './pages/SliderTest2';
+import Donation from './pages/Donation';
 
 const Router: React.FC<{toggle: () => void}> = props => {
   return (
@@ -33,6 +34,7 @@ const Router: React.FC<{toggle: () => void}> = props => {
         <Route path="/win" element={<WinPage />} />
         <Route path="/community/*" element={<Community />} />
         <Route path="/event/*" element={<Event />} />
+        <Route path="/donation/*" element={<Donation />} />
       </Route>
       <Route path="/write" element={<WritePage />} />
       <Route path="/edit" element={<EditPage />} />
