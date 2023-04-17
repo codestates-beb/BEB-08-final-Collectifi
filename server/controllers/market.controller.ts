@@ -13,12 +13,48 @@ export const market_get = async (req: Request, res: Response, next: NextFunction
   try {
     const nfts = await db.Nft.findAll({
       where: {isSell: true},
-      include: {
-        model: db.User,
-        attributes: ['nickname'],
-      },
+      include: [
+        {
+          model: db.User,
+          attributes: ['nickname'],
+        },
+      ],
     });
     res.status(200).send({message: 'nft 목록 불러오기 성공', data: nfts});
+  } catch (e) {
+    res.status(400).send({message: 'nft 목록 불러오기 실패'});
+
+    console.log(e);
+  }
+};
+
+export const market_nft_get = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    const token_id = Number(req.params.id);
+    const userAddress = req.session.user?.address;
+    let isOwner: boolean;
+    console.log('=====userAddress=====', userAddress);
+    const nft = await db.Nft.findOne({
+      where: {token_id},
+    });
+    const userGetNft = await db.User.findOne({
+      where: {id: nft.user_id},
+    });
+    String(userAddress) == String(userGetNft.address) ? (isOwner = true) : (isOwner = false);
+    return res.status(200).send({message: '성공', data: {nft: nft, isOwner}});
+  } catch (e) {
+    console.log('ERROR:: ', e);
+    res.status(400).send({message: '실패했습니다.'});
+  }
+};
+
+export const market_nft_record_get = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+    const nftRecords = await db.Nft_record.findAll({
+      where: {token_id: id},
+    });
+    res.status(200).send({message: 'nft 목록 불러오기 성공', data: nftRecords});
   } catch (e) {
     res.status(400).send({message: 'nft 목록 불러오기 실패'});
 
@@ -42,25 +78,14 @@ export const market_sell_get = async (req: MyRequest, res: Response, next: NextF
   }
 };
 
-export const market_nft_get = async (req: MyRequest, res: Response, next: NextFunction) => {
-  try {
-    const token_id = Number(req.params.id);
-    const nft = await db.Nft.findOne({
-      where: {token_id},
-    });
-    return res.status(200).send({message: '성공', data: {nft}});
-  } catch (e) {
-    console.log('ERROR:: ', e);
-    res.status(400).send({message: '실패했습니다.'});
-  }
-};
-
 //보유하고 있는 NFT 판매 상태로 만들기(판매 등록)
 export const market_sell_post = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     const {selling_price, token_id} = req.body;
     const fromAddress = req.session.user?.address;
     const nftOwnerAddress = await erc721Contract.methods.ownerOf(token_id).call();
+    console.log('======nftOwnerAddress=======', nftOwnerAddress);
+    console.log('=======fromAddress=======', fromAddress);
 
     //판매 등록을 할때 소유자가 판매 금액을 작성하면 contract NFT 정보들 중 price가 업데이트
     if (nftOwnerAddress == fromAddress) {
@@ -73,6 +98,7 @@ export const market_sell_post = async (req: MyRequest, res: Response, next: Next
           where: {token_id: token_id},
         },
       );
+      console.log('========nftModify=======', nftModify);
     }
 
     res.status(200).send({message: '판매 등록 성공했습니다'});
@@ -173,6 +199,13 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
           where: {
             id: toUserId,
           },
+        });
+        //nft_record에 거래 기록을 저장
+        const nftRecord = await db.Nft_record.create({
+          token_id,
+          fromAddress,
+          toAddress,
+          price: selling_price,
         });
         const sellerModify = await seller.increment('token_amount', {by: selling_price});
         const buyerModify = await buyer.decrement('token_amount', {by: selling_price});
