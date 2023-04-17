@@ -180,6 +180,13 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
             id: toUserId,
           },
         });
+        //nft_record에 거래 기록을 저장
+        const nftRecord = await db.Nft_record.create({
+          token_id,
+          fromAddress,
+          toAddress,
+          price: selling_price,
+        });
         const sellerModify = await seller.increment('token_amount', {by: selling_price});
         const buyerModify = await buyer.decrement('token_amount', {by: selling_price});
         return res.status(200).send({message: '구매에 성공했습니다'});

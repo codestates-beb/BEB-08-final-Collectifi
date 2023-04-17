@@ -3,9 +3,9 @@ import {Model, DataTypes, Sequelize} from 'sequelize';
 interface NftRecordAttributes {
   token_id: number;
   nft_id: number;
-  form_address: string;
+  from_address: string;
   to_address: string;
-  selling_price: number;
+  price: number;
   created_at: Date;
 }
 
@@ -14,7 +14,7 @@ class Nft_record extends Model<NftRecordAttributes> {
   public nft_id!: number;
   public from_address!: string;
   public to_address!: string;
-  public selling_price!: number;
+  public price!: number;
   public created_at!: Date;
 
   public static initModel(sequelize: Sequelize) {
@@ -28,7 +28,7 @@ class Nft_record extends Model<NftRecordAttributes> {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
-        form_address: {
+        from_address: {
           type: DataTypes.STRING(255),
           allowNull: false,
         },
@@ -36,7 +36,7 @@ class Nft_record extends Model<NftRecordAttributes> {
           type: DataTypes.STRING(255),
           allowNull: false,
         },
-        selling_price: {
+        price: {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
