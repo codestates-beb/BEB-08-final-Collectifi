@@ -53,12 +53,10 @@ const ItemLink = styled(Link)`
 const Dropdown = ({setDropdown, submenu}: DropdownProps) => {
   return (
     <DropdownMenu onClick={() => setDropdown('')}>
-      {submenu?.map(item => (
-        <>
-          <Item>
-            <ItemLink to={item.link}>{item.name}</ItemLink>
-          </Item>
-        </>
+      {submenu?.map((item, idx) => (
+        <Item key={idx}>
+          <ItemLink to={item.link}>{item.name}</ItemLink>
+        </Item>
       ))}
     </DropdownMenu>
   );

@@ -7,6 +7,8 @@ import Router from './Router';
 import ScrollReset from './components/ScrollReset';
 import GlobalStyle from './Styles';
 import Init from './components/Init';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,6 +59,18 @@ function App() {
           <Sidebar toggle={toggle} isOpen={isOpen} />
         </BrowserRouter>
       </ThemeProvider>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </RecoilRoot>
   );
 }

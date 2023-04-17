@@ -17,6 +17,7 @@ import MyInfo from './MyInfo';
 import { darken } from 'polished';
 
 
+import {toast} from 'react-toastify';
 declare global {
   interface Window {
     ethereum?: {
@@ -70,11 +71,21 @@ const NavbarContainer = styled.div`
     grid-template-columns: 1fr 15fr 1fr;
   }
 `;
-const LogImg = styled.div`
-  background: url('/logo/logo2.png');
+
+const Logo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const LogoImgDiv = styled.div`
+  object-fit: contain;
+  border: none;
+  border-radius: 10px;
+  background-image: url('/logo/2.png');
   background-size: contain;
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
 `;
 
 export const NavLogo = styled(Link)`
@@ -257,11 +268,13 @@ const Header = ({toggle}: PageLayoutProps) => {
             set(userId, res.data.data.id);
             set(userNickname, res.data.data.nickname);
             set(userAmount, res.data.data.token_amount);  
+            toast.success('logged in successfully! 🎉');
           });
         // setIsLoggedIn(true);
         // localStorage.setItem('isLoggedIn', res[0]);
       })
       .catch(e => console.log(e));
+      toast.error('logged in failed');
   });
 
   const logout = useRecoilCallback(({ snapshot, set }) => async () => {
@@ -281,9 +294,10 @@ const Header = ({toggle}: PageLayoutProps) => {
     <>
       <Nav variants={navVariants} animate={headerAnimation} initial={'top'}>
         <NavbarContainer>
-          {/* <LogImg src="/logo/logo4.png" /> */}
-          {/* <LogImg /> */}
-          <NavLogo to="/">Collectifi</NavLogo>
+          <Logo>
+            <LogoImgDiv />
+            <NavLogo to="/">Collectifi</NavLogo>
+          </Logo>
           <MobileIcon onClick={toggle}>
             <FaBars />
           </MobileIcon>
