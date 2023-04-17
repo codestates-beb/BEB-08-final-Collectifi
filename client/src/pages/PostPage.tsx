@@ -47,7 +47,7 @@ interface Post_comment_likeds {
 }
 
 const PostLayout = styled.div`
-  margin-top: 15px;
+  margin-top: 20px;
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
@@ -199,8 +199,7 @@ const CommentInput = styled.textarea`
   height: 100%;
   border-radius: 10px;
   padding: 8px 14px 10px;
-  outline: none;
-  resize: none;
+  /* resize: none; */
   border: 1px solid ${props => props.theme.lineColor};
   &:focus-visible {
     background-color: #fff;
@@ -500,12 +499,11 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
                     {comment.User.nickname}
                     <CrownIcon icon={faCrown} />
                   </div>
-                  {userId === 0 ? (
-                    <div></div>
-                  ) : (
+                  {/* 댓쓴이와  로그인 계정이 동일한가? */}
+                  {comment.Post_comment_likeds[0]?.user_id == userId ? (
                     <>
-                      {comment.Post_comment_likeds[0]?.user_id == userId &&
-                      parseInt(isInput) !== comment.id ? (
+                      {/* 수정 버튼을 눌렀는가? */}
+                      {parseInt(isInput) !== comment.id ? (
                         <div>
                           <EditButton onClick={() => editComment(comment.id)} icon={faEdit} />
                           <DeleteButton onClick={() => deleteComment(comment.id)} icon={faTrash} />
@@ -515,16 +513,18 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
                           <CloseButton onClick={editCommentCancel} icon={faClose} />
                           <CheckButton onClick={() => editCommentSave(comment.id)} icon={faCheck} />
                           {/* <Cancel onClick={editCommentCancel}>Cancel</Cancel>
-                          <Save onClick={editCommentSave}>Save</Save> */}
+                        <Save onClick={editCommentSave}>Save</Save> */}
                         </div>
                       )}
                     </>
+                  ) : (
+                    <div></div>
                   )}
                 </CommentUser>
                 {parseInt(isInput) == comment.id ? (
                   <CommentInput
                     minLength={5}
-                    maxLength={1000}
+                    maxLength={2500}
                     required
                     value={editContent}
                     onChange={e => setEditContent(e.target.value)}

@@ -20,6 +20,7 @@ const Container = styled.div`
   align-items: center;
 `;
 const PaginationContainer = styled.div`
+  margin-bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,7 +30,9 @@ const PaginationContainer = styled.div`
 const PaginationButton = styled.button`
   padding: 10px;
   margin: 0 5px;
-  cursor: pointer;
+  /* cursor: cu; */
+  border-radius: 6px;
+  cursor: ${props => (props.disabled ? 'default' : 'pointer')};
 `;
 
 const PageNumbersContainer = styled.div`
@@ -45,8 +48,9 @@ const PageNumberButton = styled.button<PageNumberButtonProps>`
   padding: 10px;
   margin: 0 5px;
   cursor: pointer;
-
-  background-color: ${props => (props.active ? '#2E3D53' : 'white')};
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: ${props => (props.active ? '#bb57ae' : 'white')};
   color: ${props => (props.active ? 'white' : 'black')};
 `;
 function Pagination({dataPerPage, dataLength, paginate, currentPage, setCurrentPage}: DataProps) {

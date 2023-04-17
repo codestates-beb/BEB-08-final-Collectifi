@@ -29,7 +29,7 @@ class Post_comment extends Model<Post_commentAttributes> {
           allowNull: false,
         },
         content: {
-          type: DataTypes.STRING(255),
+          type: DataTypes.TEXT,
           allowNull: false,
         },
         likes: {

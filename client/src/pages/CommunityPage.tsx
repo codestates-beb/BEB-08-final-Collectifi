@@ -178,6 +178,13 @@ const Community = () => {
     setTabs(e);
   };
 
+  // 필터 관련
+  const [filterText, setFilterText] = useState('latest');
+
+  const filterSelected = (e: any) => {
+    setFilterText(e.target.value);
+  };
+
   return (
     <CommunityLayout>
       <Routes>
@@ -213,6 +220,13 @@ const Community = () => {
       {/* <div>{tabs}</div> */}
       {tabs == 'General' && (
         <>
+          <select onChange={filterSelected}>
+            <option value="Latest">Latest</option>
+            <option value="views">Views</option>
+            <option value="likes">Likes</option>
+            <option value="oldest">Oldest</option>
+          </select>
+          {filterText}
           <BoardList
             title={
               <BoardTitleItem

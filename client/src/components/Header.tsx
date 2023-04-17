@@ -60,7 +60,7 @@ const Logo = styled.div`
   align-items: center;
 `;
 
-const LogoImgDiv = styled.div`
+const LogoImgDiv = styled(Link)`
   object-fit: contain;
   border: none;
   border-radius: 10px;
@@ -244,7 +244,7 @@ const Header = ({toggle}: PageLayoutProps) => {
       <Nav variants={navVariants} animate={headerAnimation} initial={'top'}>
         <NavbarContainer>
           <Logo>
-            <LogoImgDiv />
+            <LogoImgDiv to="/" />
             <NavLogo to="/">Collectifi</NavLogo>
           </Logo>
           <MobileIcon onClick={toggle}>

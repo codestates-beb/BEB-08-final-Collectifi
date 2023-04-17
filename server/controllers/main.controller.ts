@@ -84,7 +84,7 @@ export const dummy_get = async (req: MyRequest, res: Response, next: NextFunctio
       });
     }
 
-    // // Post 더미 데이터 200개 넣기
+    // Post 더미 데이터 200개 넣기
     data.map(item => {
       const posts = db.Post.create({
         user_id: Math.floor(Math.random() * 10 + 1),
@@ -93,7 +93,7 @@ export const dummy_get = async (req: MyRequest, res: Response, next: NextFunctio
       });
     });
 
-    // // Post_comment 더미 데이터 5개 넣기
+    // Post_comment 더미 데이터 5개 넣기
     // for (let i = 0; i < 5; i++) {
     //   let users = await db.Post_comment.create({
     //     user_id: Math.floor(Math.random() * 10 + 1),
