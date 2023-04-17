@@ -7,7 +7,7 @@ import {data} from '../data/data';
 import {WriteButton, WriteForm, WriteInput, WriteLabel, WriteTextarea} from './WritePage';
 import {PostsAttributes} from './CommunityPage';
 import {faThumbsUp, faThumbsDown, faEdit} from '@fortawesome/free-regular-svg-icons';
-import {faCrown, faDeleteLeft, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faCrown, faTrash, faCheck, faClose} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {toast} from 'react-toastify';
 interface PostProps {
@@ -128,6 +128,7 @@ const CommentContainer = styled.div`
 `;
 const Comment = styled.div`
   padding: 7px;
+  /* height: 200px; */
   margin: 10px 10px 10px 10px;
   border: 1px solid #b5b5b5;
   border-radius: 10px;
@@ -137,13 +138,15 @@ const CommentUser = styled.div`
   padding: 5px;
   display: flex;
   justify-content: space-between;
+  margin: 5px;
 `;
+
 const CrownIcon = styled(FontAwesomeIcon)`
   margin-left: 10px;
   color: #e9e900;
 `;
 const EditButton = styled(FontAwesomeIcon)`
-  margin-right: 5px;
+  margin-right: 7px;
   cursor: pointer;
 `;
 const DeleteButton = styled(FontAwesomeIcon)`
@@ -151,14 +154,66 @@ const DeleteButton = styled(FontAwesomeIcon)`
   margin-right: 20px;
   cursor: pointer;
 `;
+const CheckButton = styled(FontAwesomeIcon)`
+  margin-left: 10px;
+  margin-right: 20px;
+  cursor: pointer;
+`;
+const CloseButton = styled(FontAwesomeIcon)`
+  margin-left: 10px;
+  margin-right: 20px;
+  cursor: pointer;
+`;
+
+const Cancel = styled.span`
+  margin-right: 7px;
+  cursor: pointer;
+
+  color: black;
+  white-space: nowrap;
+  padding: 5px 15px;
+  border-radius: 12px;
+  border: 1px solid #cacaca;
+  font-size: 12px;
+  font-weight: bold;
+`;
+const Save = styled.span`
+  margin-left: 10px;
+  margin-right: 20px;
+  cursor: pointer;
+  color: black;
+  white-space: nowrap;
+  padding: 5px 15px;
+  border-radius: 12px;
+  border: 1px solid #cacaca;
+  font-size: 12px;
+  font-weight: bold;
+`;
 
 const CommentContent = styled.div`
   padding: 5px;
+  margin: 5px;
 `;
+const CommentInput = styled.textarea`
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  padding: 8px 14px 10px;
+  outline: none;
+  resize: none;
+  border: 1px solid ${props => props.theme.lineColor};
+  &:focus-visible {
+    background-color: #fff;
+    border: 1px solid grey;
+  }
+`;
+
 const LieksContainer = styled.div`
   /* background: green; */
   text-align: end;
   margin-right: 30px;
+  margin: 5px;
+  padding: 5px;
 `;
 const Comment_likes = styled.span`
   margin-right: 5px;
@@ -281,6 +336,8 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
 
   // 댓글 기능 관련
   const [comment, setCommnet] = useState('');
+  const [isInput, setIsInput] = useState('');
+  const [editContent, setEditContent] = useState('');
   const handleSubmit = (e: any) => {
     e.preventDefault();
     axios
@@ -335,7 +392,20 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
       });
   };
   const editComment = (e: number) => {
-    console.log('댓글을 수정하시겠습니까?');
+    axios
+      .get(`http://localhost:8000/community/${id}/comment/${e}/edit`, {withCredentials: true})
+      .then(res => {
+        console.log('댓글 수정 요청: ', res);
+        console.log(res.data.data);
+        // Input 태그로 바꿔줌
+        setIsInput(e.toString());
+        // 태그 안에 내용을 입력해줌
+        setEditContent(res.data.data);
+      })
+      .catch(err => {
+        console.log('게시글 수정 err: ', err);
+        toast.error('Failed to edit comment');
+      });
   };
   const deleteComment = (e: number) => {
     console.log('댓글을 삭제하시겠습니까?');
@@ -351,6 +421,40 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
       .catch(err => {
         console.log('글삭제 실패', err);
         toast.error('Error deleting comment');
+      });
+  };
+  const editCommentCancel = () => {
+    setIsInput('');
+    setEditContent('');
+  };
+  const editCommentSave = (e: number) => {
+    axios
+      .patch(
+        `http://localhost:8000/community/${id}/comment/${e}/edit`,
+        {content: editContent},
+        {withCredentials: true},
+      )
+      .then(res => {
+        console.log('댓글 수정patch: ', res);
+        toast.success('Editted it successfully! 🎈');
+        // 프론트 변경
+        setComments(prev =>
+          prev.map(comment => {
+            return comment.id == e
+              ? {
+                  ...comment,
+                  content: editContent,
+                }
+              : comment;
+          }),
+        );
+
+        setIsInput('');
+        setEditContent('');
+      })
+      .catch(err => {
+        console.log('댓글 수정 err: ', err);
+        toast.error('Failed to edit comment');
       });
   };
 
@@ -396,31 +500,60 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
                     {comment.User.nickname}
                     <CrownIcon icon={faCrown} />
                   </div>
-                  {comment.Post_comment_likeds[0]?.user_id == userId ? (
-                    <div>
-                      <EditButton onClick={() => editComment(comment.id)} icon={faEdit} />
-                      <DeleteButton onClick={() => deleteComment(comment.id)} icon={faTrash} />
-                    </div>
+                  {userId === 0 ? (
+                    <div></div>
+                  ) : (
+                    <>
+                      {comment.Post_comment_likeds[0]?.user_id == userId &&
+                      parseInt(isInput) !== comment.id ? (
+                        <div>
+                          <EditButton onClick={() => editComment(comment.id)} icon={faEdit} />
+                          <DeleteButton onClick={() => deleteComment(comment.id)} icon={faTrash} />
+                        </div>
+                      ) : (
+                        <div>
+                          <CloseButton onClick={editCommentCancel} icon={faClose} />
+                          <CheckButton onClick={() => editCommentSave(comment.id)} icon={faCheck} />
+                          {/* <Cancel onClick={editCommentCancel}>Cancel</Cancel>
+                          <Save onClick={editCommentSave}>Save</Save> */}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </CommentUser>
+                {parseInt(isInput) == comment.id ? (
+                  <CommentInput
+                    minLength={5}
+                    maxLength={1000}
+                    required
+                    value={editContent}
+                    onChange={e => setEditContent(e.target.value)}
+                    rows={8}
+                  />
+                ) : (
+                  <CommentContent>{comment.content}</CommentContent>
+                )}
+
+                <LieksContainer>
+                  {parseInt(isInput) !== comment.id ? (
+                    <>
+                      {' '}
+                      <Comment_likes onClick={() => handleCommentLikes(comment.id, 'likes')}>
+                        <Thumbs>
+                          <FontAwesomeIcon icon={faThumbsUp} />
+                        </Thumbs>
+                        {comment.likes}
+                      </Comment_likes>
+                      <Comment_likes onClick={() => handleCommentLikes(comment.id, 'dislikes')}>
+                        <Thumbs>
+                          <FontAwesomeIcon icon={faThumbsDown} />
+                        </Thumbs>
+                        {comment.dislikes}
+                      </Comment_likes>{' '}
+                    </>
                   ) : (
                     <div></div>
                   )}
-                </CommentUser>
-
-                <CommentContent>{comment.content}</CommentContent>
-
-                <LieksContainer>
-                  <Comment_likes onClick={() => handleCommentLikes(comment.id, 'likes')}>
-                    <Thumbs>
-                      <FontAwesomeIcon icon={faThumbsUp} />
-                    </Thumbs>
-                    {comment.likes}
-                  </Comment_likes>
-                  <Comment_likes onClick={() => handleCommentLikes(comment.id, 'dislikes')}>
-                    <Thumbs>
-                      <FontAwesomeIcon icon={faThumbsDown} />
-                    </Thumbs>
-                    {comment.dislikes}
-                  </Comment_likes>
                 </LieksContainer>
               </Comment>
             ))}

@@ -130,7 +130,6 @@ const EditPage = () => {
 
         navigate('/community');
       });
-    axios;
   };
 
   return (

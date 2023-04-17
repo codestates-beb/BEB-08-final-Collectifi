@@ -467,7 +467,7 @@ export const editComment_patch = async (req: MyRequest, res: Response, next: Nex
     // 3. db comment title, content 내용 업데이트
     const result = await db.Post_comment.update({content}, {where: {id: commentId}});
     // 4. 프론트에 성공했다 알려주기
-    sendResponse(res, 200, '성공했습니다');
+    sendResponse(res, 200, '성공했습니다'+content);
   } catch (error) {
     sendResponse(res, 400, '실패했습니다');
     console.log(error);
