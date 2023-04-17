@@ -24,6 +24,11 @@ export const userAmount = atom<number>({
   default: 0
 });
 
+export const userReferral = atom<string | null>({
+  key: 'UserReferral',
+  default: null
+});
+
 ////
 export const checkLoginQuery = selector({
   key: 'CheckLoginQuery',

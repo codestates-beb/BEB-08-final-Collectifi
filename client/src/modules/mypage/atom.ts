@@ -1,5 +1,5 @@
 import { atom, selector, selectorFamily } from "recoil";
-import { userInfo, editNickname } from "./api";
+import { userInfo, editNickname, editReferral } from "./api";
 import { userId, userNickname } from "../atom";
 
 export const currentUserId = atom<number>({
@@ -22,6 +22,15 @@ export const editNicknameQuery = selectorFamily({
   get: (newNickname: string) => async ({get}) => {
     get(userNickname);
     const response = await editNickname(newNickname);
+    return response;
+  }, 
+});
+
+export const editReferralQuery = selectorFamily({
+  key: 'EditReferralQuery',
+  get: (address: string) => async ({get}) => {
+    get(userId);
+    const response = await editReferral(address);
     return response;
   }, 
 });

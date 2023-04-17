@@ -44,3 +44,24 @@ export const editNickname = async (nickname: string) => {
     return null;
   }
 }
+
+export const editReferral = async (address: string) => {
+  //if(!ISCONNECT) return sellCardData;
+  const options = {
+    method: 'POST',
+    url: `${SERVERURL}/user/referral`,
+    headers: {accept: 'application/json'},
+    withCredentials: true,
+    data: {
+      "address" : address,
+    }
+  };
+
+  try {
+    const data = await axios(options);
+    return data;
+  } catch (err) {
+    console.log("editReferral err: ",err);
+    return null;
+  }
+}

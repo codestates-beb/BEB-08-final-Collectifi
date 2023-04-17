@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRecoilValue, useSetRecoilState, useRecoilRefresher_UNSTABLE } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState, useRecoilRefresher_UNSTABLE } from 'recoil';
 import { currentUserId, getUserQuery, getCardListQuery, getPostListQuery } from '../../modules/mypage/atom';
 import { userNickname, userAmount, userId } from '../../modules/atom';
 
@@ -15,7 +15,7 @@ import BoardList from '../UI/BoardList';
 import BoardTitleItem from '../UI/BoardTitleItem';
 import BoardListItem from '../UI/BoardListItem';
 import BoardListItemInfo from '../UI/BoardListItemInfo';
-import EditNickname from './EditNickname';
+import EditInfo from './EditInfo';
 
 
 const MyPage = () => {
@@ -28,7 +28,7 @@ const MyPage = () => {
   const nickname = useRecoilValue(userNickname);
   //const usrId = useRecoilValue(userId);
   const setCurrId = useSetRecoilState(currentUserId);
-  const setAmount = useSetRecoilState(userAmount);
+  const [amount, setAmount] = useRecoilState(userAmount);
   const userInfo = useRecoilValue(getUserQuery);
   const cardList = useRecoilValue(getCardListQuery);
   const postList = useRecoilValue(getPostListQuery);  
@@ -43,13 +43,13 @@ const MyPage = () => {
     postRefresh();
   }, [id]);
 
-  if(!userInfo || !cardList || !postList) return <></>
   console.log(userInfo, cardList, postList);
+  if(!userInfo || !cardList || !postList) return <></>  
   const cardWidth = '250px'; 
 
   const infoTitle = ["ADDRESS", "TOKEN AMOUNT", "NICKNAME"];
   const infoData = [userInfo.user.address.slice(0, 10), 
-    userInfo.user.token_amount, 
+    userInfo.isOwner ? amount :userInfo.user.token_amount, 
     userInfo.isOwner ? nickname : userInfo.user.nickname,
   ];
 
@@ -69,7 +69,7 @@ const MyPage = () => {
           })}
         </BoardList>
         {userInfo.isOwner && <div className='edit-wrap'>
-          <EditNickname />
+          <EditInfo />
         </div>}
       </div>      
       <Tab title={[userInfo.isOwner ? 'MY CARD' : 'CARD',

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRecoilCallback } from 'recoil';
-import { userAddr, userId, userNickname, userAmount, checkLoginQuery } from '../modules/atom';
+import { userAddr, userId, userNickname, userAmount, userReferral, checkLoginQuery } from '../modules/atom';
 
 export default function Init () {
   const init = useRecoilCallback(({ snapshot, set }) => async () => {
@@ -10,7 +10,8 @@ export default function Init () {
     set(userAddr, result.address);
     set(userId, result.id);
     set(userNickname, result.nickname);
-    set(userAmount, result.token_amount);  
+    set(userAmount, result.token_amount);
+    set(userReferral, result.referral);  
     console.log("init", result);
   });
 

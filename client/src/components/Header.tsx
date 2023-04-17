@@ -39,7 +39,7 @@ const navVariants = {
 };
 
 const Nav = styled(motion.div)`
-  height: 70px;
+  height: 90px;
   /* margin-top: -70px; */
   display: flex;
   justify-content: center;
@@ -273,8 +273,10 @@ const Header = ({toggle}: PageLayoutProps) => {
         // setIsLoggedIn(true);
         // localStorage.setItem('isLoggedIn', res[0]);
       })
-      .catch(e => console.log(e));
-      toast.error('logged in failed');
+      .catch(e => {
+        console.log(e)
+        toast.error('logged in failed');
+      });      
   });
 
   const logout = useRecoilCallback(({ snapshot, set }) => async () => {
