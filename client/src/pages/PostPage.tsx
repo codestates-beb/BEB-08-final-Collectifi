@@ -499,6 +499,7 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
                     {comment.User.nickname}
                     <CrownIcon icon={faCrown} />
                   </div>
+
                   {/* 댓쓴이와  로그인 계정이 동일한가? */}
                   {comment.Post_comment_likeds[0]?.user_id == userId ? (
                     <>

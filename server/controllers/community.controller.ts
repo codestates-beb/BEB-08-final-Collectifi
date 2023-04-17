@@ -122,11 +122,14 @@ export const detail_get = async (req: MyRequest, res: Response, next: NextFuncti
         {model: db.User,
         attributes: ['nickname'],
       },
-      {model: db.Post_comment_liked,
-        attributes: ['user_id']   // (댓글을 불러올 때 글쓴이 user_id를 가져옴)
+      {
+        model: db.Post_comment_liked,
+        attributes: ['user_id'],   // (댓글을 불러올 때 글쓴이 user_id를 가져옴)
+        
       }
 
-      ]
+      ],
+      order: [[db.Post_comment_liked,'id', 'ASC']], 
 
     });
  
