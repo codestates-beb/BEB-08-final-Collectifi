@@ -13,30 +13,16 @@ export const market_get = async (req: Request, res: Response, next: NextFunction
   try {
     const nfts = await db.Nft.findAll({
       where: {isSell: true},
-      include: {
-        model: db.User,
-        attributes: ['nickname'],
-      },
+      include: [
+        {
+          model: db.User,
+          attributes: ['nickname'],
+        },
+      ],
     });
     res.status(200).send({message: 'nft 목록 불러오기 성공', data: nfts});
   } catch (e) {
     res.status(400).send({message: 'nft 목록 불러오기 실패'});
-
-    console.log(e);
-  }
-};
-
-//자신이 가지고 있는 NFT 중 판매 할수 있는 NFT 목록 조회(판매 페이지)
-export const market_sell_get = async (req: MyRequest, res: Response, next: NextFunction) => {
-  try {
-    const id = req.session.user?.id;
-    console.log('=====id====', id);
-    const nfts = await db.Nft.findAll({
-      where: {isSell: false, user_id: id}, //세션 아이디 받아오기
-    });
-    res.status(200).send({message: '성공', data: nfts});
-  } catch (e) {
-    res.status(400).send({message: '실패'});
 
     console.log(e);
   }
@@ -59,6 +45,36 @@ export const market_nft_get = async (req: MyRequest, res: Response, next: NextFu
   } catch (e) {
     console.log('ERROR:: ', e);
     res.status(400).send({message: '실패했습니다.'});
+  }
+};
+
+export const market_nft_record_get = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+    const nftRecords = await db.Nft_record.findAll({
+      where: {token_id: id},
+    });
+    res.status(200).send({message: 'nft 목록 불러오기 성공', data: nftRecords});
+  } catch (e) {
+    res.status(400).send({message: 'nft 목록 불러오기 실패'});
+
+    console.log(e);
+  }
+};
+
+//자신이 가지고 있는 NFT 중 판매 할수 있는 NFT 목록 조회(판매 페이지)
+export const market_sell_get = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    const id = req.session.user?.id;
+    console.log('=====id====', id);
+    const nfts = await db.Nft.findAll({
+      where: {isSell: false, user_id: id}, //세션 아이디 받아오기
+    });
+    res.status(200).send({message: '성공', data: nfts});
+  } catch (e) {
+    res.status(400).send({message: '실패'});
+
+    console.log(e);
   }
 };
 
