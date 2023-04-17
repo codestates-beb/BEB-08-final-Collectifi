@@ -1,11 +1,16 @@
 import React from 'react';
-import {Suspense} from 'react';
-import {ErrorBoundary} from 'react-error-boundary';
+import { Suspense } from 'react';
+import { ErrorBoundary} from 'react-error-boundary';
 import CardDetail from '../components/market/CardDetail';
+import Fallback from '../components/Fallback';
+
+
 
 const MarketPage = () => {
+
   return (
-    <ErrorBoundary fallback={<div>Error!</div>}>
+    // <ErrorBoundary fallback={<Fallback />}>
+    <ErrorBoundary fallback={<div>error!</div>}>
       <Suspense>
         <CardDetail />
       </Suspense>

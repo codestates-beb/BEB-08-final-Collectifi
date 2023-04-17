@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar';
 import Router from './Router';
 import ScrollReset from './components/ScrollReset';
 import GlobalStyle from './Styles';
+import Init from './components/Init';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,7 +24,8 @@ function App() {
   //   } else {
   //     setScrollNav(false);
   //   }
-  // };
+  // };  
+
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth > 768) {
@@ -45,10 +47,11 @@ function App() {
     mainColor2: '#e52e93',
     lineColor: 'rgb(203, 203, 203)',
   };
-
+  
   return (
     <RecoilRoot>
       <GlobalStyle />
+      <Init />
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <ScrollReset />

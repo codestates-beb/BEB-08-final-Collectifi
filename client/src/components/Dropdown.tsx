@@ -19,7 +19,8 @@ interface SubmenuItem {
 const DropdownMenu = styled.ul`
   width: 10rem;
   position: absolute;
-  top: 69px;
+  //top: 69px;
+  top: 59px;
   list-style: none;
   text-align: start;
   overflow: hidden;
