@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {NavLogo} from '../components/Header';
 import axios from 'axios';
 import {useLocation, useNavigate, useParams} from 'react-router';
+import {toast} from 'react-toastify';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -120,14 +121,15 @@ const EditPage = () => {
       .then(res => {
         console.log('게시글 수정patch: ', res);
         navigate('/community');
-        //ToDo 토스트메세지: You have successfully written
+        toast.success('Editted it successfully! 🎈');
       })
       .catch(err => {
         console.log('게시글 수정 err: ', err);
-        alert('Please log in again.');
+        // alert('Please log in again.');
+        toast.error('Please log in again.');
+
         navigate('/community');
       });
-    axios;
   };
 
   return (
@@ -140,6 +142,8 @@ const EditPage = () => {
         <WriteForm>
           <WriteLabel>title</WriteLabel>
           <WriteInput
+            minLength={10}
+            maxLength={60}
             placeholder="제목을 입력하세요"
             type="text"
             required
@@ -148,6 +152,8 @@ const EditPage = () => {
           />
           <WriteLabel>content</WriteLabel>
           <WriteTextarea
+            minLength={10}
+            maxLength={1500}
             required
             value={content}
             onChange={e => setContent(e.target.value)}

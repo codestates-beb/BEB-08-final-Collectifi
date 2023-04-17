@@ -10,7 +10,7 @@ import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Dropdown from './Dropdown';
 import axios from 'axios';
-
+import {toast} from 'react-toastify';
 declare global {
   interface Window {
     ethereum?: {
@@ -53,11 +53,21 @@ const NavbarContainer = styled.div`
   max-width: 1100px;
   margin-top: 10px;
 `;
-const LogImg = styled.div`
-  background: url('/logo/logo2.png');
+
+const Logo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const LogoImgDiv = styled.div`
+  object-fit: contain;
+  border: none;
+  border-radius: 10px;
+  background-image: url('/logo/2.png');
   background-size: contain;
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
 `;
 
 export const NavLogo = styled(Link)`
@@ -217,21 +227,26 @@ const Header = ({toggle}: PageLayoutProps) => {
           .post('http://localhost:8000/login', {address: res[0]}, {withCredentials: true})
           .then(res => {
             console.log('login_post success: ', res);
+            toast.success('logged in successfully! 🎉');
           });
         // setIsLoggedIn(true);
         // localStorage.setItem('isLoggedIn', res[0]);
       })
 
-      .catch(e => console.log(e));
+      .catch(e => {
+        console.log(e);
+        toast.error('logged in failed');
+      });
   };
 
   return (
     <>
       <Nav variants={navVariants} animate={headerAnimation} initial={'top'}>
         <NavbarContainer>
-          {/* <LogImg src="/logo/logo4.png" /> */}
-          {/* <LogImg /> */}
-          <NavLogo to="/">Collectifi</NavLogo>
+          <Logo>
+            <LogoImgDiv />
+            <NavLogo to="/">Collectifi</NavLogo>
+          </Logo>
           <MobileIcon onClick={toggle}>
             <FaBars />
           </MobileIcon>

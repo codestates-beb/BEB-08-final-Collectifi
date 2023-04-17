@@ -11,6 +11,7 @@ import MyPage from '../components/mypage/MyPage';
 import CardDetail from '../components/market/CardDetail';
 import {DummyComponent} from '../Styles';
 import styled from 'styled-components';
+import {toast} from 'react-toastify';
 
 const ImagWrapper = styled.div`
   width: 100%;
@@ -30,6 +31,7 @@ const MainImg = styled.img`
   z-index: 1;
 `;
 const MainBack = styled.div`
+  background-size: contain;
   background: linear-gradient(
       to bottom,
       rgba(255, 255, 255, 0.2) 10%,
@@ -38,7 +40,7 @@ const MainBack = styled.div`
       rgba(255, 255, 255, 0.9) 70%,
       rgba(255, 255, 255, 1) 100%
     ),
-    url('/main1.png');
+    url('/main1.png') no-repeat;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -90,7 +92,9 @@ const MainPage = () => {
     setError2(null);
     setError3(null);
   };
-
+  const Toast = () => {
+    toast('first notification');
+  };
   return (
     <>
       {/* <Button
@@ -151,7 +155,7 @@ const MainPage = () => {
       <ImagWrapper>
         <MainImg src="/main1.png" />
         <MainBack />
-        <MainButton>Get Player NFT</MainButton>
+        <MainButton onClick={Toast}>Get Player NFT</MainButton>
       </ImagWrapper>
       <Section>
         <Section2Image src="/trophy.png" />

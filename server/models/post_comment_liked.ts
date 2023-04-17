@@ -3,12 +3,14 @@ import { Model, DataTypes, Sequelize, DATE, NOW } from "sequelize";
 interface Post_comment_likedAttributes {
   post_comment_id: number;
   address: string;
+  user_id: number;
  
 }
 
 class Post_comment_liked extends Model<Post_comment_likedAttributes> {
   public pos_comment_id!: number;
   public address!: string;
+  public user_id!: number;
 
   public static initModel(sequelize: Sequelize) {
     return Post_comment_liked.init(
@@ -22,6 +24,10 @@ class Post_comment_liked extends Model<Post_comment_likedAttributes> {
           type: DataTypes.STRING(255),
           allowNull: false,
         },
+        user_id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        }
         
       },
       {

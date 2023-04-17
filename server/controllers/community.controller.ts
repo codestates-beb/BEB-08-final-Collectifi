@@ -11,7 +11,7 @@ export const community_get = async (req: MyRequest, res: Response, next: NextFun
   try {
     // 1. db에서 posts 가져오기 (페이지네이션 고려해서)
     console.log('id: ', req.session.user);
-
+    
     const posts = await db.Post.findAll({
       order: [['id', 'DESC']],
 
@@ -88,13 +88,14 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
   }
 };
 
-// 글 디테일 페이지
+// 글 디테일 페이지 
 export const detail_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     //1. URL params에서 post_id 가져오기
     console.log(req.session.user?.id);
     console.log(req.params);
     const id = req.params.postId;
+    const userId = req.session.user?.id || 0 ;
     console.log(id);
     //2. DB에서 해당 포스트 불러오기
     const post = await db.Post.findOne({
@@ -121,10 +122,15 @@ export const detail_get = async (req: MyRequest, res: Response, next: NextFuncti
         {model: db.User,
         attributes: ['nickname'],
       },
+      {model: db.Post_comment_liked,
+        attributes: ['user_id']   // (댓글을 불러올 때 글쓴이 user_id를 가져옴)
+      }
 
       ]
 
     });
+ 
+    
     // 조회수 증가
     const result = await post.increment('views', {by: 1});
 
@@ -142,10 +148,10 @@ export const detail_get = async (req: MyRequest, res: Response, next: NextFuncti
     console.log('=====post.user_id==', post.user_id);
 
     const isOwner = req.session.user?.id == post.user_id;
-
+    
     // const address = user.address;
     //3. 프론트로 user의 address와, post 데이터 보내주기
-    sendResponse(res, 200, '게시물을 성공적으로 가져왔습니다.', {post, isOwner, comments});
+    sendResponse(res, 200, '게시물을 성공적으로 가져왔습니다.', {post, isOwner, comments,userId});  // 이 요청을 보낸 user의 id를 다시 돌려 보냄
   } catch (error) {
     sendResponse(res, 400, '게시물 가져오기 실패.');
   }
@@ -311,21 +317,27 @@ export const comment_post = async (req: MyRequest, res: Response, next: NextFunc
       post_id: Number(postId),
       content,
     });
-    console.log(comment);
-    // 4.
+    console.log("comment: ",comment);
+   
+        // 3. 작성자의 address와 user_id를 post_comment_liked에 추가
+    const commentLiked = await db.Post_comment_liked.create({
+      post_comment_id: Number(comment.id),
+      address: userAddress,
+      user_id: userId
+ 
+    })
     const result = await db.Post_comment.findOne({
       where: {id: comment.id},
       include:  [{
         model: db.User,
         attributes: ['nickname'],
+      },{model: db.Post_comment_liked,
+        attributes: ['user_id']  // 쓴 댓글을 프론트에 보내줄 때 user_id를 포함시킴
       }],
+     
       
     })
-    // 3. 작성자의 address를 post_comment_liked에 추가
-    const commentLiked = await db.Post_comment_liked.create({
-      post_comment_id: Number(comment.id),
-      address: userAddress
-    })
+
 
     //4. 프론트로 post 데이터 보내주기
     sendResponse(res, 200, '성공했습니다',{result});
@@ -339,6 +351,7 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
   try {
     // 1. 로그인한 유저인지 확인 + user 정보 받아오기
     const user = req.session.user;
+    const userId = req.session.user?.id
     // 1-1. 로그인 안했으면 돌려보냄
     if (!user) {
       sendResponse(res, 400, '실패했습니다');
@@ -363,11 +376,21 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
     const commentLikedFind = await db.Post_comment_liked.findOne({
       where: {
         post_comment_id: commentId,
-        address: userAddress
+        user_id: userId
       },
     });
-    if( commentLikedFind) {
-      return sendResponse(res, 200, '좋아요/싫어요는 한번만 가능합니다');
+    // 첫번째 데이터는 글쓴이 이므로 글쓴이가 눌렀는지 판단
+    const firstData = await db.Post_comment_liked.findAll({
+      where: { post_comment_id:  commentId},
+      order:[['id','ASC']],
+      limit: 1,
+    })
+    if (firstData[0].user_id == userId ) {
+      return sendResponse(res, 400, "You can't Like/Dislike your own comment.");
+    }
+    if( commentLikedFind ) {
+      // return sendResponse(res, 400, firstData[0].address);
+      return sendResponse(res, 400, 'You can click the Like/Dislike button only once.');
     }
     
     // 3-1. 좋아요 경우 post의 likes를 1 증가
@@ -380,10 +403,11 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
     }
     
 
-    // 지갑 주소를 post_comment_likeds에 추가
+    // 지갑 주소와 user_id를 post_comment_likeds에 추가
     const commentLiked = await db.Post_comment_liked.create({
       post_comment_id: Number(comment.id),
-      address: userAddress
+      address: userAddress,
+      user_id: userId
     })
 
 
@@ -443,7 +467,7 @@ export const editComment_patch = async (req: MyRequest, res: Response, next: Nex
     // 3. db comment title, content 내용 업데이트
     const result = await db.Post_comment.update({content}, {where: {id: commentId}});
     // 4. 프론트에 성공했다 알려주기
-    sendResponse(res, 200, '성공했습니다');
+    sendResponse(res, 200, '성공했습니다'+content);
   } catch (error) {
     sendResponse(res, 400, '실패했습니다');
     console.log(error);
@@ -458,7 +482,7 @@ export const deleteComment_delete = async (req: MyRequest, res: Response, next: 
     const {commentId} = req.params;
     const user = req.session.user;
 
-    // 2. post의 글쓴이가 session의 user인지 확인
+    // 2. comment의 글쓴이가 session의 user인지 확인
     const comment = await db.Post_comment.findOne({
       where: {
         id: commentId,
@@ -471,9 +495,9 @@ export const deleteComment_delete = async (req: MyRequest, res: Response, next: 
     // 3. 해당 post 삭제
     const result = await db.Post_comment.destroy({where: {id: commentId}});
     // 4. 프론트에 성공했다 알려주기
-    sendResponse(res, 200, '성공했습니다');
+    sendResponse(res, 200, 'Comments deleted successfully.');
   } catch (error) {
-    sendResponse(res, 400, '실패했습니다');
+    sendResponse(res, 400, 'Failed to delete commen.');
     console.log(error);
   }
 };
