@@ -38,9 +38,9 @@ export const login_post = async (req: MyRequest, res: Response, next: NextFuncti
         address,
         token_amount: 1000,
       });
-      // const reward = await erc20Contract.methods
-      //   .joinReward(address)
-      //   .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+      const reward = await erc20Contract.methods
+        .joinReward(address)
+        .send({from: process.env.SERVER_ADDRESS, gas: 500000});
       console.log('=====user====', user);
 
       // 3. session에 해당 user 정보 저장
