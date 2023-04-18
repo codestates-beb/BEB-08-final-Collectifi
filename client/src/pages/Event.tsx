@@ -52,7 +52,7 @@ export const SearchBtn = styled.div`
 export const MiddleBox = styled.div`
   width: 100%;
   /* background-color: gray; */
-  height: 110vh;
+  /* height: 110px; */
   display: flex;
   flex-direction: column;
   align-items: center;

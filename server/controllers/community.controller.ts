@@ -5,26 +5,51 @@ import Web3 from 'web3';
 import erc20abi from '../abis/erc20Abi';
 import {MyRequest} from '../@types/session';
 import {sendResponse} from './utils';
-
+import { Op } from 'sequelize';
 // 글 목록 페이지
 export const community_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     // 1. db에서 posts 가져오기 (페이지네이션 고려해서)
     console.log('id: ', req.session.user);
-    
-    const posts = await db.Post.findAll({
-      order: [['id', 'DESC']],
+    const {tabs} = req.query;
+    console.log("tab==========",tabs)
+    if (tabs == 'General') {
+      
+    }
+    let posts;
+    if (tabs === 'General') {
+    posts = await db.Post.findAll({
+          order: [['id', 'DESC']],
 
-      include: [
-        {
-          model: db.User,
-          attributes: ['nickname'],
+          include: [
+            {
+              model: db.User,
+              attributes: ['nickname'],
+            },
+            {
+              model: db.Post_comment,
+            },
+          ],
+        });
+    } else if (tabs === 'Popular') {
+      posts = await db.Post.findAll({
+        where: {
+          likes: {
+            [Op.gte]: 10,
+          },
         },
-        {
-          model: db.Post_comment,
-        },
-      ],
-    });
+        order: [['id', 'DESC']],
+        include: [
+          {
+            model: db.User,
+            attributes: ['nickname'],
+          },
+          {
+            model: db.Post_comment,
+          },
+        ],
+    })
+  }
 
     // 2. 프론트에 보내주기
     const result: ResponseData = {

@@ -93,13 +93,13 @@ export const checklogin_get = async (req: MyRequest, res: Response, next: NextFu
 export const dummy_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     // 더미 User 10개 만들고 넣기
-    // for (let i = 0; i < 10; i++) {
-    //   let users = await db.User.create({
-    //     nickname: `user${i}`,
-    //     address: `xdf3234${i}`,
-    //     token_amount: 1000,
-    //   });
-    // }
+    for (let i = 0; i < 10; i++) {
+      let users = await db.User.create({
+        nickname: `user${i}`,
+        address: `xdf3234${i}`,
+        token_amount: 1000,
+      });
+    }
 
     // Post 더미 데이터 200개 넣기
     data.map(item => {
@@ -110,7 +110,7 @@ export const dummy_get = async (req: MyRequest, res: Response, next: NextFunctio
       });
     });
 
-    // Post_comment 더미 데이터 5개 넣기
+    // Post_comment 더미 데이터 5개 넣기 DB가 바뀌어서 사용 X
     // for (let i = 0; i < 5; i++) {
     //   let users = await db.Post_comment.create({
     //     user_id: Math.floor(Math.random() * 10 + 1),
