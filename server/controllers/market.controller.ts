@@ -99,12 +99,10 @@ export const market_sell_post = async (req: MyRequest, res: Response, next: Next
         },
       );
       console.log('========nftModify=======', nftModify);
+      return res.status(200).send({message: '판매 등록 성공했습니다'});
     }
-
-    res.status(200).send({message: '판매 등록 성공했습니다'});
+    return res.status(400).send({message: '실패했습니다'});
   } catch (e) {
-    res.status(400).send({message: '실패했습니다'});
-
     console.log(e);
   }
 };
