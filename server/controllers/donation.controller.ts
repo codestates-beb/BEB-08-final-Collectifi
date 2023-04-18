@@ -52,6 +52,7 @@ export const donation_get = async (req: MyRequest, res: Response, next: NextFunc
   }
 };
 
+// COL 기부 컨트롤러 (ETH 기부는 프론트에서 모든 것을 해결)
 export const donation_post = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     // 1. 세션으로 user address 받아오기
@@ -66,6 +67,15 @@ export const donation_post = async (req: MyRequest, res: Response, next: NextFun
     const donate = await donation_col_Contract.methods
       .fund(address, amount)
       .send({from: address, gas: 500000});
+
+    // 5. db 상에서도 amount만큼 차감
+    const userId = req.session?.user?.id;
+    const user = await db.User.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    const withdrawDB = await user.decrement('token_amount', {by: amount});
 
     sendResponse(res, 200, 'success donation');
   } catch (e) {
