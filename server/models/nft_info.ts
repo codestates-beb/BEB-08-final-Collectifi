@@ -8,6 +8,8 @@ interface Nft_infoAttributes {
   card_pack: number;
   card_color: number;
   img_url: string;
+  team_record: string;
+  man_record: string;
 }
 
 class Nft_info extends Model<Nft_infoAttributes> {
@@ -18,6 +20,8 @@ class Nft_info extends Model<Nft_infoAttributes> {
   public card_pack!: number;
   public card_color!: number;
   public img_url!: string;
+  public team_record!: string;
+  public man_record!: string;
 
   public static initModel(sequelize: Sequelize) {
     return Nft_info.init(
@@ -51,6 +55,14 @@ class Nft_info extends Model<Nft_infoAttributes> {
         img_url: {
           type: DataTypes.STRING(255),
           allowNull: false,
+        },
+        team_record: {
+          type: DataTypes.STRING(255),
+          allowNull: true,
+        },
+        man_record: {
+          type: DataTypes.STRING(255),
+          allowNull: true,
         },
       },
       {

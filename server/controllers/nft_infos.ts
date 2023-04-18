@@ -5,6 +5,8 @@ export const nft_infos = [
     team: `FC Barcelona`,
     card_pack: 2,
     card_color: 0,
+    team_record: 'Copa Del Rey',
+    man_record: '2012 Ballon dor, La Liga Top scorer, UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmVGZEoL8pzxfKwfj68GHtBScaGyPkX2REs4KuytewvLJP?filename=1-1.png',
   },
@@ -14,6 +16,8 @@ export const nft_infos = [
     team: `FC Barcelona`,
     card_pack: 2,
     card_color: 1,
+    team_record: 'Copa Del Rey',
+    man_record: '2012 Ballon dor, La Liga Top scorer, UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmQx4ZDvfQTb8Dbi4ppVAzF2su7cHHuNnLGxnRitika9pV?filename=1-2.png',
   },
@@ -23,6 +27,8 @@ export const nft_infos = [
     team: `FC Barcelona`,
     card_pack: 2,
     card_color: 2,
+    team_record: 'Copa Del Rey',
+    man_record: '2012 Ballon dor, La Liga Top scorer, UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmPer2sd2KCsPytPuSxZfP4fZThNVPnsX57fU8p897XvsD?filename=1-3.png',
   },
@@ -32,6 +38,8 @@ export const nft_infos = [
     team: `Argentina`,
     card_pack: 2,
     card_color: 0,
+    team_record: '2022 World Cup',
+    man_record: '2023 Ballon dor , 2022 World Cup Golden Ball',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmRWN7JbjL6w7aotVPiiFKf7ep6QSpcXeKa6fjfu9Vryon?filename=2-1.png',
   },
@@ -41,6 +49,8 @@ export const nft_infos = [
     team: `Argentina`,
     card_pack: 2,
     card_color: 1,
+    team_record: '2022 World Cup',
+    man_record: '2023 Ballon dor , 2022 World Cup Golden Ball',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmTurre7smy3Y2Z4aYpHeDdztAnYHMwY6EAeem3tPMTVju?filename=2-2.png',
   },
@@ -50,6 +60,8 @@ export const nft_infos = [
     team: `Argentina`,
     card_pack: 2,
     card_color: 2,
+    team_record: '2022 World Cup',
+    man_record: '2023 Ballon dor , 2022 World Cup Golden Ball',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmNjNckg6GbJF4CaJNeUtFG1REnEgP9d8hEK7zMZJjNuJ3?filename=2-3.png',
   },
@@ -59,6 +71,8 @@ export const nft_infos = [
     team: `FC Barcelona`,
     card_pack: 2,
     card_color: 0,
+    team_record: 'La Liga, UEFA Champions League, Copa Del Rey',
+    man_record: '2015 Ballon dor , UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/3-1.png',
   },
@@ -68,6 +82,8 @@ export const nft_infos = [
     team: `FC Barcelona`,
     card_pack: 2,
     card_color: 1,
+    team_record: 'La Liga, UEFA Champions League, Copa Del Rey',
+    man_record: '2015 Ballon dor , UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/3-2.png',
   },
@@ -77,6 +93,8 @@ export const nft_infos = [
     team: `FC Barcelona`,
     card_pack: 2,
     card_color: 2,
+    team_record: 'La Liga, UEFA Champions League, Copa Del Rey',
+    man_record: '2015 Ballon dor , UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/3-3.png',
   },
@@ -86,6 +104,8 @@ export const nft_infos = [
     team: `Manchester United`,
     card_pack: 2,
     card_color: 0,
+    team_record: 'Premier League, UEFA Champions League',
+    man_record: '2008 Ballon dor ,UEFA Champions League Top Scorer, Premeir League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/4-1.png',
   },
@@ -95,6 +115,8 @@ export const nft_infos = [
     team: `Manchester United`,
     card_pack: 2,
     card_color: 1,
+    team_record: 'Premier League, UEFA Champions League',
+    man_record: '2008 Ballon dor ,UEFA Champions League Top Scorer, Premeir League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/4-2.png',
   },
@@ -104,6 +126,8 @@ export const nft_infos = [
     team: `Manchester United`,
     card_pack: 2,
     card_color: 2,
+    team_record: 'Premier League, UEFA Champions League',
+    man_record: '2008 Ballon dor ,UEFA Champions League Top Scorer, Premeir League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/4-3.png',
   },
@@ -113,6 +137,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 2,
     card_color: 0,
+    team_record: 'La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/5-1.png',
   },
@@ -122,6 +148,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 2,
     card_color: 1,
+    team_record: 'La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/5-2.png',
   },
@@ -131,6 +159,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 2,
     card_color: 2,
+    team_record: 'La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/5-3.png',
   },
@@ -140,6 +170,8 @@ export const nft_infos = [
     team: `Portugal`,
     card_pack: 2,
     card_color: 0,
+    team_record: '2016 Euro',
+    man_record: '2017 Ballon dor , 2016 Euro Sliver Boot',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/6-1.png',
   },
@@ -149,6 +181,8 @@ export const nft_infos = [
     team: `Portugal`,
     card_pack: 2,
     card_color: 1,
+    team_record: '2016 Euro',
+    man_record: '2017 Ballon dor , 2016 Euro Sliver Boot',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/6-2.png',
   },
@@ -158,6 +192,8 @@ export const nft_infos = [
     team: `Portugal`,
     card_pack: 2,
     card_color: 2,
+    team_record: '2016 Euro',
+    man_record: '2017 Ballon dor , 2016 Euro Sliver Boot',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/6-3.png',
   },
@@ -167,6 +203,8 @@ export const nft_infos = [
     team: `Tottenham`,
     card_pack: 2,
     card_color: 0,
+    team_record: '',
+    man_record: 'Premeir League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/7-1.png',
   },
@@ -176,6 +214,8 @@ export const nft_infos = [
     team: `Tottenham`,
     card_pack: 2,
     card_color: 1,
+    team_record: '',
+    man_record: 'Premeir League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/7-2.png',
   },
@@ -185,6 +225,8 @@ export const nft_infos = [
     team: `Tottenham`,
     card_pack: 2,
     card_color: 2,
+    team_record: '',
+    man_record: 'Premeir League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/7-3.png',
   },
@@ -194,6 +236,8 @@ export const nft_infos = [
     team: `Frankfurt`,
     card_pack: 2,
     card_color: 0,
+    team_record: 'UEFA Cup',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/8-1.png',
   },
@@ -203,6 +247,8 @@ export const nft_infos = [
     team: `Frankfurt`,
     card_pack: 2,
     card_color: 1,
+    team_record: 'UEFA Cup',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/8-2.png',
   },
@@ -212,6 +258,8 @@ export const nft_infos = [
     team: `Frankfurt`,
     card_pack: 2,
     card_color: 2,
+    team_record: 'UEFA Cup',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/8-3.png',
   },
@@ -221,6 +269,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 2,
     card_color: 0,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '2022 Ballon dor, UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/9-1.png',
   },
@@ -230,6 +280,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 2,
     card_color: 1,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '2022 Ballon dor, UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/9-2.png',
   },
@@ -239,6 +291,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 2,
     card_color: 2,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '2022 Ballon dor, UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/9-3.png',
   },
@@ -248,6 +302,8 @@ export const nft_infos = [
     team: `FC Barcelona`,
     card_pack: 2,
     card_color: 0,
+    team_record: 'La Liga',
+    man_record: 'La Liga Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/10-1.png',
   },
@@ -257,6 +313,8 @@ export const nft_infos = [
     team: `FC Barcelona`,
     card_pack: 2,
     card_color: 1,
+    team_record: 'La Liga',
+    man_record: 'La Liga Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/10-2.png',
   },
@@ -266,6 +324,8 @@ export const nft_infos = [
     team: `FC Barcelona`,
     card_pack: 2,
     card_color: 2,
+    team_record: 'La Liga',
+    man_record: 'La Liga Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/10-3.png',
   },
@@ -275,6 +335,8 @@ export const nft_infos = [
     team: `AC Millan`,
     card_pack: 1,
     card_color: 0,
+    team_record: 'UEFA Champions League',
+    man_record: '2007 Ballon dor, UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/11-1.png',
   },
@@ -284,6 +346,8 @@ export const nft_infos = [
     team: `AC Millan`,
     card_pack: 1,
     card_color: 1,
+    team_record: 'UEFA Champions League',
+    man_record: '2007 Ballon dor, UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/11-2.png',
   },
@@ -293,6 +357,8 @@ export const nft_infos = [
     team: `AC Millan`,
     card_pack: 1,
     card_color: 2,
+    team_record: 'UEFA Champions League',
+    man_record: '2007 Ballon dor, UEFA Champions League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/11-3.png',
   },
@@ -302,6 +368,8 @@ export const nft_infos = [
     team: `Bayern Munchen`,
     card_pack: 1,
     card_color: 0,
+    team_record: 'Bundesliga, UEFA Champions League',
+    man_record: 'UEFA Champions League Top Scorer, Bundesliga Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/12-1.png',
   },
@@ -311,6 +379,8 @@ export const nft_infos = [
     team: `Bayern Munchen`,
     card_pack: 1,
     card_color: 1,
+    team_record: 'Bundesliga, UEFA Champions League',
+    man_record: 'UEFA Champions League Top Scorer, Bundesliga Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/12-2.png',
   },
@@ -320,6 +390,8 @@ export const nft_infos = [
     team: `Bayern Munchen`,
     card_pack: 1,
     card_color: 2,
+    team_record: 'Bundesliga, UEFA Champions League',
+    man_record: 'UEFA Champions League Top Scorer, Bundesliga Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/12-3.png',
   },
@@ -329,6 +401,8 @@ export const nft_infos = [
     team: `France`,
     card_pack: 1,
     card_color: 0,
+    team_record: '',
+    man_record: '2006 World Cup Golden Ball',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/13-1.png',
   },
@@ -338,6 +412,8 @@ export const nft_infos = [
     team: `France`,
     card_pack: 1,
     card_color: 1,
+    team_record: '',
+    man_record: '2006 World Cup Golden Ball',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/13-2.png',
   },
@@ -347,6 +423,8 @@ export const nft_infos = [
     team: `France`,
     card_pack: 1,
     card_color: 2,
+    team_record: '',
+    man_record: '2006 World Cup Golden Ball',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/13-3.png',
   },
@@ -356,6 +434,8 @@ export const nft_infos = [
     team: `Brazil`,
     card_pack: 1,
     card_color: 0,
+    team_record: '2002 World Cup',
+    man_record: '2002 Ballon dor, 2002 World Cup Golden Boot',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/14-1.png',
   },
@@ -365,6 +445,8 @@ export const nft_infos = [
     team: `Brazil`,
     card_pack: 1,
     card_color: 1,
+    team_record: '2002 World Cup',
+    man_record: '2002 Ballon dor, 2002 World Cup Golden Boot',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/14-2.png',
   },
@@ -374,6 +456,8 @@ export const nft_infos = [
     team: `Brazil`,
     card_pack: 1,
     card_color: 2,
+    team_record: '2002 World Cup',
+    man_record: '2002 Ballon dor, 2002 World Cup Golden Boot',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/14-3.png',
   },
@@ -383,6 +467,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 0,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/15-1.png',
   },
@@ -392,6 +478,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 1,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/15-2.png',
   },
@@ -401,6 +489,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 2,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/15-3.png',
   },
@@ -410,6 +500,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 0,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/16-1.png',
   },
@@ -419,6 +511,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 1,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/16-2.png',
   },
@@ -428,6 +522,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 2,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/16-3.png',
   },
@@ -437,6 +533,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 0,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/17-1.png',
   },
@@ -446,6 +544,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 1,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/17-2.png',
   },
@@ -455,6 +555,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 2,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/17-3.png',
   },
@@ -464,6 +566,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 0,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/18-1.png',
   },
@@ -473,6 +577,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 1,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/18-2.png',
   },
@@ -482,6 +588,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 2,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/18-3.png',
   },
@@ -491,6 +599,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 0,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/19-1.png',
   },
@@ -500,6 +610,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 1,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/19-2.png',
   },
@@ -509,6 +621,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 2,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/19-3.png',
   },
@@ -518,6 +632,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 0,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/20-1.png',
   },
@@ -527,6 +643,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 1,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/20-2.png',
   },
@@ -536,6 +654,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 1,
     card_color: 2,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/20-3.png',
   },
@@ -545,6 +665,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 0,
     card_color: 0,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/21-1.png',
   },
@@ -563,6 +685,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 0,
     card_color: 2,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/21-3.png',
   },
@@ -572,6 +696,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 0,
     card_color: 0,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/22-1.png',
   },
@@ -581,6 +707,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 0,
     card_color: 1,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/22-2.png',
   },
@@ -590,6 +718,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 0,
     card_color: 2,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/22-3.png',
   },
@@ -600,6 +730,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 0,
     card_color: 0,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/23-1.png',
   },
@@ -609,6 +741,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 0,
     card_color: 1,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/23-2.png',
   },
@@ -618,6 +752,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 0,
     card_color: 2,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/23-3.png',
   },
@@ -627,6 +763,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 0,
     card_color: 0,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/24-1.png',
   },
@@ -636,6 +774,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 0,
     card_color: 1,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/24-2.png',
   },
@@ -645,6 +785,8 @@ export const nft_infos = [
     team: `Real Madrid`,
     card_pack: 0,
     card_color: 2,
+    team_record: 'UEFA Champions League, La Liga',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/24-3.png',
   },
@@ -654,6 +796,8 @@ export const nft_infos = [
     team: `Liverpool`,
     card_pack: 0,
     card_color: 0,
+    team_record: '',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/25-1.png',
   },
@@ -663,6 +807,8 @@ export const nft_infos = [
     team: `Liverpool`,
     card_pack: 0,
     card_color: 1,
+    team_record: '',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/25-2.png',
   },
@@ -672,6 +818,8 @@ export const nft_infos = [
     team: `Liverpool`,
     card_pack: 0,
     card_color: 2,
+    team_record: '',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/25-3.png',
   },
@@ -681,6 +829,8 @@ export const nft_infos = [
     team: `Liverpool`,
     card_pack: 0,
     card_color: 0,
+    team_record: 'UEFA Champions League',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/26-1.png',
   },
@@ -690,6 +840,8 @@ export const nft_infos = [
     team: `Liverpool`,
     card_pack: 0,
     card_color: 1,
+    team_record: 'UEFA Champions League',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/26-2.png',
   },
@@ -699,6 +851,8 @@ export const nft_infos = [
     team: `Liverpool`,
     card_pack: 0,
     card_color: 2,
+    team_record: 'UEFA Champions League',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/26-3.png',
   },
@@ -708,6 +862,8 @@ export const nft_infos = [
     team: `Arsenal`,
     card_pack: 0,
     card_color: 0,
+    team_record: 'Premier League',
+    man_record: 'Premeir League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/27-1.png',
   },
@@ -717,6 +873,8 @@ export const nft_infos = [
     team: `Arsenal`,
     card_pack: 0,
     card_color: 1,
+    team_record: 'Premier League',
+    man_record: 'Premeir League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/27-2.png',
   },
@@ -726,6 +884,8 @@ export const nft_infos = [
     team: `Arsenal`,
     card_pack: 0,
     card_color: 2,
+    team_record: 'Premier League',
+    man_record: 'Premeir League Top Scorer',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/27-3.png',
   },
@@ -735,6 +895,8 @@ export const nft_infos = [
     team: `Manchester United`,
     card_pack: 0,
     card_color: 0,
+    team_record: '',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/28-1.png',
   },
@@ -744,6 +906,8 @@ export const nft_infos = [
     team: `Manchester United`,
     card_pack: 0,
     card_color: 1,
+    team_record: '',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/28-2.png',
   },
@@ -753,6 +917,8 @@ export const nft_infos = [
     team: `Manchester United`,
     card_pack: 0,
     card_color: 2,
+    team_record: '',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/28-3.png',
   },
@@ -762,6 +928,8 @@ export const nft_infos = [
     team: `France`,
     card_pack: 0,
     card_color: 0,
+    team_record: '2018 World Cup',
+    man_record: '2018 World Cup Best Young Player',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/29-1.png',
   },
@@ -771,6 +939,8 @@ export const nft_infos = [
     team: `France`,
     card_pack: 0,
     card_color: 1,
+    team_record: '2018 World Cup',
+    man_record: '2018 World Cup Best Young Player',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/29-2.png',
   },
@@ -780,6 +950,8 @@ export const nft_infos = [
     team: `France`,
     card_pack: 0,
     card_color: 2,
+    team_record: '2018 World Cup',
+    man_record: '2018 World Cup Best Young Player',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/29-3.png',
   },
@@ -789,6 +961,8 @@ export const nft_infos = [
     team: `PSG`,
     card_pack: 0,
     card_color: 0,
+    team_record: 'League 1',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/30-1.png',
   },
@@ -798,6 +972,8 @@ export const nft_infos = [
     team: `PSG`,
     card_pack: 0,
     card_color: 1,
+    team_record: 'League 1',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/30-2.png',
   },
@@ -807,6 +983,8 @@ export const nft_infos = [
     team: `PSG`,
     card_pack: 0,
     card_color: 2,
+    team_record: 'League 1',
+    man_record: '',
     img_url:
       'https://gateway.pinata.cloud/ipfs/QmSp1ZxXTiGVSBpoE2VQ4csj1gGEBDicRb2HNvNnJCyQxZ/30-3.png',
   },

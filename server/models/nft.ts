@@ -11,6 +11,8 @@ interface NftAttributes {
   selling_price: number;
   img_url: string;
   isSell: boolean;
+  team_record: string;
+  man_record: string;
 }
 
 class Nft extends Model<NftAttributes> {
@@ -24,6 +26,8 @@ class Nft extends Model<NftAttributes> {
   public selling_price!: number;
   public img_url!: string;
   public isSell!: boolean;
+  public team_record!: string;
+  public man_record!: string;
 
   public static initModel(sequelize: Sequelize) {
     return Nft.init(
@@ -67,6 +71,14 @@ class Nft extends Model<NftAttributes> {
         isSell: {
           type: DataTypes.BOOLEAN,
           allowNull: false,
+        },
+        team_record: {
+          type: DataTypes.STRING(255),
+          allowNull: true,
+        },
+        man_record: {
+          type: DataTypes.STRING(255),
+          allowNull: true,
         },
       },
       {

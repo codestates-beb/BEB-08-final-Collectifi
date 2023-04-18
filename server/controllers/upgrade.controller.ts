@@ -84,6 +84,8 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
               card_color: upgradeCard.card_color,
               img_url: upgradeCard.img_url,
               isSell: false,
+              team_record: upgradeCard.team_record,
+              man_record: upgradeCard.man_record,
             });
             //데이터 베이스에서 뽑은 Nft_info정보 삭제
             const deleteNftInfo = await db.Nft_info.destroy({
@@ -145,6 +147,8 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
               card_color: upgradeCard.card_color,
               img_url: upgradeCard.img_url,
               isSell: false,
+              team_record: upgradeCard.team_record,
+              man_record: upgradeCard.man_record,
             });
             //데이터 베이스에서 뽑은 Nft_info정보 삭제
             const deleteNftInfo = await db.Nft_info.destroy({
