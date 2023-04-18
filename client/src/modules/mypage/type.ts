@@ -3,4 +3,5 @@ export type user = {
   nickname: string;
   address: string;
   token_amount: number;
+  referral: string;
 }
