@@ -7,7 +7,7 @@ import { currDetailCardId, sellPrice, cardByIdQuery, txByIdQuery, getSellApprove
 import { userAddr, userAmount } from '../../modules/atom';
 import { tx } from '../../modules/market/type';
 
-import { sendTx, getTransactionCount } from '../../modules/wallet';
+import { sendTx } from '../../modules/wallet';
 import PlayerCard, { Glow } from '../UI/PlayerCard';
 import PageTitle from '../UI/PageTitle';
 import BoardList from '../UI/BoardList';
@@ -128,16 +128,22 @@ const CardDetail = () => {
 
   useEffect(() => {
     if(id) setCardId(parseInt(id));
-    //cardInfoRefresh();
-    //txListRefresh();
+    return () => {
+      cardInfoRefresh();
+      txListRefresh();
+      sellRefresh();
+    }    
   }, [id]);
 
   const isOwner = cardById.isOwner;
   //const isOwner = false;
   const cardWidth = "350px";
-  const infoTitle = ["TEAM", "SEASON", "OWNER", "PRICE"];
-  const infoData = [cardInfo.team, 
-    cardInfo.season, 
+  const infoTitle = ["TEAM", "SEASON", "AWARD", "TEAM AWARD", "OWNER", "PRICE"];
+  const infoData = [    
+    cardInfo.team, 
+    cardInfo.season,
+    cardInfo.man_record,
+    cardInfo.team_record, 
     cardInfo.user_id,
     cardInfo.isSell && cardInfo.selling_price
   ];   
@@ -168,7 +174,7 @@ const CardDetail = () => {
             const listItem = [infoTitle[i], el];
             return (<BoardListItemInfo key={i} 
               listItem={listItem} 
-              gridTemplateColumns='1fr 9fr'
+              gridTemplateColumns='2fr 8fr'
               isLast={arr.length === i + 1}
               linkTo={(infoTitle[i] === 'OWNER') ? `/user/${el}`: undefined}
               />)

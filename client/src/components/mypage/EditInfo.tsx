@@ -14,23 +14,31 @@ const EditInfo = () => {
   const [message, setMessage] = useState("");
   const [title, setTitle] = useState("");
   //
-  const [isClickOk, setIsClickOk] = useState(false);
+  const [isEditClick, setIsEditClick] = useState(false);
+  const [isReferClick, setIsReferClick] = useState(false);
   const nickEditInputRef = useRef<HTMLInputElement>(null);
   const referralEditInputRef = useRef<HTMLInputElement>(null);
   const referral = useRecoilValue(userReferral);
 
   const handleEditClick = () => {
-    setIsClickOk(true);
+    setIsEditClick(true);
   }
 
-  const handleOkClick = async () => {
+  const handleReferClick = () => {
+    setIsReferClick(true);
+  }
+
+  const handleEditOkClick = async () => {
     await editNickName();
-    if(!referral || referral === "") {
-      const referralResult = await editReferral();
-      if(referralResult === false) openModal("추천인 등록 실패", "추천인 등록에 실패했어요.");
-      else if(referralResult === true) openModal("추천인 등록 성공", "추천인 등록에 성공했어요.");
-    }    
-    setIsClickOk(false);
+    setIsEditClick(false);
+  }
+
+  const handleReffClick = async () => {
+    const referralResult = await editReferral();
+    if(referralResult === false) openModal("추천인 등록 실패", "추천인 등록에 실패했어요.");
+    else if(referralResult === true) openModal("추천인 등록 성공", "추천인 등록에 성공했어요.");
+ 
+    setIsReferClick(false);
   }
 
   const editNickName = useRecoilCallback(({ set, snapshot }) => async () => {
@@ -80,32 +88,42 @@ const EditInfo = () => {
         onConfirm={handleModalClick}
       />
     )}
-    {isClickOk ? 
+    {isEditClick ?
     <div className='open-edit-wrap'>
       <div>
-        <ThinButton color='rgb(250, 250, 250)' onClick={handleOkClick}>OK</ThinButton>
+        <ThinButton color='rgb(250, 250, 250)' onClick={handleEditOkClick}>OK</ThinButton>
       </div>
       <div>
         <div className='nickname-edit-wrap'>        
           <label htmlFor="nickname-edit-input" />
           <ThinInput id="nickname-edit-input" placeholder="NEW NICKNAME" ref={nickEditInputRef}/>
         </div>
-        {
-          (!referral || referral === "") && <div className='referral-edit-wrap'>
+      </div>      
+    </div>
+    : !isReferClick && <ThinButton color='rgb(250, 250, 250)' onClick={handleEditClick}>EDIT</ThinButton>    
+    }
+
+    {(!referral || referral === "") && (isReferClick ? 
+    <div className='open-edit-wrap'>
+      <div>
+        <ThinButton color='rgb(250, 250, 250)' onClick={handleReffClick}>OK</ThinButton>
+      </div>
+      <div>
+          <div className='referral-edit-wrap'>
             <label htmlFor="referral-edit-input" />
             <ThinInput id="referral-edit-input" placeholder="REFERRAL ADDR" ref={referralEditInputRef}/>
           </div>
-        }
       </div>      
     </div>
-    : <ThinButton color='rgb(250, 250, 250)' onClick={handleEditClick}>EDIT</ThinButton>    
-    }       
+    : !isEditClick && <ThinButton color='rgb(250, 250, 250)' onClick={handleReferClick}>REFERRAL</ThinButton>    
+    )}       
   </EditInfoLayout>
 }
 
 export default EditInfo;
 
 const EditInfoLayout = styled.div`
+  display: inline-flex;
   & #nickname-edit-input {
     //padding: 10px;
   }
@@ -116,6 +134,6 @@ const EditInfoLayout = styled.div`
   }
 
   & .referral-edit-wrap {
-    margin-top: 10px;
+    //margin-top: 10px;
   }
 `

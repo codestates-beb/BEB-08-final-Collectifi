@@ -11,7 +11,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Dropdown from './Dropdown';
 import axios from 'axios';
 import { useRecoilValue, useRecoilCallback, useRecoilRefresher_UNSTABLE } from 'recoil';
-import { userAddr, userId, userNickname, userAmount, logoutQuery } from '../modules/atom';
+import { userAddr, userId, userNickname, userAmount, userReferral, logoutQuery } from '../modules/atom';
 import { getUserQuery } from '../modules/mypage/atom';
 import MyInfo from './MyInfo';
 import { darken } from 'polished';
@@ -39,7 +39,7 @@ const navVariants = {
 };
 
 const Nav = styled(motion.div)`
-  height: 90px;
+  height: 80px;
   /* margin-top: -70px; */
   display: flex;
   justify-content: center;
@@ -268,6 +268,7 @@ const Header = ({toggle}: PageLayoutProps) => {
             set(userId, res.data.data.id);
             set(userNickname, res.data.data.nickname);
             set(userAmount, res.data.data.token_amount);  
+            set(userReferral, res.data.data.referral); 
             toast.success('logged in successfully! 🎉');
           });
         // setIsLoggedIn(true);
@@ -286,7 +287,8 @@ const Header = ({toggle}: PageLayoutProps) => {
     set(userAddr, "");
     set(userId, 0);
     set(userNickname, "");
-    set(userAmount, 0);  
+    set(userAmount, 0); 
+    set(userReferral, null);
     logoutRefresh();
     userRefresh();
     console.log("logout", result);
