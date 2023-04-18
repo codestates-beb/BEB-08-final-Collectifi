@@ -172,8 +172,10 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
     console.log(balance);
     if (balance >= selling_price) {
       console.log('=======안녕===');
+      const stringFromAddress: string = String(fromAddress);
+      const stringNftOwnerAddress: string = String(nftOwnerAddress);
 
-      if (nftOwnerAddress == fromAddress) {
+      if (stringNftOwnerAddress.toUpperCase() == stringFromAddress.toUpperCase()) {
         console.log('=======하이===');
 
         //확인 후 NFT옮기는 권한을 부여한 후 NFT 소유권 이동 및 토큰 수량 업데이트
