@@ -177,14 +177,6 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
         console.log('=======하이===');
 
         //확인 후 NFT옮기는 권한을 부여한 후 NFT 소유권 이동 및 토큰 수량 업데이트
-        const approve = await erc721Contract.methods
-          .approve(process.env.SERVER_ADDRESS, token_id)
-          .send({from: fromAddress, gas: 500000});
-        console.log('=======approve===========', approve);
-        const tokenApprove = await erc20Contract.methods
-          .approve(process.env.ERC721_CA, selling_price)
-          .send({from: toAddress, gas: 500000});
-        console.log('=======tokenApprove===========', tokenApprove);
         const safeTransferFrom = await erc721Contract.methods
           .transferNFT(fromAddress, toAddress, token_id, selling_price)
           .send({from: process.env.SERVER_ADDRESS, gas: 500000});
