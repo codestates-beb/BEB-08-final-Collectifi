@@ -44,9 +44,9 @@ const BoardListItemRow = styled.div<{gridTemplateColumns: string; col: number}>`
 
   & .item {    
     padding: 24px 12px;
-    // width: 100%;
-    // overflow: hidden;
-    // white-space: nowrap;
-    // text-overflow: ellipsis;
+    //width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }  
 `
