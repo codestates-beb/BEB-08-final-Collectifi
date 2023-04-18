@@ -105,6 +105,7 @@ export const market_sell_post = async (req: MyRequest, res: Response, next: Next
     }
     return res.status(400).send({message: '실패했습니다'});
   } catch (e) {
+    return res.status(400).send({message: '실패했습니다'});
     console.log(e);
   }
 };
@@ -221,6 +222,7 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
     }
     return res.status(400).send({message: '오류가 발생했습니다'});
   } catch (e) {
+    return res.status(400).send({message: '실패했습니다'});
     console.log('ERROR:: ', e);
   }
 };
