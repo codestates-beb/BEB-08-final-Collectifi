@@ -10,6 +10,8 @@ export type nft = {
   selling_price: number;
   img_url: string;
   isSell: boolean;
+  team_record: string;
+  man_record: string;
 }
 
 export type post = {
