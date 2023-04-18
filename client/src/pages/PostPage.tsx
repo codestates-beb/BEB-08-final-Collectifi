@@ -360,6 +360,8 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
   };
 
   // 댓글 좋아요 기능 관련
+  const [commentLike, setCommentLike] = useState(0);
+  const [commentDislike, setCommentDislike] = useState(0);
   const handleCommentLikes = (e: number, like: string) => {
     console.log('라이크: ', like);
     axios // localhost:8000/community/2/comment/3/like
@@ -372,10 +374,10 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
         console.log('좋아요: ', res);
         if (res.data.data.data == 'likes') {
           console.log('set likes: ', res.data.data.data);
-          setLike(prev => prev + 1);
+          // setLike(prev => prev + 1);
           toast.info('Like it!');
         } else if (res.data.data.data == 'dislikes') {
-          setdislike(prev => prev + 1);
+          // setdislike(prev => prev + 1);
           console.log('set dislikes: ', res.data.data.data);
           toast.info('Disike it!');
         } else {
@@ -387,7 +389,7 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
       .catch(err => {
         console.log('좋아요를 이미 눌렀습니다', err.response.data.message);
         // alert('Recommendations are only available once a day. ' + err);
-        toast.error(err.response.data.message);
+        toast.error('Failed to like comment. ' + err);
       });
   };
   const editComment = (e: number) => {
