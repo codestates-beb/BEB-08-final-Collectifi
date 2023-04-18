@@ -11,6 +11,7 @@ interface User {
 interface MySessionData extends SessionData {
   user?: User | null;
   loggedIn?: boolean;
+  admin?: boolean;
 }
 
 interface MyRequest extends express.Request {

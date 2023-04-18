@@ -40,7 +40,7 @@ const MainBack = styled.div`
       rgba(255, 255, 255, 0.9) 70%,
       rgba(255, 255, 255, 1) 100%
     ),
-    url('/main1.png') no-repeat;
+    url('/bg3.png') no-repeat;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -153,7 +153,7 @@ const MainPage = () => {
         </Suspense>
       </ErrorBoundary> */}
       <ImagWrapper>
-        <MainImg src="/main1.png" />
+        <MainImg src="/bg3.png" />
         <MainBack />
         <MainButton onClick={Toast}>Get Player NFT</MainButton>
       </ImagWrapper>
