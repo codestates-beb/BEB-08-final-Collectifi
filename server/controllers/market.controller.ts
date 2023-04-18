@@ -20,9 +20,9 @@ export const market_get = async (req: Request, res: Response, next: NextFunction
         },
       ],
     });
-    res.status(200).send({message: 'nft 목록 불러오기 성공', data: nfts});
+    return res.status(200).send({message: 'nft 목록 불러오기 성공', data: nfts});
   } catch (e) {
-    res.status(400).send({message: 'nft 목록 불러오기 실패'});
+    return res.status(400).send({message: 'nft 목록 불러오기 실패'});
 
     console.log(e);
   }
@@ -44,7 +44,7 @@ export const market_nft_get = async (req: MyRequest, res: Response, next: NextFu
     return res.status(200).send({message: '성공', data: {nft: nft, isOwner}});
   } catch (e) {
     console.log('ERROR:: ', e);
-    res.status(400).send({message: '실패했습니다.'});
+    return res.status(400).send({message: '실패했습니다.'});
   }
 };
 
@@ -54,9 +54,9 @@ export const market_nft_record_get = async (req: Request, res: Response, next: N
     const nftRecords = await db.Nft_record.findAll({
       where: {token_id: id},
     });
-    res.status(200).send({message: 'nft 목록 불러오기 성공', data: nftRecords});
+    return res.status(200).send({message: 'nft 목록 불러오기 성공', data: nftRecords});
   } catch (e) {
-    res.status(400).send({message: 'nft 목록 불러오기 실패'});
+    return res.status(400).send({message: 'nft 목록 불러오기 실패'});
 
     console.log(e);
   }
@@ -70,9 +70,9 @@ export const market_sell_get = async (req: MyRequest, res: Response, next: NextF
     const nfts = await db.Nft.findAll({
       where: {isSell: false, user_id: id}, //세션 아이디 받아오기
     });
-    res.status(200).send({message: '성공', data: nfts});
+    return res.status(200).send({message: '성공', data: nfts});
   } catch (e) {
-    res.status(400).send({message: '실패'});
+    return res.status(400).send({message: '실패'});
 
     console.log(e);
   }
@@ -120,7 +120,7 @@ export const market_apporve_token_get = async (
     return res.status(200).send({message: '성공', data: {approve, erc20ca: process.env.ERC20_CA}});
   } catch (e) {
     console.log('ERROR:: ', e);
-    res.status(400).send({message: '실패했습니다.'});
+    return res.status(400).send({message: '실패했습니다.'});
   }
 };
 
@@ -135,7 +135,7 @@ export const market_apporve_nft_get = async (req: MyRequest, res: Response, next
       .send({message: '성공', data: {approve, erc721ca: process.env.ERC721_CA}});
   } catch (e) {
     console.log('ERROR:: ', e);
-    res.status(400).send({message: '실패했습니다.'});
+    return res.status(400).send({message: '실패했습니다.'});
   }
 };
 
