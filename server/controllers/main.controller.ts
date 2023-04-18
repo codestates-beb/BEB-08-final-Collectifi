@@ -38,9 +38,9 @@ export const login_post = async (req: MyRequest, res: Response, next: NextFuncti
         address,
         token_amount: 1000,
       });
-      // const reward = await erc20Contract.methods
-      //   .joinReward(address)
-      //   .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+      const reward = await erc20Contract.methods
+        .joinReward(address)
+        .send({from: process.env.SERVER_ADDRESS, gas: 500000});
       console.log('=====user====', user);
 
       // 3. session에 해당 user 정보 저장
@@ -52,7 +52,7 @@ export const login_post = async (req: MyRequest, res: Response, next: NextFuncti
     // 3. session에 해당 user 정보 저장
     req.session.loggedIn = true;
     req.session.user = exists;
-    console.log('세션', req.session.user?.id);  
+    console.log('세션', req.session.user?.id);
     return sendResponse(res, 200, '로그인 성공!', exists);
   } catch (e) {
     console.log(e);
@@ -75,14 +75,13 @@ export const logout_post = async (req: MyRequest, res: Response, next: NextFunct
 //로그인 확인
 export const checklogin_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
-    if(!req.session.user) 
-      throw new Error(`not login`);
+    if (!req.session.user) throw new Error(`not login`);
     const id = req.session.user.id;
     const result = await db.User.findOne({
       where: {
         id,
       },
-    });      
+    });
     sendResponse(res, 200, '로그인 상태', result);
   } catch (e) {
     sendResponse(res, 400, '로그인 상태X');
@@ -94,13 +93,13 @@ export const checklogin_get = async (req: MyRequest, res: Response, next: NextFu
 export const dummy_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     // 더미 User 10개 만들고 넣기
-    for (let i = 0; i < 10; i++) {
-      let users = await db.User.create({
-        nickname: `user${i}`,
-        address: `xdf3234${i}`,
-        token_amount: 1000,
-      });
-    }
+    // for (let i = 0; i < 10; i++) {
+    //   let users = await db.User.create({
+    //     nickname: `user${i}`,
+    //     address: `xdf3234${i}`,
+    //     token_amount: 1000,
+    //   });
+    // }
 
     // Post 더미 데이터 200개 넣기
     data.map(item => {
@@ -131,23 +130,27 @@ export const dummy_get = async (req: MyRequest, res: Response, next: NextFunctio
         card_pack: item.card_pack,
         card_color: item.card_color,
         img_url: item.img_url,
+        team_record: item.team_record,
+        man_record: item.man_record,
       });
     });
     //판매중인 Nft 데이터 넣기 (마켓 테스트 위한)
-    // nft_infos.map(item => {
-    //   const selling_nfts = db.Nft.create({
-    //     token_id: 1,
-    //     user_id: 1,
-    //     player: 'Lionel Messi',
-    //     season: '2011-2012',
-    //     team: 'FC Barcelona',
-    //     card_color: 0,
-    //     price: 500,
-    //     selling_price: 500,
-    //     img_url: item.img_url,
-    //     isSell: true,
-    //   });
-    // });
+    nft_infos.slice(0, 12).map(item => {
+      const selling_nfts = db.Nft.create({
+        token_id: 1,
+        user_id: 1,
+        player: item.player,
+        season: item.season,
+        team: item.team,
+        card_color: 0,
+        price: 500,
+        selling_price: 500,
+        img_url: item.img_url,
+        isSell: true,
+        team_record: item.team_record,
+        man_record: item.man_record,
+      });
+    });
 
     sendResponse(res, 200, '데이터 삽입 완료');
   } catch (e) {
