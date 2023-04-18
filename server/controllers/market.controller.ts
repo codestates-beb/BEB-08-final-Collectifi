@@ -84,11 +84,13 @@ export const market_sell_post = async (req: MyRequest, res: Response, next: Next
     const {selling_price, token_id} = req.body;
     const fromAddress = req.session.user?.address;
     const nftOwnerAddress = await erc721Contract.methods.ownerOf(token_id).call();
+    const stringFromAddress: string = String(fromAddress);
+    const stringNftOwnerAddress: string = String(nftOwnerAddress);
     console.log('======nftOwnerAddress=======', nftOwnerAddress);
     console.log('=======fromAddress=======', fromAddress);
 
     //판매 등록을 할때 소유자가 판매 금액을 작성하면 contract NFT 정보들 중 price가 업데이트
-    if (nftOwnerAddress == fromAddress) {
+    if (stringFromAddress.toUpperCase() == stringNftOwnerAddress.toUpperCase()) {
       const nftModify = await db.Nft.update(
         {
           isSell: true,
@@ -175,6 +177,14 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
         console.log('=======하이===');
 
         //확인 후 NFT옮기는 권한을 부여한 후 NFT 소유권 이동 및 토큰 수량 업데이트
+        const approve = await erc721Contract.methods
+          .approve(process.env.SERVER_ADDRESS, token_id)
+          .send({from: fromAddress, gas: 500000});
+        console.log('=======approve===========', approve);
+        const tokenApprove = await erc20Contract.methods
+          .approve(process.env.ERC721_CA, selling_price)
+          .send({from: toAddress, gas: 500000});
+        console.log('=======tokenApprove===========', tokenApprove);
         const safeTransferFrom = await erc721Contract.methods
           .transferNFT(fromAddress, toAddress, token_id, selling_price)
           .send({from: process.env.SERVER_ADDRESS, gas: 500000});
@@ -192,27 +202,31 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
             where: {token_id: token_id},
           },
         );
+        console.log('=========nftModify============', nftModify);
         //구매자와 판매자의 토큰 수량 업데이트
         const buyer = await db.User.findOne({
           where: {
             id: toUserId,
           },
         });
+        console.log('=========buyer============', buyer);
         //nft_record에 거래 기록을 저장
         const nftRecord = await db.Nft_record.create({
           token_id,
-          fromAddress,
-          toAddress,
+          from_address: fromAddress,
+          to_address: toAddress,
           price: selling_price,
         });
+        console.log('=========nftRecord============', nftRecord);
         const sellerModify = await seller.increment('token_amount', {by: selling_price});
+        console.log('=========sellerModify============', sellerModify);
         const buyerModify = await buyer.decrement('token_amount', {by: selling_price});
+        console.log('=========buyerModify============', buyerModify);
         return res.status(200).send({message: '구매에 성공했습니다'});
       }
     }
     return res.status(400).send({message: '오류가 발생했습니다'});
   } catch (e) {
     console.log('ERROR:: ', e);
-    res.status(400).send({message: '실패했습니다.'});
   }
 };
