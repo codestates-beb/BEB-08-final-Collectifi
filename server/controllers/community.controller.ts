@@ -72,6 +72,7 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
     console.log('================title===============', title);
     // 2. session에서 user 추출
     const id = req.session.user?.id;
+    const userAddress = req.session.user?.address;
     console.log('================id=================', id);
     console.log('================id=================', id);
 
@@ -87,6 +88,13 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
       title: title,
       content: content,
     });
+    // 작성자의 address, user_id 추가
+    const postLiked = await db.Post_liked.create({
+      post_id: Number(post.id),
+      address: userAddress,
+      user_id: id
+ 
+    })
     //5. 잘 저장되었다면, erc-20 토큰을 보상으로 1개 주기
     if (post) {
       const web3 = new Web3(
@@ -209,6 +217,30 @@ export const like_post = async (req: MyRequest, res: Response, next: NextFunctio
     if (!data) {
       sendResponse(res, 400, '요청 실패');
     }
+
+    // post_comment_liked에서 address가 있는지 필터링 후 없을 때 실행.
+    const posttLikedFind = await db.Post_liked.findOne({
+      where: {
+        post_id: postId,
+        user_id: user?.id
+      },
+    });
+    // 첫번째 데이터는 글쓴이 이므로 글쓴이가 눌렀는지 판단
+    const firstData = await db.Post_liked.findAll({
+      where: { post_id:  postId},
+      order:[['id','ASC']],
+      limit: 1,
+    })
+    if (firstData[0].user_id == user?.id ) {
+      return sendResponse(res, 400, "You can't Like/Dislike your own post.");
+    }
+    if( posttLikedFind ) {
+      // return sendResponse(res, 400, firstData[0].address);
+      return sendResponse(res, 400, 'You can click the Like/Dislike button only once.');
+    }
+    
+
+
     // 3-1. 좋아요 경우 post의 likes를 1 증가
     if (data === 'likes') {
       const increaseLike = await post.increment('likes', {by: 1});
@@ -231,6 +263,14 @@ export const like_post = async (req: MyRequest, res: Response, next: NextFunctio
 
     //   }
     // }
+        // 지갑 주소와 user_id를 post_comment_likeds에 추가
+        const posttLiked = await db.Post_liked.create({
+          post_id: Number(postId),
+          address: user?.address,
+          user_id: user?.id
+        })
+    
+
     sendResponse(res, 200, '좋아요/싫어요 누르기 성공',{data});
   } catch (error) {
     sendResponse(res, 400, '좋아요/싫어요 누르기 실패');

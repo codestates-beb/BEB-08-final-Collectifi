@@ -331,8 +331,8 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
       })
       .catch(err => {
         console.log('좋아요를 이미 눌렀습니다', err);
+        toast.error(err.response.data.message);
         // alert('Recommendations are only available once a day.');
-        toast.error(err.response.data.error);
       });
   };
 
