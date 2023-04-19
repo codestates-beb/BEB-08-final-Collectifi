@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import UserList from './UserList';
 import {Sidebar, Menu, MenuItem, SubMenu} from 'react-pro-sidebar';
+import ReactPaginate from 'react-js-pagination';
 
 const Container = styled.div`
   background-color: blue;
@@ -112,14 +113,14 @@ const Admin = () => {
     <Layout>
       <TopBar>Collectifi Admin</TopBar>
       <Container>
-        <Sidebar>
+        <Sidebar style={{fontSize: 25, fontWeight: 600}}>
           <Menu>
-            <SubMenu label="Charts">
-              <MenuItem> Pie charts </MenuItem>
-              <MenuItem> Line charts </MenuItem>
+            <SubMenu label="Database">
+              <MenuItem>Users</MenuItem>
+              <MenuItem>Posts</MenuItem>
+              <MenuItem>Comments</MenuItem>
             </SubMenu>
-            <MenuItem> Documentation </MenuItem>
-            <MenuItem> Calendar </MenuItem>
+            <MenuItem>Win</MenuItem>
           </Menu>
         </Sidebar>
         <ContentBox></ContentBox>
