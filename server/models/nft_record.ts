@@ -26,7 +26,7 @@ class Nft_record extends Model<NftRecordAttributes> {
         },
         nft_id: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
         },
         from_address: {
           type: DataTypes.STRING(255),
@@ -42,7 +42,7 @@ class Nft_record extends Model<NftRecordAttributes> {
         },
         created_at: {
           type: DataTypes.DATE,
-          allowNull: false,
+          allowNull: true,
           defaultValue: DataTypes.NOW,
         },
       },

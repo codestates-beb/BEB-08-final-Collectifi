@@ -26,7 +26,6 @@ const MyPage = () => {
   const postRefresh = useRecoilRefresher_UNSTABLE(getPostListQuery);
   //recoil
   const nickname = useRecoilValue(userNickname);
-  //const usrId = useRecoilValue(userId);
   const setCurrId = useSetRecoilState(currentUserId);
   const [amount, setAmount] = useRecoilState(userAmount);
   const userInfo = useRecoilValue(getUserQuery);
@@ -38,9 +37,11 @@ const MyPage = () => {
       setCurrId(parseInt(id));      
     if(userInfo && userInfo.user.token_amount) 
       setAmount(userInfo.user.token_amount);
-    userRefresh();
-    cardRefresh();
-    postRefresh();
+    return () => {
+      userRefresh();
+      cardRefresh();
+      postRefresh();
+    }   
   }, [id]);
 
   console.log(userInfo, cardList, postList);
@@ -49,7 +50,7 @@ const MyPage = () => {
 
   const infoTitle = ["ADDRESS", "TOKEN AMOUNT", "NICKNAME"];
   const infoData = [userInfo.user.address.slice(0, 10), 
-    userInfo.isOwner ? amount :userInfo.user.token_amount, 
+    userInfo.isOwner ? amount : userInfo.user.token_amount, 
     userInfo.isOwner ? nickname : userInfo.user.nickname,
   ];
 
@@ -67,12 +68,12 @@ const MyPage = () => {
               isLast={arr.length === i + 1}
               />)
           })}
-        </BoardList>
-        {userInfo.isOwner && <div className='edit-wrap'>
+        </BoardList>        
+      </div>  
+      {userInfo.isOwner && <div className='edit-wrap'>
           <EditInfo />
-        </div>}
-      </div>      
-      <Tab title={[userInfo.isOwner ? 'MY CARD' : 'CARD',
+      </div>}    
+      <Tab className='tab' title={[userInfo.isOwner ? 'MY CARD' : 'CARD',
         userInfo.isOwner ? 'MY POST' : 'POST',
         userInfo.isOwner && 'GET OFFER']}
       >
@@ -149,8 +150,15 @@ const MyPageLayout = styled.div`
   max-width: 1140px;
   margin: 0 auto;
 
-  & .top {
-    margin-bottom: 40px;
+  & .edit-wrap {
+    margin-top: 5px;    
+  }
+
+  & .tab {
+    margin-top: 40px;
+  }
+
+  & .top {    
     //display: grid;
     //grid-template-columns: minmax(auto, 400px) auto;
     max-width: 400px;    
