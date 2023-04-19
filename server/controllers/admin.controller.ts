@@ -2,10 +2,6 @@ import express, {Request, Response, NextFunction} from 'express';
 import db from '../models';
 import {MyRequest} from '../@types/session';
 import {sendResponse} from './utils';
-import Web3 from 'web3';
-import erc20abi from '../abi/erc20abi';
-const web3 = new Web3(`HTTP://127.0.0.1:${process.env.GANACHE_PORT}`);
-const erc20Contract = new web3.eth.Contract(erc20abi, process.env.ERC20_CA);
 import bcrypt from 'bcrypt';
 
 // 관리자 로그인
@@ -87,5 +83,137 @@ export const admin_comments_get = async (req: MyRequest, res: Response, next: Ne
     sendResponse(res, 200, 'comments', {comments});
   } catch (e) {
     console.log(e);
+  }
+};
+
+// blacklists 불러오기
+export const admin_blacklists_get = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    //1. 관리자인지 확인
+    const admin = req.session.admin;
+    if (!admin) {
+      return sendResponse(res, 403, 'You are not Authorized');
+    }
+    //2. blacklists 모든 데이터 불러오기
+    const blacklists = await db.Blacklist.findAll();
+
+    sendResponse(res, 200, 'blacklists', {blacklists});
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+// 특정 post 삭제하기
+export const admin_post_delete = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    //1. 관리자인지 확인
+    const admin = req.session.admin;
+    if (!admin) {
+      return sendResponse(res, 403, 'You are not Authorized');
+    }
+    //2. front에서 post id 받아오기
+    const {id} = req.body;
+    // 3. 해당 post 삭제
+    const result = db.Post.destroy({
+      where: {
+        id,
+      },
+    });
+    if (!result) {
+      return sendResponse(res, 400, 'Fail to find the post');
+    }
+    // 4. front에 응답 보내주기
+    sendResponse(res, 200, 'Delete the Post Successfully');
+  } catch (e) {
+    console.log(e);
+    sendResponse(res, 400, 'Error : Fail to find the post');
+  }
+};
+
+// 특정 comment 삭제하기
+export const admin_comment_delete = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    //1. 관리자인지 확인
+    const admin = req.session.admin;
+    if (!admin) {
+      return sendResponse(res, 403, 'You are not Authorized');
+    }
+    //2. front에서 comment id 받아오기
+    const {id} = req.body;
+    // 3. 해당 comment 삭제
+    const result = db.Post_comment.destroy({
+      where: {
+        id,
+      },
+    });
+    if (!result) {
+      return sendResponse(res, 400, 'Fail to find the Comment');
+    }
+    // 4. front에 응답 보내주기
+    return sendResponse(res, 200, 'Delete the Comment Successfully');
+  } catch (e) {
+    console.log(e);
+    return sendResponse(res, 400, 'Error : Fail to find the Comment');
+  }
+};
+
+// 특정 user 삭제하기
+export const admin_user_delete = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    //1. 관리자인지 확인
+    const admin = req.session.admin;
+    if (!admin) {
+      return sendResponse(res, 403, 'You are not Authorized');
+    }
+    //2. front에서 user address 받아오기
+    const {address} = req.body;
+
+    // 3. 해당 address를 블랙리스트에 등록
+    const addBlackList = await db.Blacklist.create({
+      address,
+    });
+
+    // 4. 해당 user 삭제
+    const result = db.User.destroy({
+      where: {
+        address,
+      },
+    });
+    if (!result) {
+      return sendResponse(res, 400, 'Fail to find the user');
+    }
+    // 4. front에 응답 보내주기
+    return sendResponse(res, 200, 'Delete the user Successfully');
+  } catch (e) {
+    console.log(e);
+    return sendResponse(res, 400, 'Error : Fail to find the user');
+  }
+};
+
+// 특정 blacklist 삭제하기
+export const admin_blacklist_delete = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    //1. 관리자인지 확인
+    const admin = req.session.admin;
+    if (!admin) {
+      return sendResponse(res, 403, 'You are not Authorized');
+    }
+    //2. front에서 user address 받아오기
+    const {address} = req.body;
+
+    // 3. 해당 blacklist 삭제
+    const result = db.Blacklist.destroy({
+      where: {
+        address,
+      },
+    });
+    if (!result) {
+      return sendResponse(res, 400, 'Fail to find the blacklist');
+    }
+    // 4. front에 응답 보내주기
+    return sendResponse(res, 200, 'Delete the blacklist Successfully');
+  } catch (e) {
+    console.log(e);
+    return sendResponse(res, 400, 'Error : Fail to find the blacklist');
   }
 };
