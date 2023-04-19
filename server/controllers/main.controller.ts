@@ -7,6 +7,7 @@ import erc20abi from '../abi/erc20abi';
 import {nft_infos} from './nft_infos';
 import {data} from './dummy_posts';
 import bcrypt from 'bcrypt';
+import {gallerys} from './dummy_gallery';
 const web3 = new Web3(`HTTP://127.0.0.1:${process.env.GANACHE_PORT}`);
 const erc20Contract = new web3.eth.Contract(erc20abi, process.env.ERC20_CA);
 
@@ -94,30 +95,41 @@ export const checklogin_get = async (req: MyRequest, res: Response, next: NextFu
 export const dummy_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     //더미 User 10개 만들고 넣기
-    for (let i = 0; i < 10; i++) {
-      let users = await db.User.create({
-        nickname: `user${i}`,
-        address: `xdf3234${i}`,
-        token_amount: 1000,
-      });
-    }
+    // for (let i = 0; i < 10; i++) {
+    //   let users = await db.User.create({
+    //     nickname: `user${i}`,
+    //     address: `xdf3234${i}`,
+    //     token_amount: 1000,
+    //   });
+    // }
 
-    //Admin 1개 넣기
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash('1234', saltRounds);
+    // //Admin 1개 넣기
+    // const saltRounds = 10;
+    // const hashedPassword = await bcrypt.hash('1234', saltRounds);
 
-    const admin = await db.Admin.create({
-      username: 'admin',
-      password: hashedPassword,
-    });
+    // const admin = await db.Admin.create({
+    //   username: 'admin',
+    //   password: hashedPassword,
+    // });
 
-    // Post 더미 데이터 200개 넣기
-    data.map((item, index) => {
-      const posts = db.Post.create({
-        user_id: Math.floor(Math.random() * 10 + 1),
+    // // Post 더미 데이터 200개 넣기
+    // data.map((item, index) => {
+    //   const posts = db.Post.create({
+    //     user_id: Math.floor(Math.random() * 10 + 1),
+    //     title: item.title,
+    //     content: item.content,
+    //     likes: index,
+    //   });
+    // });
+
+    // Gallery 더미 데이터 3개 넣기
+    gallerys.map(item => {
+      const datas = db.Gallery.create({
         title: item.title,
-        content: item.content,
-        likes: index,
+        description: item.description,
+        img_url: item.img_url,
+        tags: item.tags,
+        date: item.date,
       });
     });
 
