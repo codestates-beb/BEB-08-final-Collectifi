@@ -9,6 +9,7 @@ import GlobalStyle from './Styles';
 import Init from './components/Init';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {HelmetProvider, Helmet} from 'react-helmet-async';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +25,7 @@ function App() {
   //   } else {
   //     setScrollNav(false);
   //   }
-  // };  
+  // };
 
   useEffect(() => {
     function handleResize() {
@@ -47,31 +48,36 @@ function App() {
     mainColor2: '#e52e93',
     lineColor: 'rgb(203, 203, 203)',
   };
-  
+
   return (
-    <RecoilRoot>
-      <GlobalStyle />
-      <Init />
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <ScrollReset />
-          <Router toggle={toggle} />
-          <Sidebar toggle={toggle} isOpen={isOpen} />
-        </BrowserRouter>
-      </ThemeProvider>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-    </RecoilRoot>
+    <HelmetProvider>
+      <Helmet>
+        <title>The largest decentralized football community...</title>
+      </Helmet>
+      <RecoilRoot>
+        <GlobalStyle />
+        <Init />
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <ScrollReset />
+            <Router toggle={toggle} />
+            <Sidebar toggle={toggle} isOpen={isOpen} />
+          </BrowserRouter>
+        </ThemeProvider>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </RecoilRoot>
+    </HelmetProvider>
   );
 }
 
