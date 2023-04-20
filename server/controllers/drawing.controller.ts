@@ -49,6 +49,8 @@ export const drawing_post = async (req: MyRequest, res: Response, next: NextFunc
           card_color: data.card_color,
           img_url: data.img_url,
           isSell: false,
+          team_record: data.team_record,
+          man_record: data.man_record,
         });
         //데이터 베이스에서 뽑은 Nft_info정보 삭제
         const deleteNftInfo = await db.Nft_info.destroy({

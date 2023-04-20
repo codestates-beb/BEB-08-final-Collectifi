@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {NavLogo} from '../components/Header';
 import axios from 'axios';
 import {useNavigate} from 'react-router';
-
+import {toast} from 'react-toastify';
 interface Height {
   height: number;
 }
@@ -108,10 +108,11 @@ const WritePage = () => {
       .then(res => {
         console.log(res);
         navigate('/community');
-        //ToDo 토스트메세지: You have successfully written
+        toast.success('You have successfully written! 🎈');
       })
       .catch(err => {
-        alert('Please log in again.');
+        // alert('Please log in again.');
+        toast.error('Please log in again.' + err);
         navigate('/community');
       });
   };
@@ -126,6 +127,7 @@ const WritePage = () => {
         <WriteForm>
           <WriteLabel>title</WriteLabel>
           <WriteInput
+            minLength={10}
             maxLength={60}
             placeholder="제목을 입력하세요"
             type="text"
@@ -135,6 +137,8 @@ const WritePage = () => {
           />
           <WriteLabel>content</WriteLabel>
           <WriteTextarea
+            minLength={10}
+            maxLength={1500}
             required
             value={content}
             onChange={e => setContent(e.target.value)}

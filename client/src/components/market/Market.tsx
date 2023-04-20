@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { sellCardListQuery } from '../../modules/market/atom';
+import { useRecoilValue, useRecoilRefresher_UNSTABLE } from 'recoil';
+import { getSellCardListQuery } from '../../modules/market/atom';
 
 import { nft } from '../../modules/type';
 import PageTitle from '../UI/PageTitle';
@@ -11,9 +11,18 @@ import CardListItem from './CardListItem';
 import PlayerCard from '../UI/PlayerCard';
 
 const Market = () => {
-  const cardList = useRecoilValue(sellCardListQuery);
-  //console.log(cardList);
+  const cardList = useRecoilValue(getSellCardListQuery);
+  const cardListRefresh = useRecoilRefresher_UNSTABLE(getSellCardListQuery); 
 
+  useEffect(() => {
+    return () => {
+      cardListRefresh();
+    }    
+  }, []);
+
+  if(!cardList) return <></>;
+  console.log(cardList);
+  
   return (
     <MarketLayout>
       <PageTitle title='MARKET'/>
@@ -42,7 +51,7 @@ const Market = () => {
 export default Market;
 
 const MarketLayout = styled.div`
-  padding: 20px 20px 10px;
+  padding: 40px 20px 30px;
   max-width: 1140px;
   margin: 0 auto;
 `

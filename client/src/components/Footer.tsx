@@ -12,7 +12,6 @@ import {Link} from 'react-router-dom';
 
 const FooterWrapper = styled.div`
   background-color: #101522;
-  margin-top: 20px;
   width: 100%;
 `;
 const FooterPadding = styled.div`

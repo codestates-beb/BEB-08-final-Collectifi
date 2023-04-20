@@ -4,6 +4,7 @@ import {darken, lighten} from 'polished';
 
 type Props = {
   title: string[];
+  className?: string;
   children: React.ReactNode;
 };
 
@@ -14,7 +15,7 @@ const Tab: React.FC<Props> = props => {
   };
 
   return (
-    <div className="Tab">
+    <div className={`Tab ${props.className || ""}`}>
       <TabUl>
         {props.title.map((el, i) => {
           return (

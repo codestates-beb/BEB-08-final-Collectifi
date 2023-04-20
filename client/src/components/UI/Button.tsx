@@ -13,7 +13,7 @@ type Props = {
 const Button: React.FC<Props> = (props) => {
   return (
     <ButtonLayout
-      className={`button ${props.className && props.className}`}
+      className={`button ${props.className || ''}`}
       type={props.type || 'button'}
       onClick={props.onClick}
       color={props.color}

@@ -19,7 +19,8 @@ interface SubmenuItem {
 const DropdownMenu = styled.ul`
   width: 10rem;
   position: absolute;
-  top: 69px;
+  //top: 69px;
+  top: 59px;
   list-style: none;
   text-align: start;
   overflow: hidden;
@@ -52,12 +53,10 @@ const ItemLink = styled(Link)`
 const Dropdown = ({setDropdown, submenu}: DropdownProps) => {
   return (
     <DropdownMenu onClick={() => setDropdown('')}>
-      {submenu?.map(item => (
-        <>
-          <Item>
-            <ItemLink to={item.link}>{item.name}</ItemLink>
-          </Item>
-        </>
+      {submenu?.map((item, idx) => (
+        <Item key={idx}>
+          <ItemLink to={item.link}>{item.name}</ItemLink>
+        </Item>
       ))}
     </DropdownMenu>
   );

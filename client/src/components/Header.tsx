@@ -10,7 +10,21 @@ import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Dropdown from './Dropdown';
 import axios from 'axios';
+import {useRecoilValue, useRecoilCallback, useRecoilRefresher_UNSTABLE} from 'recoil';
+import {
+  userAddr,
+  userId,
+  userNickname,
+  userAmount,
+  userReferral,
+  logoutQuery,
+} from '../modules/atom';
+import {getUserQuery} from '../modules/mypage/atom';
+import MyInfo from './MyInfo';
+import {darken} from 'polished';
+import Cookies from 'js-cookie';
 
+import {toast} from 'react-toastify';
 declare global {
   interface Window {
     ethereum?: {
@@ -21,15 +35,17 @@ declare global {
 
 const navVariants = {
   top: {
-    backgroundColor: 'transparent', // 'white', '#333333',
+    backgroundColor: 'rgb(250, 250, 250)', // 'white', '#333333',
+    boxShadow: 'none',
   },
   scroll: {
-    backgroundColor: 'white',
+    //backgroundColor: 'white',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
   },
 };
 
 const Nav = styled(motion.div)`
-  height: 70px;
+  height: 80px;
   /* margin-top: -70px; */
   display: flex;
   justify-content: center;
@@ -44,20 +60,38 @@ const Nav = styled(motion.div)`
 `;
 
 const NavbarContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 70px;
+  display: grid;
+  grid-template-columns: 1fr 7fr 3fr 1fr;
+  max-width: 1140px;
+  padding: 0 20px;
+
+  //display: flex;
+  //justify-content: space-between;
+  //height: 70px;
   z-index: 1;
-  width: 100%;
-  padding: 0 24px;
-  max-width: 1100px;
-  margin-top: 10px;
+  //width: 100%;
+  //padding: 0 24px;
+  //max-width: 1100px;
+  //margin-top: 10px;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr 15fr 1fr;
+  }
 `;
-const LogImg = styled.div`
-  background: url('/logo/logo2.png');
+
+const Logo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const LogoImgDiv = styled(Link)`
+  object-fit: contain;
+  border: none;
+  border-radius: 10px;
+  background-image: url('/logo/2.png');
   background-size: contain;
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
 `;
 
 export const NavLogo = styled(Link)`
@@ -90,9 +124,11 @@ const NavMenu = styled.ul`
   align-items: center;
   list-style: none;
   text-align: center;
-  margin-right: -22px;
-  margin-top: 5px;
-  padding: 6px;
+  //margin-right: -22px;
+  //margin-top: 5px;
+  //padding: 6px;
+  justify-self: center;
+  align-self: center;
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -109,12 +145,14 @@ const NavItem = styled(Link)`
 `;
 const NavLink = styled.div`
   font-weight: 600;
-  color: #616161;
+  //color: #616161;
+  color: rgb(123, 123, 123);
+  font-size: 14px;
   display: flex;
   gap: 5px;
   align-items: center;
   text-decoration: none;
-  padding: 0 1rem;
+  padding: 1rem 1rem;
   height: 100%;
 `;
 
@@ -133,23 +171,37 @@ const NavBtnLink = styled.div`
   white-space: nowrap;
   padding: 13px 22px;
   color: #fff;
-  font-size: 16px;
+  font-size: 0.875rem;
   outline: none;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-decoration: none;
+  width: 110px;
 
   &:hover {
     transition: all 0.2s ease-in-out;
-    background: #fff;
-    color: #010606;
+    //background: #fff;
+    //color: #010606;
+    background: ${props => darken(0.1, props.theme.mainColor)};
   }
+  &:active {
+    background: ${props => darken(0.2, props.theme.mainColor)};
+  }
+`;
+
+const MyInfoBox = styled.div`
+  justify-self: right;
+  align-self: center;
+  padding-right: 20px;
 `;
 
 const Header = ({toggle}: PageLayoutProps) => {
   const [dropdown, setDropdown] = useState('');
-  const [account, setAccount] = useState('');
+  //const [account, setAccount] = useState('');
+  const currId = useRecoilValue(userId);
+  const logoutRefresh = useRecoilRefresher_UNSTABLE(logoutQuery);
+  const userRefresh = useRecoilRefresher_UNSTABLE(getUserQuery);
 
   const onMouseEnter = (e: string) => {
     if (window.innerWidth < 768) {
@@ -179,29 +231,29 @@ const Header = ({toggle}: PageLayoutProps) => {
 
   const menu = [
     {
-      name: 'Play',
+      name: 'PLAY',
       link: '/draw',
       submenu: [
-        {name: 'Pack', link: '/draw'},
-        {name: 'Upgrade', link: '/upgrade'},
+        {name: 'PACK', link: '/draw'},
+        {name: 'UPGRADE', link: '/upgrade'},
         // {name: '승부', link: '/prediction'},
       ],
     },
     {
-      name: 'Earn',
+      name: 'EARN',
       link: '/staking',
       submenu: [
-        {name: 'Staking', link: '/staking'},
-        {name: 'Swap', link: '/swap'},
+        {name: 'STAKING', link: '/staking'},
+        {name: 'SWAP', link: '/swap'},
       ],
     },
-    {name: 'Market', link: '/market'},
-    {name: 'Win', link: '/win'},
-    {name: 'Community', link: '/community'},
-    {name: 'Event', link: '/event'},
+    {name: 'MARKET', link: '/market'},
+    {name: 'WIN', link: '/win'},
+    {name: 'COMMUNITY', link: '/community'},
+    {name: 'EVENT', link: '/event'},
   ];
 
-  const connectWallet = async () => {
+  const login = useRecoilCallback(({set}) => async () => {
     if (!window.ethereum) {
       console.log('Ethereum not detected in browser');
       return;
@@ -211,27 +263,51 @@ const Header = ({toggle}: PageLayoutProps) => {
         method: 'eth_requestAccounts',
       })
       .then(res => {
-        setAccount(res[0]);
+        //setAccount(res[0]);
         // 백엔드로 로그인 요청
         axios
           .post('http://localhost:8000/login', {address: res[0]}, {withCredentials: true})
           .then(res => {
             console.log('login_post success: ', res);
+            if (!res.data.data) return;
+            set(userAddr, res.data.data.address);
+            set(userId, res.data.data.id);
+            set(userNickname, res.data.data.nickname);
+            set(userAmount, res.data.data.token_amount);
+            set(userReferral, res.data.data.referral);
+            toast.success('logged in successfully! 🎉');
           });
         // setIsLoggedIn(true);
         // localStorage.setItem('isLoggedIn', res[0]);
       })
+      .catch(e => {
+        console.log(e);
+        toast.error('logged in failed');
+      });
+  });
 
-      .catch(e => console.log(e));
-  };
+  const logout = useRecoilCallback(({snapshot, set}) => async () => {
+    const result = await snapshot.getPromise(logoutQuery);
+    if (!result) return;
+    set(userAddr, '');
+    set(userId, 0);
+    set(userNickname, '');
+    set(userAmount, 0);
+    set(userReferral, null);
+    logoutRefresh();
+    userRefresh();
+    console.log('logout', result);
+    Cookies.remove('connect.sid');
+  });
 
   return (
     <>
       <Nav variants={navVariants} animate={headerAnimation} initial={'top'}>
         <NavbarContainer>
-          {/* <LogImg src="/logo/logo4.png" /> */}
-          {/* <LogImg /> */}
-          <NavLogo to="/">Collectifi</NavLogo>
+          <Logo>
+            <LogoImgDiv to="/" />
+            <NavLogo to="/">Collectifi</NavLogo>
+          </Logo>
           <MobileIcon onClick={toggle}>
             <FaBars />
           </MobileIcon>
@@ -257,13 +333,14 @@ const Header = ({toggle}: PageLayoutProps) => {
               </NavItem>
             ))}
           </NavMenu>
+          <MyInfoBox>{currId !== 0 && <MyInfo />}</MyInfoBox>
           <NavBtn>
             <NavBtnLink
               onClick={() => {
-                connectWallet();
+                currId === 0 ? login() : logout();
               }}
             >
-              Connect
+              {currId === 0 ? 'CONNECT' : 'DISCONN'}
             </NavBtnLink>
           </NavBtn>
         </NavbarContainer>

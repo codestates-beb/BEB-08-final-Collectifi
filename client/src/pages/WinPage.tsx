@@ -3,7 +3,7 @@ import {DummyComponent} from '../Styles';
 import styled from 'styled-components';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
-
+import {toast} from 'react-toastify';
 const WinLayout = styled.div`
   margin-top: 150px;
   max-width: 70%;
@@ -165,7 +165,8 @@ const WinPage = () => {
         {withCredentials: true},
       );
       if (response.status == 200) {
-        alert('베팅에 성공했습니다!');
+        // alert('베팅에 성공했습니다!');
+        toast.success('You made a bet successfully!');
         navigate('/win');
       }
     } else {
