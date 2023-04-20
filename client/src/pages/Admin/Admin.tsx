@@ -673,7 +673,7 @@ const Admin = () => {
                         linkTo={''}
                         onClick={() => showWinDetail(idx)}
                       />
-                      <WinDetail active={activeComment === idx}>
+                      <WinDetail active={activeWin === idx}>
                         <div>WIN</div>
                         <div>DRAW</div>
                         <div>LOSE</div>

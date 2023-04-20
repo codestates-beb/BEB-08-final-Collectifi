@@ -13,19 +13,29 @@ import {DummyComponent} from '../Styles';
 import styled, {keyframes} from 'styled-components';
 import {toast} from 'react-toastify';
 import {TypeAnimation} from 'react-type-animation';
+import CountUp from 'react-countup';
 
-const ImagWrapper = styled.div`
+const MainLayout = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const MainWrapper = styled.div`
   width: 100%;
   padding: 10px 100px 30px 100px;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   position: relative;
 `;
 
 const MainImg = styled.img`
   /* left: 30px; */
-  width: 80%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
   border-radius: 40px;
   /* margin: 10px 10px 10px 10px; */
   position: relative;
@@ -78,6 +88,7 @@ const MainTypeAnimation = styled(TypeAnimation)`
   color: #fff;
   position: absolute;
   border-radius: 5px;
+  text-shadow: 4px 0 #525252;
   top: 80%;
   left: 15%;
   z-index: 1;
@@ -88,8 +99,7 @@ const MainTypeAnimation = styled(TypeAnimation)`
 `;
 const Section = styled.div`
   line-height: 0;
-  display: flex;
-  flex-direction: column;
+  position: relative;
 `;
 const Section2Image = styled.img`
   /* background-size: cover; */
@@ -114,7 +124,29 @@ const Section3Image = styled.img`
   height: 100%;
   margin: 0 auto;
 `;
-const floatAnimation = keyframes`
+const floatAnimation1 = keyframes`
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+`;
+const floatAnimation2 = keyframes`
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+`;
+const floatAnimation3 = keyframes`
   0% {
     transform: translateY(0px);
   }
@@ -126,20 +158,71 @@ const floatAnimation = keyframes`
   }
 `;
 
-const FloatingDiv = styled.div`
-  position: relative;
-  animation-name: ${floatAnimation};
-  animation-duration: 1s;
+const FloatingDiv1 = styled.div`
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation-name: ${floatAnimation1};
+  animation-duration: 4.2s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
 `;
-const Balloon1 = styled.div<{bgImage: string}>`
-  background-image: ${({bgImage}) => `url(${bgImage})`};
-  background-position: center;
-  background-size: cover;
+
+const FloatingDiv2 = styled.div`
   width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation-name: ${floatAnimation2};
+  animation-duration: 3.8s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+`;
+
+const FloatingDiv3 = styled.div`
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation-name: ${floatAnimation3};
+  animation-duration: 4.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+`;
+const CountUpS = styled(CountUp)`
+  width: 100%;
+  position: absolute;
+  top: 5%;
+  left: 41%;
+  color: #f1c164;
+  color: #5040dc;
+  font-family: 'Concert One', cursive;
+  letter-spacing: 3vw;
+  /* font-family: 'DynaPuff', cursive; */
+  /* text-shadow: 0 0 50px #f1c164, 0 0 70px #f1c164, 0 0 90px #f1c164, 0 0 110px #f1c164,
+    0 0 130px #f1c164; */
+  text-shadow: -10px 0 #caa357, 0 10px #cfa655, 10px 0 #af8d4a, 0 -10px #be9c59;
+  font-size: 12vw;
+`;
+const UpgradeBack = styled.img`
+  width: 100%;
+`;
+const Balloon1 = styled.img`
+  /* background-position: center;
+  background-size: cover; */
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* height: 100%; */
   /* height: 1080px; */
+`;
+const Balloon2 = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 `;
 const MainPage = () => {
   const [error, setError] = useState<any>(null);
@@ -158,8 +241,9 @@ const MainPage = () => {
   const Toast = () => {
     toast('first notification');
   };
+  const [counterOn, setCounterOn] = useState(false);
   return (
-    <>
+    <MainLayout>
       {/* <Button
         onClick={() => {
           setError('asd');
@@ -216,11 +300,11 @@ const MainPage = () => {
         </Suspense>
       </ErrorBoundary> */}
 
-      <ImagWrapper>
+      <MainWrapper>
         <MainImg src="/bg3.png" />
         <MainBack />
         <MainButton onClick={Toast}>Get Player NFT</MainButton>
-        {/* <MainTypeAnimation
+        <MainTypeAnimation
           sequence={[
             'Own your NFT', // Types 'One'
             2000, // Waits 1s
@@ -236,22 +320,26 @@ const MainPage = () => {
           cursor={true}
           repeat={Infinity}
           style={{display: 'inline-block'}}
-        /> */}
-      </ImagWrapper>
-      <Section>
-        <Section2Image src="/trophy.png" />
-        <Section3Images>
-          {/* <Section3Image src="/upgrade_background.jpg" /> */}
-          {/* <Section3Image src="/balloon1.png" />
-          <Section3Image src="/balloon1.png" /> */}
+        />
+      </MainWrapper>
 
-          <FloatingDiv>
-            <Balloon1 bgImage="/balloon1.png" />
-            <Balloon1 bgImage="/balloon2.png" />
-          </FloatingDiv>
-        </Section3Images>
+      <Section2Image src="/trophy.png" />
+
+      <Section>
+        <UpgradeBack src="/upgrade_background.jpg" />
+        <FloatingDiv1>
+          <Balloon1 src="/balloon1.png" />
+        </FloatingDiv1>
+        <FloatingDiv2>
+          <Balloon1 src="/balloon2.png" />
+        </FloatingDiv2>
+        <FloatingDiv3>
+          <Balloon1 src="/balloon3.png" />
+        </FloatingDiv3>
+
+        <CountUpS start={0} end={25} duration={5} delay={0} />
       </Section>
-    </>
+    </MainLayout>
   );
 };
 

@@ -111,7 +111,7 @@ function Pagination({dataPerPage, dataLength, paginate, currentPage, setCurrentP
             currentPageRange === Math.ceil(pageNumbers.length / pageSize) || dataLength === 0
           }
         >
-          Next{currentPageRange}
+          Next
         </PaginationButton>
       </PaginationContainer>
     </Container>
