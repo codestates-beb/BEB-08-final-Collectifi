@@ -81,6 +81,16 @@ export const game_fund_post = async (req: MyRequest, res: Response, next: NextFu
     const fund = await soccerContract.methods
       .fund(fromAddress, game, value)
       .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+
+    // db에서 token 뺏기
+    const userId = req.session.user?.id;
+    const user = await db.User.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    const takeToken = await user.decrement('token_amount', {by: value});
+
     console.log('=========fund=============', fund);
     // const transferFrom = await erc20Contract.methods
     //   .transferFrom(fromAddress, process.env.SERVER_ADDRESS, value)

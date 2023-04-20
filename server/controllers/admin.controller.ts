@@ -67,9 +67,7 @@ export const admin_posts_get = async (req: MyRequest, res: Response, next: NextF
       return sendResponse(res, 403, 'You are not Authorized');
     }
     //2. posts 모든 데이터 불러오기
-    const posts = await db.Post.findAll(
-      {order: [['id', 'DESC']],}
-    );
+    const posts = await db.Post.findAll({order: [['id', 'DESC']]});
 
     sendResponse(res, 200, 'posts', {posts});
   } catch (e) {
@@ -181,12 +179,11 @@ export const admin_user_blacklist = async (req: MyRequest, res: Response, next: 
       where: {
         address: address,
       },
-    })
+    });
     if (blacklistExist) {
-      console.log('이미 존재 합니다')
+      console.log('이미 존재 합니다');
       return sendResponse(res, 400, 'Already exists.');
     }
-
 
     // 3. 해당 address를 블랙리스트에 등록
     const addBlackList = await db.Blacklist.create({
@@ -281,6 +278,7 @@ export const admin_win_post = async (req: MyRequest, res: Response, next: NextFu
 
     if (game == 'win') {
       token = await soccerContract.methods.winToken().call();
+      console.log('hereeee');
     }
     if (game == 'lose') {
       token = await soccerContract.methods.loseToken().call();
@@ -289,18 +287,18 @@ export const admin_win_post = async (req: MyRequest, res: Response, next: NextFu
       token = await soccerContract.methods.drawToken().call();
     }
 
-    const drainage = totalToken / token;
+    // const drainage = totalToken / token;
 
-    // 승부예측 contract에 erc20 approve 권한 부여
-    const approve = await erc20Contract.methods
-      .approve(process.env.SOCCER_CA, totalToken)
-      .send({from: process.env.SERVER_ADDRESS, gas: 500000});
-    // 승부 맞춘 이들에게 분배
-    const matchedReward = await soccerContract.methods
-      .matchedReward(game, drainage)
-      .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+    // // 승부예측 contract에 erc20 approve 권한 부여
+    // const approve = await erc20Contract.methods
+    //   .approve(process.env.SOCCER_CA, totalToken)
+    //   .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+    // // 승부 맞춘 이들에게 분배
+    // const matchedReward = await soccerContract.methods
+    //   .matchedReward(game, drainage)
+    //   .send({from: process.env.SERVER_ADDRESS, gas: 500000});
 
-    console.log('=======match====', matchedReward);
+    console.log('=======match====');
     return res.status(200).send({message: 'Success!'});
   } catch (e) {
     console.log(e);

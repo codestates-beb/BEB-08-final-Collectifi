@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import {toast} from 'react-toastify';
+import Timer from './Timer';
 const WinLayout = styled.div`
   margin-top: 150px;
   max-width: 70%;
@@ -18,7 +19,10 @@ const WinLayout = styled.div`
 `;
 
 const BigBox = styled.div`
-  background-color: #c9c6c6;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.3);
+
   margin-top: 50px;
   height: 350px;
   margin-bottom: 40px;
@@ -32,6 +36,7 @@ const MatchDate = styled.div`
   /* background-color: bisque; */
   font-size: 50px;
   font-weight: 600;
+  margin-bottom: 15px;
 `;
 
 const MatchInfo = styled.div`
@@ -185,7 +190,8 @@ const WinPage = () => {
   return (
     <WinLayout>
       <BigBox>
-        <MatchDate>4월 29일</MatchDate>
+        <MatchDate>29th April</MatchDate>
+        <Timer />
         <HomeAway>
           <HomeAwayInfo>Home</HomeAwayInfo>
           <HomeAwayInfo>Away</HomeAwayInfo>
@@ -223,7 +229,7 @@ const WinPage = () => {
         </BetForm>
       </BigBox>
       <BigBox>
-        <MatchDate>4월 30일 </MatchDate>
+        <MatchDate>30th April</MatchDate>
         <HomeAway>
           <HomeAwayInfo>Home</HomeAwayInfo>
           <HomeAwayInfo>Away</HomeAwayInfo>
