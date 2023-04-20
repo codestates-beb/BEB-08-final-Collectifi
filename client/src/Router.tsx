@@ -26,6 +26,7 @@ import Donation from './pages/Donation';
 import AdminLogin from './pages/AdminLogin';
 import Admin from './pages/Admin/Admin';
 import WinTest from './pages/WinTest';
+import PoolPage from './pages/PoolPage';
 
 const Router: React.FC<{toggle: () => void}> = props => {
   return (
@@ -36,6 +37,7 @@ const Router: React.FC<{toggle: () => void}> = props => {
         <Route path="/upgrade" element={<UpgradeCardPage />} />
         <Route path="/staking" element={<StakingPage />} />
         <Route path="/swap" element={<SwapPage />} />
+        <Route path="/pool" element={<PoolPage />} />
         <Route path="/market" element={<MarketPage />} />
         <Route path="/market/:id" element={<CardDetailPage />} />
         <Route path="/user/:id" element={<UserPage />} />

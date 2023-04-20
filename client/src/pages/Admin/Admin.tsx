@@ -141,12 +141,27 @@ const WinDetail = styled.div<{active: boolean}>`
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin: 5px 10px 5px 10px;
   padding: 25px 30px 30px 40px;
   display: ${props => (props.active ? '' : 'none')};
 `;
+
+const WinBox = styled.div`
+  background-color: #fd115c;
+  padding: 10px;
+  font-size: 30px;
+  color: white;
+  font-weight: 600;
+  margin-right: 20px;
+  border-radius: 10px;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
 const BanIcon = styled(FontAwesomeIcon)`
   cursor: pointer;
 `;
@@ -244,13 +259,13 @@ const Admin = () => {
   const winPaginate = (pageNumber: number) => {
     setWinCurrentPage(pageNumber);
   };
-  const [activeWin, setActiveWin] = useState(0);
+  const [activeWin, setActiveWin] = useState(-1);
   const showWinDetail = (idx: number) => {
     if (activeWin !== idx) {
       console.log('win id: ', idx);
       setActiveWin(idx);
     } else {
-      setActiveWin(0);
+      setActiveWin(-1);
     }
   };
 
@@ -317,7 +332,7 @@ const Admin = () => {
     } else if (menu === 4) {
       if (wins.length === 0) {
         axios.get('http://localhost:8000/admin/win', {withCredentials: true}).then(res => {
-          setWins(res.data.data);
+          setWins([res.data.data]);
           // setWins(
           //   [...res.data.data.blacklists].map(black => {
           //     return {
@@ -402,6 +417,22 @@ const Admin = () => {
         .catch(error => {
           toast.error('Failed to delete comment', error);
         });
+    }
+  };
+
+  const handleReward = async (e: any) => {
+    if (confirm(`Are you sure to give reward to ${e}???`)) {
+      const response = await axios.post(
+        'http://localhost:8000/admin/win',
+        {e},
+        {withCredentials: true},
+      );
+      if (response.status == 200) {
+        alert('Reward to Winner Success!!!');
+        toast.success('Reward to Winner Success!!!');
+      }
+    } else {
+      console.log('no');
     }
   };
 
@@ -674,9 +705,9 @@ const Admin = () => {
                         onClick={() => showWinDetail(idx)}
                       />
                       <WinDetail active={activeWin === idx}>
-                        <div>WIN</div>
-                        <div>DRAW</div>
-                        <div>LOSE</div>
+                        <WinBox onClick={() => handleReward('win')}>WIN</WinBox>
+                        <WinBox onClick={() => handleReward('draw')}>DRAW</WinBox>
+                        <WinBox onClick={() => handleReward('lose')}>LOSE</WinBox>
                       </WinDetail>
                     </>
                   );

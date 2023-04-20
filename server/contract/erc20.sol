@@ -3,24 +3,27 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract GLDToken is ERC20 {
+contract COLToken is ERC20 {
     uint256 public maxSupply;
     address payable public joinRewardAddress;
     uint256 public userReward;
     uint256 public initValue = 0;
 
 
-    constructor(uint256 ) ERC20("ToKenIn", "TKI") {
-        maxSupply = 1000000000000;
+    constructor() ERC20("Collectifi", "COL") {
+        maxSupply = 100000000000000000000;
         userReward = maxSupply / 2;
         _mint(msg.sender, maxSupply);
     }
 
 
     function joinReward(address payable joinUserAddress) public returns(bool) {
-        joinRewardAddress = joinUserAddress;
-        require(balanceOf(joinRewardAddress) == initValue);
-        transfer(joinRewardAddress,1000);
+        transfer(joinUserAddress,1000);
         return true;
+    }
+
+    function mintToken(address user,uint256 amount) public returns(uint256){
+        _mint(user,amount);
+        return amount;
     }
 }
