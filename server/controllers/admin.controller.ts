@@ -3,6 +3,12 @@ import db from '../models';
 import {MyRequest} from '../@types/session';
 import {sendResponse} from './utils';
 import bcrypt from 'bcrypt';
+import erc20abi from '../abi/erc20abi';
+import soccerabi from '../abi/soccerabi';
+import Web3 from 'web3';
+const web3 = new Web3(`HTTP://127.0.0.1:${process.env.GANACHE_PORT}`);
+const erc20Contract = new web3.eth.Contract(erc20abi, process.env.ERC20_CA);
+const soccerContract = new web3.eth.Contract(soccerabi, process.env.SOCCER_CA);
 
 // 관리자 로그인
 export const admin_login_post = async (req: MyRequest, res: Response, next: NextFunction) => {
@@ -215,5 +221,75 @@ export const admin_blacklist_delete = async (req: MyRequest, res: Response, next
   } catch (e) {
     console.log(e);
     return sendResponse(res, 400, 'Error : Fail to find the blacklist');
+  }
+};
+
+// win탭 get
+export const admin_win_get = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    // contract로 부터 총 모인 토큰 / 승무패 각각에 건 토큰 / 배당 정보 불러오기
+    const totalToken = await soccerContract.methods.totalToken().call();
+
+    const winToken = await soccerContract.methods.winToken().call();
+    const loseToken = await soccerContract.methods.loseToken().call();
+    const drawToken = await soccerContract.methods.drawToken().call();
+
+    const winDiainage = (totalToken / winToken).toFixed(2);
+    const loseDiainage = (totalToken / loseToken).toFixed(2);
+    const drawDiainage = (totalToken / drawToken).toFixed(2);
+
+    return res.status(200).send({
+      message: 'Success',
+      data: {
+        winDiainage: winDiainage,
+        loseDiainage: loseDiainage,
+        drawDiainage: drawDiainage,
+        winToken: winToken,
+        loseToken: loseToken,
+        drawToken: drawToken,
+        totalToken,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(400).send({message: 'Error'});
+  }
+};
+
+// win 결과 입력 (토큰 분배)
+export const admin_win_post = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    // 게임 결과 입력 (win/draw/lost)
+    const {game} = req.body;
+    let token = 0;
+    // 배수 계산 (총 모인 토큰 / 맞춘 토큰)
+    const totalToken = await soccerContract.methods.totalToken().call();
+
+    if (game == 'win') {
+      token = await soccerContract.methods.winToken().call();
+    }
+    if (game == 'lose') {
+      token = await soccerContract.methods.loseToken().call();
+    }
+    if (game == 'draw') {
+      token = await soccerContract.methods.drawToken().call();
+    }
+
+    const drainage = totalToken / token;
+
+    // 승부예측 contract에 erc20 approve 권한 부여
+    const approve = await erc20Contract.methods
+      .approve(process.env.SOCCER_CA, totalToken)
+      .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+    // 승부 맞춘 이들에게 분배
+    const matchedReward = await soccerContract.methods
+      .matchedReward(game, drainage)
+      .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+
+    console.log('=======match====', matchedReward);
+    return res.status(200).send({message: 'Success!'});
+  } catch (e) {
+    console.log(e);
+    return res.status(400).send({message: 'Error'});
   }
 };
