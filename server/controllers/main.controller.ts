@@ -133,7 +133,7 @@ export const dummy_get = async (req: MyRequest, res: Response, next: NextFunctio
       });
     });
 
-    // // Post_comment 더미 데이터 5개 넣기
+    // Post_comment 더미 데이터 5개 넣기 DB가 바뀌어서 사용 X
     // for (let i = 0; i < 5; i++) {
     //   let users = await db.Post_comment.create({
     //     user_id: Math.floor(Math.random() * 10 + 1),
@@ -145,35 +145,35 @@ export const dummy_get = async (req: MyRequest, res: Response, next: NextFunctio
     // }
 
     // Nft_info 데이터 넣기
-    // nft_infos.map(item => {
-    //   const result = db.Nft_info.create({
-    //     player: item.player,
-    //     season: item.season,
-    //     team: item.team,
-    //     card_pack: item.card_pack,
-    //     card_color: item.card_color,
-    //     img_url: item.img_url,
-    //     team_record: item.team_record,
-    //     man_record: item.man_record,
-    //   });
-    // });
-    // //판매중인 Nft 데이터 넣기 (마켓 테스트 위한)
-    // nft_infos.slice(0, 12).map(item => {
-    //   const selling_nfts = db.Nft.create({
-    //     token_id: 1,
-    //     user_id: 1,
-    //     player: item.player,
-    //     season: item.season,
-    //     team: item.team,
-    //     card_color: 0,
-    //     price: 500,
-    //     selling_price: 500,
-    //     img_url: item.img_url,
-    //     isSell: true,
-    //     team_record: item.team_record,
-    //     man_record: item.man_record,
-    //   });
-    // });
+    nft_infos.map(item => {
+      const result = db.Nft_info.create({
+        player: item.player,
+        season: item.season,
+        team: item.team,
+        card_pack: item.card_pack,
+        card_color: item.card_color,
+        img_url: item.img_url,
+        team_record: item.team_record,
+        man_record: item.man_record,
+      });
+    });
+    //판매중인 Nft 데이터 넣기 (마켓 테스트 위한)
+    nft_infos.slice(0, 12).map(item => {
+      const selling_nfts = db.Nft.create({
+        token_id: 1,
+        user_id: 1,
+        player: item.player,
+        season: item.season,
+        team: item.team,
+        card_color: 0,
+        price: 500,
+        selling_price: 500,
+        img_url: item.img_url,
+        isSell: true,
+        team_record: item.team_record,
+        man_record: item.man_record,
+      });
+    });
 
     sendResponse(res, 200, '데이터 삽입 완료');
   } catch (e) {

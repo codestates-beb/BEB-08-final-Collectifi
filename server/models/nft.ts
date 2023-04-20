@@ -102,7 +102,7 @@ class Nft extends Model<NftAttributes> {
       onUpdate: 'cascade',
     });
 
-    db.Nft.hasMany(db.Post, {
+    db.Nft.hasMany(db.Nft_record, {
       foreignKey: 'nft_id',
       sourceKey: 'id',
       onDelete: 'cascade',

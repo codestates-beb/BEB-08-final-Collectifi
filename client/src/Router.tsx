@@ -24,7 +24,7 @@ import Donation from './pages/Donation';
 // import GalleryDetailPage from './pages/GalleryDetailPage';
 // import GalleryRegi from './components/gallery/GalleryRegi';
 import AdminLogin from './pages/AdminLogin';
-import Admin from './pages/Admin';
+import Admin from './pages/Admin/Admin';
 import WinTest from './pages/WinTest';
 
 const Router: React.FC<{toggle: () => void}> = props => {

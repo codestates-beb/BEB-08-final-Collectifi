@@ -68,7 +68,7 @@ const MyCardsContainer = styled.div`
   display: flex;
 `;
 
-interface StyledDivProps {
+export interface StyledDivProps {
   bgImage: string;
   // 다른 props 추가 가능
 }

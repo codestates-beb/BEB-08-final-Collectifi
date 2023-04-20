@@ -10,8 +10,9 @@ import Market from '../components/market/Market';
 import MyPage from '../components/mypage/MyPage';
 import CardDetail from '../components/market/CardDetail';
 import {DummyComponent} from '../Styles';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import {toast} from 'react-toastify';
+import {TypeAnimation} from 'react-type-animation';
 
 const ImagWrapper = styled.div`
   width: 100%;
@@ -67,17 +68,79 @@ const MainButton = styled.div`
   border: none;
   cursor: pointer;
   transform: translate(-40%, -50%);
+  @media screen and (max-width: 780px) {
+    font-size: 10px;
+    padding: 10px 20px;
+  }
+`;
+const MainTypeAnimation = styled(TypeAnimation)`
+  /* background: white; */
+  color: #fff;
+  position: absolute;
+  border-radius: 5px;
+  top: 80%;
+  left: 15%;
+  z-index: 1;
+  font-size: 2.5em;
+  @media screen and (max-width: 780px) {
+    font-size: 1em;
+  }
 `;
 const Section = styled.div`
   line-height: 0;
+  display: flex;
+  flex-direction: column;
 `;
 const Section2Image = styled.img`
   /* background-size: cover; */
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  z-index: 1;
+`;
+const Section3Images = styled.div`
+  /* position: relative; */
+  background-image: url('/upgrade_background.jpg');
+`;
+const Section3Image = styled.img`
+  /* background-size: cover; */
+  /* width: 100%;
+  height: 100%;
+  margin: 0 auto; */
+  /* position: absolute; */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+`;
+const floatAnimation = keyframes`
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 `;
 
+const FloatingDiv = styled.div`
+  position: relative;
+  animation-name: ${floatAnimation};
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+`;
+const Balloon1 = styled.div<{bgImage: string}>`
+  background-image: ${({bgImage}) => `url(${bgImage})`};
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  /* height: 1080px; */
+`;
 const MainPage = () => {
   const [error, setError] = useState<any>(null);
   const [error2, setError2] = useState<any>(null);
@@ -152,18 +215,42 @@ const MainPage = () => {
           <CardDetail />
         </Suspense>
       </ErrorBoundary> */}
+
       <ImagWrapper>
         <MainImg src="/bg3.png" />
         <MainBack />
         <MainButton onClick={Toast}>Get Player NFT</MainButton>
+        {/* <MainTypeAnimation
+          sequence={[
+            'Own your NFT', // Types 'One'
+            2000, // Waits 1s
+            'Own your Player', // Deletes 'One' and types 'Two'
+            2000, // Waits 2s
+            'Upgrade your Player', // Types 'Three' without deleting 'Two'
+            1800,
+            () => {
+              console.log('Sequence completed'); // Place optional callbacks anywhere in the array
+            },
+          ]}
+          wrapper="span"
+          cursor={true}
+          repeat={Infinity}
+          style={{display: 'inline-block'}}
+        /> */}
       </ImagWrapper>
       <Section>
         <Section2Image src="/trophy.png" />
-        <Section2Image src="/upgrade.png" />
+        <Section3Images>
+          {/* <Section3Image src="/upgrade_background.jpg" /> */}
+          {/* <Section3Image src="/balloon1.png" />
+          <Section3Image src="/balloon1.png" /> */}
+
+          <FloatingDiv>
+            <Balloon1 bgImage="/balloon1.png" />
+            <Balloon1 bgImage="/balloon2.png" />
+          </FloatingDiv>
+        </Section3Images>
       </Section>
-      <DummyComponent />
-      <DummyComponent />
-      <DummyComponent />
     </>
   );
 };

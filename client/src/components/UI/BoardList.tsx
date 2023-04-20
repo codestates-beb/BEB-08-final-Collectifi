@@ -5,14 +5,16 @@ import BoardListItem from './BoardListItem';
 type Props = {
   title?: React.ReactElement<typeof BoardTitleItem>;
   children: React.ReactElement<typeof BoardListItem>[];
-}
+  className?: string;
+};
 
-const BoardList: React.FC<Props> = (props) => {
+const BoardList: React.FC<Props> = props => {
   return (
-    <div>
-      <div>{props.title}</div>      
+    <div className={props.className}>
+      <div>{props.title}</div>
       <ul>{props.children}</ul>
-    </div>)
-}
+    </div>
+  );
+};
 
 export default BoardList;

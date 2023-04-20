@@ -10,6 +10,8 @@ import {faThumbsUp, faThumbsDown, faEdit} from '@fortawesome/free-regular-svg-ic
 import {faCrown, faTrash, faCheck, faClose} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {toast} from 'react-toastify';
+import {userId} from '../modules/atom';
+import {useRecoilValue} from 'recoil';
 interface PostProps {
   setCurrentPage: (value: number) => void;
   setPosts: (value: PostsAttributes[]) => void;
@@ -47,7 +49,7 @@ interface Post_comment_likeds {
 }
 
 const PostLayout = styled.div`
-  margin-top: 15px;
+  margin-top: 20px;
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
@@ -199,8 +201,7 @@ const CommentInput = styled.textarea`
   height: 100%;
   border-radius: 10px;
   padding: 8px 14px 10px;
-  outline: none;
-  resize: none;
+  /* resize: none; */
   border: 1px solid ${props => props.theme.lineColor};
   &:focus-visible {
     background-color: #fff;
@@ -243,7 +244,8 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
   const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Post_comment[]>([]);
   const [isOwner, setIsOwner] = useState(false);
-  const [userId, setUserId] = useState(0);
+  const [user_Id, setUser_Id] = useState(0);
+  const recoilUserId = useRecoilValue(userId);
 
   useEffect(() => {
     // 포스트 디테일을 불러옴
@@ -255,7 +257,7 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
       setdislike(res.data.data.post.dislikes);
       setPostTitle(res.data.data.post.title);
       setPostContent(res.data.data.post.content);
-      setUserId(res.data.data.userId);
+      setUser_Id(res.data.data.userId);
       console.log('res: ', res);
     });
 
@@ -329,8 +331,8 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
       })
       .catch(err => {
         console.log('좋아요를 이미 눌렀습니다', err);
+        toast.error(err.response.data.message);
         // alert('Recommendations are only available once a day.');
-        toast.error(err.response.data.error);
       });
   };
 
@@ -361,6 +363,8 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
   };
 
   // 댓글 좋아요 기능 관련
+  const [commentLike, setCommentLike] = useState(0);
+  const [commentDislike, setCommentDislike] = useState(0);
   const handleCommentLikes = (e: number, like: string) => {
     console.log('라이크: ', like);
     axios // localhost:8000/community/2/comment/3/like
@@ -373,11 +377,25 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
         console.log('좋아요: ', res);
         if (res.data.data.data == 'likes') {
           console.log('set likes: ', res.data.data.data);
-          setLike(prev => prev + 1);
+          const newComments = comments.map(comment => {
+            if (comment.id === e) {
+              return {...comment, likes: comment.likes + 1};
+            } else {
+              return comment;
+            }
+          });
+          setComments(newComments);
           toast.info('Like it!');
         } else if (res.data.data.data == 'dislikes') {
-          setdislike(prev => prev + 1);
           console.log('set dislikes: ', res.data.data.data);
+          const newComments = comments.map(comment => {
+            if (comment.id === e) {
+              return {...comment, dislikes: comment.dislikes + 1};
+            } else {
+              return comment;
+            }
+          });
+          setComments(newComments);
           toast.info('Disike it!');
         } else {
           // alert('Recommendations are only available once a day.');
@@ -388,7 +406,7 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
       .catch(err => {
         console.log('좋아요를 이미 눌렀습니다', err.response.data.message);
         // alert('Recommendations are only available once a day. ' + err);
-        toast.error(err.response.data.message);
+        toast.error('Failed to like comment. ' + err);
       });
   };
   const editComment = (e: number) => {
@@ -484,7 +502,7 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
           </PostLikeDiv>
           {/* <Button onClick={() => navigate('/community')}>목록</Button> */}
 
-          {isOwner && (
+          {recoilUserId !== 0 && isOwner && (
             <IsOwner>
               <OwnersBtn onClick={handleEdit}>Edit</OwnersBtn>
               <OwnersBtn onClick={handleDelete}>Delete</OwnersBtn>
@@ -493,70 +511,79 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
 
           <CommentContainer>
             {/* 댓글 뿌려주는 부분 */}
-            {comments?.map(comment => (
-              <Comment key={comment.id}>
-                <CommentUser>
-                  <div>
-                    {comment.User.nickname}
-                    <CrownIcon icon={faCrown} />
-                  </div>
-                  {userId === 0 ? (
-                    <div></div>
-                  ) : (
-                    <>
-                      {comment.Post_comment_likeds[0]?.user_id == userId &&
-                      parseInt(isInput) !== comment.id ? (
-                        <div>
-                          <EditButton onClick={() => editComment(comment.id)} icon={faEdit} />
-                          <DeleteButton onClick={() => deleteComment(comment.id)} icon={faTrash} />
-                        </div>
-                      ) : (
-                        <div>
-                          <CloseButton onClick={editCommentCancel} icon={faClose} />
-                          <CheckButton onClick={() => editCommentSave(comment.id)} icon={faCheck} />
-                          {/* <Cancel onClick={editCommentCancel}>Cancel</Cancel>
-                          <Save onClick={editCommentSave}>Save</Save> */}
-                        </div>
-                      )}
-                    </>
-                  )}
-                </CommentUser>
-                {parseInt(isInput) == comment.id ? (
-                  <CommentInput
-                    minLength={5}
-                    maxLength={1000}
-                    required
-                    value={editContent}
-                    onChange={e => setEditContent(e.target.value)}
-                    rows={8}
-                  />
-                ) : (
-                  <CommentContent>{comment.content}</CommentContent>
-                )}
+            {comments &&
+              comments?.map(comment => (
+                <Comment key={comment.id}>
+                  <CommentUser>
+                    <div>
+                      {comment.User.nickname}
+                      <CrownIcon icon={faCrown} />
+                    </div>
 
-                <LieksContainer>
-                  {parseInt(isInput) !== comment.id ? (
-                    <>
-                      {' '}
-                      <Comment_likes onClick={() => handleCommentLikes(comment.id, 'likes')}>
-                        <Thumbs>
-                          <FontAwesomeIcon icon={faThumbsUp} />
-                        </Thumbs>
-                        {comment.likes}
-                      </Comment_likes>
-                      <Comment_likes onClick={() => handleCommentLikes(comment.id, 'dislikes')}>
-                        <Thumbs>
-                          <FontAwesomeIcon icon={faThumbsDown} />
-                        </Thumbs>
-                        {comment.dislikes}
-                      </Comment_likes>{' '}
-                    </>
+                    {/* 댓쓴이와  로그인 계정이 동일한가? */}
+                    {recoilUserId !== 0 && comment.Post_comment_likeds[0]?.user_id == user_Id ? (
+                      <>
+                        {/* 수정 버튼을 눌렀는가? */}
+                        {recoilUserId !== 0 && parseInt(isInput) !== comment.id ? (
+                          <div>
+                            <EditButton onClick={() => editComment(comment.id)} icon={faEdit} />
+                            <DeleteButton
+                              onClick={() => deleteComment(comment.id)}
+                              icon={faTrash}
+                            />
+                          </div>
+                        ) : (
+                          <div>
+                            <CloseButton onClick={editCommentCancel} icon={faClose} />
+                            <CheckButton
+                              onClick={() => editCommentSave(comment.id)}
+                              icon={faCheck}
+                            />
+                            {/* <Cancel onClick={editCommentCancel}>Cancel</Cancel>
+                        <Save onClick={editCommentSave}>Save</Save> */}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div></div>
+                    )}
+                  </CommentUser>
+                  {parseInt(isInput) == comment.id ? (
+                    <CommentInput
+                      minLength={10}
+                      maxLength={2500}
+                      required
+                      value={editContent}
+                      onChange={e => setEditContent(e.target.value)}
+                      rows={8}
+                    />
                   ) : (
-                    <div></div>
+                    <CommentContent>{comment.content}</CommentContent>
                   )}
-                </LieksContainer>
-              </Comment>
-            ))}
+
+                  <LieksContainer>
+                    {parseInt(isInput) !== comment.id ? (
+                      <>
+                        {' '}
+                        <Comment_likes onClick={() => handleCommentLikes(comment.id, 'likes')}>
+                          <Thumbs>
+                            <FontAwesomeIcon icon={faThumbsUp} />
+                          </Thumbs>
+                          {comment.likes}
+                        </Comment_likes>
+                        <Comment_likes onClick={() => handleCommentLikes(comment.id, 'dislikes')}>
+                          <Thumbs>
+                            <FontAwesomeIcon icon={faThumbsDown} />
+                          </Thumbs>
+                          {comment.dislikes}
+                        </Comment_likes>{' '}
+                      </>
+                    ) : (
+                      <div></div>
+                    )}
+                  </LieksContainer>
+                </Comment>
+              ))}
           </CommentContainer>
         </>
       )}

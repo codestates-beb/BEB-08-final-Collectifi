@@ -5,7 +5,10 @@ export default function ScrollReset () {
   const location = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (location.pathname !== '/admin') {
+
+      window.scrollTo(0, 0);
+    }
   }, [location]);
 
   return null;
