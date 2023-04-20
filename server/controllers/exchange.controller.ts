@@ -40,23 +40,23 @@ const toEther: any = (value: any) => web3.utils.fromWei(value.toString());
 //   } catch {}
 // };
 
-export const Factory_post = async (req: MyRequest, res: Response, next: NextFunction) => {
-  try {
-    //두가지 방법  1.FRONT에서 token의 CA를 받아와서 Exchange를 배포한다. 2.여기서 process.env.ERC20_CA로 배포한다.
+// export const Factory_post = async (req: MyRequest, res: Response, next: NextFunction) => {
+//   try {
+//     //두가지 방법  1.FRONT에서 token의 CA를 받아와서 Exchange를 배포한다. 2.여기서 process.env.ERC20_CA로 배포한다.
 
-    const serverAddress = process.env.SERVER_ADDRESS;
-    console.log('==========serverAddress=============', serverAddress);
-    const createExchange1 = await factory.methods
-      .createExchange(process.env.ERC20_CA)
-      .send({from: serverAddress, gas: 50000000});
-    console.log('==========createExchange=============', createExchange1);
-    const getExchangeCA = await factory.methods.getExchange(process.env.ERC20_CA).call();
-    return res.status(200).send({message: '풀 생성 완료했습니다.'});
-    /////////////////////
-  } catch {
-    return res.status(400).send({message: 'Factory에서 오류가 발생했습니다.'});
-  }
-};
+//     const serverAddress = process.env.SERVER_ADDRESS;
+//     console.log('==========serverAddress=============', serverAddress);
+//     const createExchange1 = await factory.methods
+//       .createExchange(process.env.ERC20_CA)
+//       .send({from: serverAddress, gas: 50000000});
+//     console.log('==========createExchange=============', createExchange1);
+//     const getExchangeCA = await factory.methods.getExchange(process.env.ERC20_CA).call();
+//     return res.status(200).send({message: '풀 생성 완료했습니다.'});
+//     /////////////////////
+//   } catch {
+//     return res.status(400).send({message: 'Factory에서 오류가 발생했습니다.'});
+//   }
+// };
 
 export const Liquidity_account_post = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
@@ -92,6 +92,11 @@ export const Liquidity_post = async (req: MyRequest, res: Response, next: NextFu
     const exchange = new web3.eth.Contract(exchangeabi, getExchangeCA);
     const exchangeTokenBalance = await exchange.methods.tokenBalanceOf().call();
     const exchangeEthBalance = await exchange.methods.ethBalanceOf().call();
+    console.log(
+      '=======exchangeTokenBalance============',
+      exchangeTokenBalance,
+      exchangeEthBalance,
+    );
     const outputToken = (toWei(ethAmount) * exchangeEthBalance) / exchangeTokenBalance;
     console.log('==============outputToken=============', outputToken);
     const approve = await token.methods
@@ -101,7 +106,7 @@ export const Liquidity_post = async (req: MyRequest, res: Response, next: NextFu
     //유동성을 공급해준다.
     const liquidity = await exchange.methods
       .addLiquidity(toWei(tokenAmount)) //토큰과 이더 수량은 변수로 받기
-      .send({from: userAddress, value: toWei(ethAmount), gas: 5000000});
+      .send({from: userAddress, value: toWei(ethAmount), gas: 50000000});
     console.log('==============liquidity=============', liquidity);
 
     if (exchangeTokenBalance == 0 || exchangeEthBalance == 0) {
@@ -126,9 +131,9 @@ export const Swap_account_post = async (req: MyRequest, res: Response, next: Nex
       .getOutputAmountWithFee(toWei(ethAmount), exchangeEthBalance, exchangeTokenBalance)
       .call();
 
-    return res
-      .status(200)
-      .send({message: 'outputAccount 성공했습니다.', data: {outputTokenAmount}});
+    const colAmount = toEther(outputTokenAmount);
+
+    return res.status(200).send({message: 'outputAccount 성공했습니다.', data: {colAmount}});
   } catch {
     return res.status(400).send({message: 'outputAccount 실패했습니다.'});
   }
