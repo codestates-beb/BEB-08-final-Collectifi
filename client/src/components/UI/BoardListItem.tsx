@@ -8,12 +8,21 @@ type Props = {
   linkTo?: string;
   onClick?: () => void;
   className?: string;
+  isPreventDefault?: boolean;
   //children: React.ReactNode[];
 };
 
 const BoardListItem: React.FC<Props> = props => {
   //const col = React.Children.count(props.children);
   const col = props.listItem.length;
+
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if(props.isPreventDefault) 
+      event.preventDefault();
+    if(props.onClick)
+      props.onClick();
+  }
+
   return (
     <BoardListItemLayout linkTo={props.linkTo} className={props.className} isClick={props.onClick}>
       <Link to={props.linkTo || ''} onClick={props.onClick}>

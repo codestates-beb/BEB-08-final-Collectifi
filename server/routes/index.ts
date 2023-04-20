@@ -11,6 +11,7 @@ import upgrade from './upgrade.route';
 import game from './game.route';
 import donation from './donation.route';
 import admin from './admin.route';
+import gallery from './gallery.route';
 
 router.use('/', main);
 router.use('/user', user);
@@ -21,5 +22,6 @@ router.use('/upgrade', upgrade);
 router.use('/game', game);
 router.use('/donation', donation);
 router.use('/admin', admin);
+router.use('/gallery', gallery);
 
 export default router;
