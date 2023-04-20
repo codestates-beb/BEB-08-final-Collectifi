@@ -50,7 +50,7 @@ const Tab = styled.div`
 const InputBox = styled.div`
   border-radius: 5px;
   margin-top: 10px;
-  background-color: #414792;
+  background-color: #262a56;
   padding: 20px 20px;
   width: 100%;
   font-size: 24px;
@@ -104,7 +104,7 @@ const BtnBox = styled.div`
   }
 `;
 
-const SwapPage = () => {
+const PoolPage = () => {
   const {
     register,
     handleSubmit,
@@ -117,19 +117,19 @@ const SwapPage = () => {
 
   const handleCalClick = async () => {
     const response = await axios.post(
-      'http://localhost:8000/exchange/swapaccount',
+      'http://localhost:8000/exchange/liquidityaccount',
       {ethAmount},
       {withCredentials: true},
     );
     console.log(response.data.data);
-    setColAmount(response.data.data.outputTokenAmount);
+    setColAmount(response.data.data.outputToken);
   };
 
   const handleSwap = async () => {
     if (confirm('Do you want to Swap ETH to COL?')) {
       const response = await axios.post(
-        'http://localhost:8000/exchange/swap',
-        {ethAmount},
+        'http://localhost:8000/exchange/liquidity',
+        {ethAmount, tokenAmount: colAmount},
         {withCredentials: true},
       );
       if (response.status == 200) {
@@ -144,8 +144,8 @@ const SwapPage = () => {
     <Layout>
       <Container>
         <TabBox>
-          <Tab style={{backgroundColor: '#414792'}}>SWAP</Tab>
-          <Tab onClick={() => navigate('/pool')}>POOL</Tab>
+          <Tab onClick={() => navigate('/swap')}>SWAP</Tab>
+          <Tab style={{backgroundColor: '#414792'}}>POOL</Tab>
         </TabBox>
         <InputBox>
           <InputTitle>Input : ETH</InputTitle>
@@ -159,14 +159,14 @@ const SwapPage = () => {
           <FontAwesomeIcon icon={faArrowAltCircleDown} />
         </CalBox>
         <InputBox>
-          <InputTitle>Output : COL</InputTitle>
+          <InputTitle>Input : COL</InputTitle>
           <Input placeholder="COL" value={colAmount} />
         </InputBox>
 
-        <BtnBox onClick={handleSwap}>SWAP!</BtnBox>
+        <BtnBox onClick={handleSwap}>ADD!</BtnBox>
       </Container>
     </Layout>
   );
 };
 
-export default SwapPage;
+export default PoolPage;

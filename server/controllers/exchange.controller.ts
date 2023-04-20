@@ -4,6 +4,7 @@ import express, {Request, Response, NextFunction} from 'express';
 import erc20abi from '../abi/erc20abi'; //token abi로 변경하기
 import factoryabi from '../abi/factoryabi';
 import exchangeabi from '../abi/exchangeabi';
+import db from '../models';
 
 const web3 = new Web3(
   new Web3.providers.HttpProvider(`HTTP://127.0.0.1:${process.env.GANACHE_PORT}`),
@@ -12,7 +13,7 @@ const token = new web3.eth.Contract(erc20abi, process.env.ERC20_CA); // tokenabi
 const factory = new web3.eth.Contract(factoryabi, process.env.FACTORY_CA); // tokenabi,token_ca로 변경하기
 
 const toWei: any = (value: any) => web3.utils.toWei(value.toString());
-const toEther: any = (value: any) => web3.utils.fromWei(value.toString());
+const toEther: any = (value: any) => web3.utils.fromWei(value);
 
 ////////////////////////////////////
 
@@ -66,6 +67,7 @@ export const Liquidity_account_post = async (req: MyRequest, res: Response, next
     const exchangeTokenBalance = await exchange.methods.tokenBalanceOf().call();
     const exchangeEthBalance = await exchange.methods.ethBalanceOf().call();
     const outputToken = (toWei(ethAmount) * exchangeEthBalance) / exchangeTokenBalance;
+
     console.log('========exchangeTokenBalance==========', exchangeTokenBalance);
     console.log('========exchangeEthBalance==========', exchangeEthBalance);
     if (exchangeTokenBalance == 0 || exchangeEthBalance == 0) {
@@ -74,9 +76,9 @@ export const Liquidity_account_post = async (req: MyRequest, res: Response, next
       console.log('========최초의 유동성==========');
     } else {
       console.log('========outputToken==========', outputToken);
-      return res
-        .status(200)
-        .send({message: '유동성 추가', data: {outputToken: toEther(outputToken)}});
+      // const colToken = toEther(outputToken);
+      // console.log('==========colToken=======', colToken);
+      return res.status(200).send({message: '유동성 추가', data: {outputToken: outputToken}});
     }
   } catch {
     return res.status(400).send({message: 'outputAccount 실패했습니다.'});
@@ -133,12 +135,13 @@ export const Swap_account_post = async (req: MyRequest, res: Response, next: Nex
 
     const colAmount = toEther(outputTokenAmount);
 
-    return res.status(200).send({message: 'outputAccount 성공했습니다.', data: {colAmount}});
+    return res
+      .status(200)
+      .send({message: 'outputAccount 성공했습니다.', data: {outputTokenAmount}});
   } catch {
     return res.status(400).send({message: 'outputAccount 실패했습니다.'});
   }
 };
-
 export const Swap_post = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     const {ethAmount} = req.body;
@@ -155,6 +158,12 @@ export const Swap_post = async (req: MyRequest, res: Response, next: NextFunctio
       .ethToTokenSwap(outputTokenAmount)
       .send({from: userAddress, value: toWei(ethAmount), gas: 5000000});
 
+    const user = await db.User.findOne({
+      where: {
+        address: userAddress,
+      },
+    });
+    const tokenIncre = await user.increment('token_amount', {by: outputTokenAmount});
     return res.status(200).send({message: 'swap에 성공했습니다.'});
   } catch {
     return res.status(400).send({message: 'swap에 실패했습니다.'});
