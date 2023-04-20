@@ -5,6 +5,7 @@ interface UserAttributes {
   address: string;
   token_amount: number;
   referral: string;
+  rank: number;
 }
 
 class User extends Model<UserAttributes> {
@@ -12,6 +13,7 @@ class User extends Model<UserAttributes> {
   public address!: string;
   public token_amount!: number;
   public referral!: string;
+  public rank!: number;
 
   public static initModel(sequelize: Sequelize) {
     return User.init(
@@ -32,6 +34,11 @@ class User extends Model<UserAttributes> {
         referral: {
           type: DataTypes.STRING(255),
           allowNull: true,
+        },
+        rank: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          defaultValue: 0,
         },
       },
       {

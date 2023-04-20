@@ -23,6 +23,8 @@ import Donation from './pages/Donation';
 import GalleryPage from './pages/GalleryPage';
 import GalleryDetailPage from './pages/GalleryDetailPage';
 import GalleryRegi from './components/gallery/GalleryRegi';
+import AdminLogin from './pages/AdminLogin';
+import Admin from './pages/Admin';
 
 const Router: React.FC<{toggle: () => void}> = props => {
   return (
@@ -47,6 +49,8 @@ const Router: React.FC<{toggle: () => void}> = props => {
       <Route path="/edit" element={<EditPage />} />
       <Route path="*" element={<NotFound />} />
       <Route path="/slidertest" element={<SliderTest2 />} />
+      <Route path="/admin/" element={<Admin />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
     </Routes>
   );
 };
