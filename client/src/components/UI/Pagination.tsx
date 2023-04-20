@@ -107,9 +107,11 @@ function Pagination({dataPerPage, dataLength, paginate, currentPage, setCurrentP
         ))}
         <PaginationButton
           onClick={handleNextButtonClick}
-          disabled={currentPageRange === Math.ceil(pageNumbers.length / pageSize)}
+          disabled={
+            currentPageRange === Math.ceil(pageNumbers.length / pageSize) || dataLength === 0
+          }
         >
-          Next
+          Next{currentPageRange}
         </PaginationButton>
       </PaginationContainer>
     </Container>

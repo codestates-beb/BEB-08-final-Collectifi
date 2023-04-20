@@ -21,7 +21,7 @@ import EditPage from './pages/EditPage';
 import SliderTest2 from './pages/SliderTest2';
 import Donation from './pages/Donation';
 import AdminLogin from './pages/AdminLogin';
-import Admin from './pages/Admin';
+import Admin from './pages/Admin/Admin';
 
 const Router: React.FC<{toggle: () => void}> = props => {
   return (

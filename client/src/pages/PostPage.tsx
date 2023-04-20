@@ -550,7 +550,7 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
                   </CommentUser>
                   {parseInt(isInput) == comment.id ? (
                     <CommentInput
-                      minLength={5}
+                      minLength={10}
                       maxLength={2500}
                       required
                       value={editContent}

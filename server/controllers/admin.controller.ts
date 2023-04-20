@@ -61,7 +61,9 @@ export const admin_posts_get = async (req: MyRequest, res: Response, next: NextF
       return sendResponse(res, 403, 'You are not Authorized');
     }
     //2. posts 모든 데이터 불러오기
-    const posts = await db.Post.findAll();
+    const posts = await db.Post.findAll(
+      {order: [['id', 'DESC']],}
+    );
 
     sendResponse(res, 200, 'posts', {posts});
   } catch (e) {
@@ -157,8 +159,8 @@ export const admin_comment_delete = async (req: MyRequest, res: Response, next: 
   }
 };
 
-// 특정 user 삭제하기
-export const admin_user_delete = async (req: MyRequest, res: Response, next: NextFunction) => {
+// 특정 user 삭제하기 => 밴하기
+export const admin_user_blacklist = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     //1. 관리자인지 확인
     const admin = req.session.admin;
@@ -168,25 +170,37 @@ export const admin_user_delete = async (req: MyRequest, res: Response, next: Nex
     //2. front에서 user address 받아오기
     const {address} = req.body;
 
+    // 2.5 DB에 해당 address가 존재하는지
+    const blacklistExist = await db.Blacklist.findOne({
+      where: {
+        address: address,
+      },
+    })
+    if (blacklistExist) {
+      console.log('이미 존재 합니다')
+      return sendResponse(res, 400, 'Already exists.');
+    }
+
+
     // 3. 해당 address를 블랙리스트에 등록
     const addBlackList = await db.Blacklist.create({
       address,
     });
 
-    // 4. 해당 user 삭제
-    const result = db.User.destroy({
-      where: {
-        address,
-      },
-    });
-    if (!result) {
-      return sendResponse(res, 400, 'Fail to find the user');
-    }
+    // // 4. 해당 user 삭제
+    // const result = db.User.destroy({
+    //   where: {
+    //     address,
+    //   },
+    // });
+    // if (!result) {
+    //   return sendResponse(res, 400, 'Fail to find the user');
+    // }
     // 4. front에 응답 보내주기
-    return sendResponse(res, 200, 'Delete the user Successfully');
+    return sendResponse(res, 200, addBlackList);
   } catch (e) {
     console.log(e);
-    return sendResponse(res, 400, 'Error : Fail to find the user');
+    return sendResponse(res, 400, 'Error : Fail to ban the user');
   }
 };
 
