@@ -7,10 +7,15 @@ import Web3 from 'web3';
 import erc20abi from '../abi/erc20abi';
 import donation_ethAbi from '../abi/donation_ethAbi';
 import donation_colAbi from '../abi/donation_colAbi';
+import donation_eth_endAbi from '../abi/donation_eth_endAbi';
 const web3 = new Web3(`HTTP://127.0.0.1:${process.env.GANACHE_PORT}`);
 const erc20Contract = new web3.eth.Contract(erc20abi, process.env.ERC20_CA);
 const donation_eth_Contract = new web3.eth.Contract(donation_ethAbi, process.env.DONATION_ETH_CA);
 const donation_col_Contract = new web3.eth.Contract(donation_colAbi, process.env.DONATION_COL_CA);
+const donation_eth_end_Contract = new web3.eth.Contract(
+  donation_eth_endAbi,
+  process.env.DONATION_ETH_END_CA,
+);
 
 // 기부 페이지
 export const donation_get = async (req: MyRequest, res: Response, next: NextFunction) => {
@@ -45,6 +50,24 @@ export const donation_get = async (req: MyRequest, res: Response, next: NextFunc
       percent: colpercent,
     });
 
+    // const endtitle = await donation_eth_end_Contract.methods.title().call();
+    // const endimg_url = await donation_eth_end_Contract.methods.img_url().call();
+    // const endtargetAmount = await donation_eth_end_Contract.methods.targetAmount().call();
+    // const endraisedAmount = await donation_eth_end_Contract.methods.raisedAmount().call();
+    // const endtargetEth = web3.utils.fromWei(endtargetAmount, 'ether');
+    // const endraisedEth = web3.utils.fromWei(endraisedAmount, 'ether');
+    // const endpercent = ((endraisedAmount / endtargetAmount) * 100).toFixed(1);
+
+    // donations.push({
+    //   title: endtitle,
+    //   img_url: endimg_url,
+    //   targetAmount: endtargetAmount,
+    //   raisedAmount: endraisedAmount,
+    //   targetEth: endtargetEth,
+    //   raisedEth: endraisedEth,
+    //   percent: endpercent,
+    // });
+
     sendResponse(res, 200, 'donation_get', {donations});
   } catch (e) {
     console.log(e);
@@ -57,6 +80,7 @@ export const donation_post = async (req: MyRequest, res: Response, next: NextFun
   try {
     // 1. 세션으로 user address 받아오기
     const address = req.session?.user?.address;
+    console.log(address);
     // 2. 기부할 amount 받아오기
     const {amount} = req.body;
     // 3. address를 donation_col CA에게 approve
@@ -78,6 +102,27 @@ export const donation_post = async (req: MyRequest, res: Response, next: NextFun
     const withdrawDB = await user.decrement('token_amount', {by: amount});
 
     sendResponse(res, 200, 'success donation');
+  } catch (e) {
+    console.log(e);
+    sendResponse(res, 400, 'fail donation');
+  }
+};
+
+export const donation_refund_post = async (req: MyRequest, res: Response, next: NextFunction) => {
+  try {
+    // 1. 세션으로 user address 받아오기
+    const id = req.session.user?.id;
+    console.log(id);
+
+    const address = req.session.user?.address;
+    console.log(address);
+
+    // 2. ETH 환불해주기
+    const refund = await donation_eth_end_Contract.methods
+      .refund()
+      .send({from: address, gas: 500000});
+
+    sendResponse(res, 200, 'success refund');
   } catch (e) {
     console.log(e);
     sendResponse(res, 400, 'fail donation');

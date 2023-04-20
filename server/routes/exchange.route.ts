@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  Factory_post,
+  // Factory_post,
   Liquidity_account_post,
   Liquidity_post,
   Swap_account_post,
@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.post('/factory', Factory_post);
+// router.post('/factory', Factory_post);
 router.post('/liquidityaccount', Liquidity_account_post);
 router.post('/liquidity', Liquidity_post);
 router.post('/swapaccount', Swap_account_post);
