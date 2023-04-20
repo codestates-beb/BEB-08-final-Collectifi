@@ -1,10 +1,54 @@
 import {AbiItem} from 'web3-utils';
 
-const erc20Abi: AbiItem[] = [
+const exchangeabi: AbiItem[] = [
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_maxTokens',
+        type: 'uint256',
+      },
+    ],
+    name: 'addLiquidity',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
+      },
+    ],
     stateMutability: 'nonpayable',
     type: 'constructor',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'provider',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'ethAmount',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'tokenAmount',
+        type: 'uint256',
+      },
+    ],
+    name: 'AddLiquidity',
+    type: 'event',
   },
   {
     anonymous: false,
@@ -80,6 +124,62 @@ const erc20Abi: AbiItem[] = [
     type: 'function',
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'buyer',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'ethSold',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'tokensBought',
+        type: 'uint256',
+      },
+    ],
+    name: 'EthPurchase',
+    type: 'event',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_minToken',
+        type: 'uint256',
+      },
+    ],
+    name: 'ethToTokenSwap',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_minToken',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '_recipient',
+        type: 'address',
+      },
+    ],
+    name: 'ethToTransfer',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
     inputs: [
       {
         internalType: 'address',
@@ -106,44 +206,110 @@ const erc20Abi: AbiItem[] = [
   {
     inputs: [
       {
-        internalType: 'address payable',
-        name: 'joinUserAddress',
+        internalType: 'uint256',
+        name: '_lpTokenAmount',
+        type: 'uint256',
+      },
+    ],
+    name: 'removeLiquidity',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'provider',
         type: 'address',
       },
-    ],
-    name: 'joinReward',
-    outputs: [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
+        indexed: true,
+        internalType: 'uint256',
+        name: 'ethAmount',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'tokenAmount',
+        type: 'uint256',
       },
     ],
-    stateMutability: 'nonpayable',
+    name: 'RemoveLiquidity',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'buyer',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'ethSold',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'tokensBought',
+        type: 'uint256',
+      },
+    ],
+    name: 'TokenPurchase',
+    type: 'event',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_tokenSold',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_minEth',
+        type: 'uint256',
+      },
+    ],
+    name: 'tokenToEthSwap',
+    outputs: [],
+    stateMutability: 'payable',
     type: 'function',
   },
   {
     inputs: [
       {
+        internalType: 'uint256',
+        name: '_tokenSold',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_minTokenBought',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_minEthBought',
+        type: 'uint256',
+      },
+      {
         internalType: 'address',
-        name: 'user',
+        name: '_tokenAddress',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
     ],
-    name: 'mintToken',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'nonpayable',
+    name: 'tokenToTokenSwap',
+    outputs: [],
+    stateMutability: 'payable',
     type: 'function',
   },
   {
@@ -282,7 +448,7 @@ const erc20Abi: AbiItem[] = [
   },
   {
     inputs: [],
-    name: 'initValue',
+    name: 'ethBalanceOf',
     outputs: [
       {
         internalType: 'uint256',
@@ -295,20 +461,7 @@ const erc20Abi: AbiItem[] = [
   },
   {
     inputs: [],
-    name: 'joinRewardAddress',
-    outputs: [
-      {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'maxSupply',
+    name: 'getEthBalance',
     outputs: [
       {
         internalType: 'uint256',
@@ -317,6 +470,35 @@ const erc20Abi: AbiItem[] = [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'inputAmount',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'inputReserve',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'outputReserve',
+        type: 'uint256',
+      },
+    ],
+    name: 'getOutputAmountWithFee',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'pure',
     type: 'function',
   },
   {
@@ -347,7 +529,7 @@ const erc20Abi: AbiItem[] = [
   },
   {
     inputs: [],
-    name: 'totalSupply',
+    name: 'tokenBalanceOf',
     outputs: [
       {
         internalType: 'uint256',
@@ -360,7 +542,7 @@ const erc20Abi: AbiItem[] = [
   },
   {
     inputs: [],
-    name: 'userReward',
+    name: 'totalSupply',
     outputs: [
       {
         internalType: 'uint256',
@@ -373,4 +555,4 @@ const erc20Abi: AbiItem[] = [
   },
 ];
 
-export default erc20Abi;
+export default exchangeabi;
