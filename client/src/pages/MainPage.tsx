@@ -196,7 +196,7 @@ const CountUpS = styled(CountUp)`
   top: 5%;
   left: 41%;
   color: #f1c164;
-  color: #5040dc;
+  color: #5f4fec;
   font-family: 'Concert One', cursive;
   letter-spacing: 3vw;
   /* font-family: 'DynaPuff', cursive; */
