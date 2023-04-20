@@ -5,7 +5,7 @@ import './erc20.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
 contract Soccer {
-  GLDToken public token;
+  COLToken public token;
   uint256 public winAmount = 0;
   uint256 public loseAmount = 0;
   uint256 public drawAmount = 0;
@@ -26,7 +26,7 @@ contract Soccer {
   address[] public drawKeys = new address[](100);
 
   constructor(address _tokenAddress) {
-    token = GLDToken(_tokenAddress);
+    token = COLToken(_tokenAddress);
     owner = payable(msg.sender);
   }
 
