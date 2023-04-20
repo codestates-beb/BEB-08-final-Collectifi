@@ -47,6 +47,15 @@ interface IBans {
   address: string;
   created_at: Date;
 }
+interface IWins {
+  winDiainage: number;
+  loseDiainage: number;
+  drawDiainage: number;
+  winToken: number;
+  loseToken: number;
+  drawToken: number;
+  totalToken: number;
+}
 const Container = styled.div`
   /* background-color: grey; */
   padding: 50px;
@@ -119,6 +128,16 @@ const TrashIcon = styled(FontAwesomeIcon)`
   cursor: pointer;
 `;
 const CommentDetail = styled.div<{active: boolean}>`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 10px 5px 10px;
+  padding: 25px 30px 30px 40px;
+  display: ${props => (props.active ? '' : 'none')};
+`;
+const WinDetail = styled.div<{active: boolean}>`
   width: 100%;
   height: 100%;
   display: flex;
@@ -215,16 +234,25 @@ const Admin = () => {
   };
 
   // Win
-  // const [wins, setWins] = useState<IUsers[]>([]);
-  // const [usersLength, setUsersLength] = useState(users.length);
-  // const [userCurrentPage, setUserCurrentPage] = useState(1);
-  // const usersPerPage = 10;
-  // const indexOfLastUsers = userCurrentPage * usersPerPage;
-  // const indexOfFirstUsers = indexOfLastUsers - usersPerPage;
-  // const currentUsers = users.slice(indexOfFirstUsers, indexOfLastUsers);
-  // const userPaginate = (pageNumber: number) => {
-  //   setUserCurrentPage(pageNumber);
-  // };
+  const [wins, setWins] = useState<IWins[]>([]);
+  const [winsLength, setWinsLength] = useState(wins.length);
+  const [winCurrentPage, setWinCurrentPage] = useState(1);
+  const winsPerPage = 10;
+  const indexOfLastWins = winCurrentPage * winsPerPage;
+  const indexOfFirstWins = indexOfLastWins - winsPerPage;
+  const currentWins = wins.slice(indexOfFirstWins, indexOfLastWins);
+  const winPaginate = (pageNumber: number) => {
+    setWinCurrentPage(pageNumber);
+  };
+  const [activeWin, setActiveWin] = useState(0);
+  const showWinDetail = (idx: number) => {
+    if (activeWin !== idx) {
+      console.log('win id: ', idx);
+      setActiveWin(idx);
+    } else {
+      setActiveWin(0);
+    }
+  };
 
   useEffect(() => {
     if (menu === 0) {
@@ -285,6 +313,25 @@ const Admin = () => {
         });
       } else {
         console.log('이미 blacklists 데이터가 존재');
+      }
+    } else if (menu === 4) {
+      if (wins.length === 0) {
+        axios.get('http://localhost:8000/admin/win', {withCredentials: true}).then(res => {
+          setWins(res.data.data);
+          // setWins(
+          //   [...res.data.data.blacklists].map(black => {
+          //     return {
+          //       ...black,
+          //       created_at: new Date(black.created_at),
+          //     };
+          //   }),
+          // );
+          setWinsLength(res.data.data.length);
+          setWinCurrentPage(1);
+          console.log('Win: ', res.data.data);
+        });
+      } else {
+        console.log('이미 wins 데이터가 존재');
       }
     }
   }, [menu]);
@@ -580,6 +627,67 @@ const Admin = () => {
               paginate={banPaginate}
               currentPage={banCurrentPage}
               setCurrentPage={setBanCurrentPage}
+            />
+          </ContentBox>
+        )}
+
+        {menu === 4 && (
+          <ContentBox>
+            <BoardListAdmin
+              title={
+                <BoardTitleItem
+                  title={[
+                    'GAME',
+                    'TOTAL TOKEN',
+                    'WIN',
+                    'DRAW',
+                    'LOSE',
+                    'WIN DRAIN',
+                    'DRAW DRAIN',
+                    'LOSE DRAIN',
+                    'STATUS',
+                  ]}
+                  gridTemplateColumns={'1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr'}
+                />
+              }
+            >
+              {currentWins &&
+                currentWins.map((win, idx) => {
+                  const listItemW = [
+                    'TOT vs MCU',
+                    win.totalToken,
+                    win.winToken,
+                    win.drawToken,
+                    win.loseToken,
+                    win.winDiainage,
+                    win.drawDiainage,
+                    win.loseDiainage,
+                    'End',
+                  ];
+                  return (
+                    <>
+                      <BoardListItemAdmin
+                        key={idx}
+                        listItem={listItemW}
+                        gridTemplateColumns={'1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr'}
+                        linkTo={''}
+                        onClick={() => showWinDetail(idx)}
+                      />
+                      <WinDetail active={activeComment === idx}>
+                        <div>WIN</div>
+                        <div>DRAW</div>
+                        <div>LOSE</div>
+                      </WinDetail>
+                    </>
+                  );
+                })}
+            </BoardListAdmin>
+            <Pagination
+              dataPerPage={winsPerPage}
+              dataLength={winsLength}
+              paginate={winPaginate}
+              currentPage={winCurrentPage}
+              setCurrentPage={setWinCurrentPage}
             />
           </ContentBox>
         )}
