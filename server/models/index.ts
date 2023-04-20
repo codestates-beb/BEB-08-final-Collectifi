@@ -11,6 +11,7 @@ import Nft_record from './nft_record';
 import Admin from './admin';
 import Rank from './rank';
 import Blacklist from './blacklist';
+import Gallery from './gallery';
 
 const env: string = process.env.NODE_ENV || 'development';
 const config = config_dev;
@@ -30,6 +31,7 @@ db.Nft_record = Nft_record;
 db.Admin = Admin;
 db.Rank = Rank;
 db.Blacklist = Blacklist;
+db.Gallery = Gallery;
 
 User.initModel(sequelize);
 Nft.initModel(sequelize);
@@ -42,6 +44,7 @@ Nft_record.initModel(sequelize);
 Admin.initModel(sequelize);
 Rank.initModel(sequelize);
 Blacklist.initModel(sequelize);
+Gallery.initModel(sequelize);
 
 //관계를 설정 해 준다.
 User.associate(db);
