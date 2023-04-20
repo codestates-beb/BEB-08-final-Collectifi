@@ -49,7 +49,7 @@ const Tab = styled.div`
 const InputBox = styled.div`
   border-radius: 5px;
   margin-top: 10px;
-  background-color: #262a56;
+  background-color: #414792;
   padding: 20px 20px;
   width: 100%;
   font-size: 24px;
