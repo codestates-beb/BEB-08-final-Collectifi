@@ -66,6 +66,7 @@ export const Liquidity_account_post = async (req: MyRequest, res: Response, next
     const exchangeTokenBalance = await exchange.methods.tokenBalanceOf().call();
     const exchangeEthBalance = await exchange.methods.ethBalanceOf().call();
     const outputToken = (toWei(ethAmount) * exchangeEthBalance) / exchangeTokenBalance;
+
     console.log('========exchangeTokenBalance==========', exchangeTokenBalance);
     console.log('========exchangeEthBalance==========', exchangeEthBalance);
     if (exchangeTokenBalance == 0 || exchangeEthBalance == 0) {
@@ -133,7 +134,6 @@ export const Swap_account_post = async (req: MyRequest, res: Response, next: Nex
     return res.status(400).send({message: 'outputAccount 실패했습니다.'});
   }
 };
-
 export const Swap_post = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     const {ethAmount} = req.body;
