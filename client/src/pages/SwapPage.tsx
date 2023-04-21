@@ -30,7 +30,7 @@ const Container = styled.div`
 `;
 
 const TabBox = styled.div`
-  background-color: #11132a;
+  background-color: #05050b;
   border-radius: 5px;
   padding: 5px;
   width: 100%;
@@ -45,12 +45,16 @@ const Tab = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const InputBox = styled.div`
   border-radius: 5px;
   margin-top: 10px;
-  background-color: #414792;
+  background-color: #262a56;
   padding: 20px 20px;
   width: 100%;
   font-size: 24px;
@@ -97,6 +101,7 @@ const BtnBox = styled.div`
   margin-top: 20px;
   padding: 10px;
   border-radius: 10px;
+  padding: 15px;
 
   :hover {
     cursor: pointer;
@@ -122,7 +127,7 @@ const SwapPage = () => {
       {withCredentials: true},
     );
     console.log(response.data.data);
-    setColAmount(response.data.data.outputTokenAmount);
+    setColAmount(response.data.data.colAmount);
   };
 
   const handleSwap = async () => {

@@ -50,23 +50,23 @@ export const donation_get = async (req: MyRequest, res: Response, next: NextFunc
       percent: colpercent,
     });
 
-    // const endtitle = await donation_eth_end_Contract.methods.title().call();
-    // const endimg_url = await donation_eth_end_Contract.methods.img_url().call();
-    // const endtargetAmount = await donation_eth_end_Contract.methods.targetAmount().call();
-    // const endraisedAmount = await donation_eth_end_Contract.methods.raisedAmount().call();
-    // const endtargetEth = web3.utils.fromWei(endtargetAmount, 'ether');
-    // const endraisedEth = web3.utils.fromWei(endraisedAmount, 'ether');
-    // const endpercent = ((endraisedAmount / endtargetAmount) * 100).toFixed(1);
+    const endtitle = await donation_eth_end_Contract.methods.title().call();
+    const endimg_url = await donation_eth_end_Contract.methods.img_url().call();
+    const endtargetAmount = await donation_eth_end_Contract.methods.targetAmount().call();
+    const endraisedAmount = await donation_eth_end_Contract.methods.raisedAmount().call();
+    const endtargetEth = web3.utils.fromWei(endtargetAmount, 'ether');
+    const endraisedEth = web3.utils.fromWei(endraisedAmount, 'ether');
+    const endpercent = ((endraisedAmount / endtargetAmount) * 100).toFixed(1);
 
-    // donations.push({
-    //   title: endtitle,
-    //   img_url: endimg_url,
-    //   targetAmount: endtargetAmount,
-    //   raisedAmount: endraisedAmount,
-    //   targetEth: endtargetEth,
-    //   raisedEth: endraisedEth,
-    //   percent: endpercent,
-    // });
+    donations.push({
+      title: endtitle,
+      img_url: endimg_url,
+      targetAmount: endtargetAmount,
+      raisedAmount: endraisedAmount,
+      targetEth: endtargetEth,
+      raisedEth: endraisedEth,
+      percent: endpercent,
+    });
 
     sendResponse(res, 200, 'donation_get', {donations});
   } catch (e) {
