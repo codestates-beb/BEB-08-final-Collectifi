@@ -6,6 +6,7 @@ import Modal from '../components/UI/Modal';
 import axios from 'axios';
 import testImg from '../data/7-1.png';
 import {useNavigate} from 'react-router-dom';
+import {toast} from 'react-toastify';
 
 const DrawLayout = styled(Layout)`
   height: 100%;
@@ -57,6 +58,7 @@ const PackListItem = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  perspective: 600px;
 `;
 
 const PackLabel = styled.div`
@@ -94,9 +96,11 @@ const Pack = styled.div<Src>`
   color: black;
   text-align: center;
   box-shadow: 5px 5px 5px grey;
+  /* transform: rotateY(130deg); */
+  /* transform: rotateZ(90deg); */
+  /* transform-origin: left; */
   &:hover {
     cursor: pointer;
-    transform: rotateZ(0deg);
     /* transform: translateY(-5px); 
     transition: transform 0.5s ease; */
     animation: ${rotate} 3s linear infinite;
@@ -164,25 +168,26 @@ const DrawCardPage = () => {
     console.log(selectedPack);
 
     if (confirm('정말 구매하시겠습니까?')) {
-      // axios
-      //   .post('http://localhost:8000/drawing', {card_pack: e}, {withCredentials: true})
-      //   .then((res: any) => {
-      //     setCard(res.data.data.mintedNft);
-      //   });
+      axios
+        .post('http://localhost:8000/drawing', {card_pack: e}, {withCredentials: true})
+        .then((res: any) => {
+          setCard(res.data.data.mintedNft);
+          toast.success('Successfully Minted your Nft!🎉');
+        });
 
       // 테스트용
-      setCard({
-        token_id: 1,
-        user_id: 1,
-        player: 'Test',
-        season: '2023',
-        team: 'team1',
-        card_color: 1,
-        price: 5,
-        selling_price: 10,
-        img_url: '/7-1.png',
-        isSell: false,
-      });
+      // setCard({
+      //   token_id: 1,
+      //   user_id: 1,
+      //   player: 'Test',
+      //   season: '2023',
+      //   team: 'team1',
+      //   card_color: 1,
+      //   price: 5,
+      //   selling_price: 10,
+      //   img_url: '/7-1.png',
+      //   isSell: false,
+      // });
       console.log('yes');
     } else {
       console.log('no');

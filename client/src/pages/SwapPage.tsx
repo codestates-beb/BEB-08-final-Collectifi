@@ -6,6 +6,7 @@ import {useForm} from 'react-hook-form';
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
+import Particle from '../components/UI/Particle';
 
 const Layout = styled.div`
   margin-top: 100px;
@@ -103,6 +104,9 @@ const BtnBox = styled.div`
     scale: 1.05;
   }
 `;
+const ParticleS = styled(Particle)`
+  z-index: 1;
+`;
 
 const SwapPage = () => {
   const {
@@ -142,6 +146,7 @@ const SwapPage = () => {
 
   return (
     <Layout>
+      {/* <ParticleS /> */}
       <Container>
         <TabBox>
           <Tab style={{backgroundColor: '#414792'}}>SWAP</Tab>
