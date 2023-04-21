@@ -24,7 +24,7 @@ export const community_get = async (req: MyRequest, res: Response, next: NextFun
           include: [
             {
               model: db.User,
-              attributes: ['nickname'],
+              attributes: ['nickname','rank'],
             },
             {
               model: db.Post_comment,
@@ -42,11 +42,12 @@ export const community_get = async (req: MyRequest, res: Response, next: NextFun
         include: [
           {
             model: db.User,
-            attributes: ['nickname'],
+            attributes: ['nickname','rank'],
           },
           {
             model: db.Post_comment,
           },
+          
         ],
     })
   }
