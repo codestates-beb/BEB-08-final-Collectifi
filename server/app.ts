@@ -102,7 +102,7 @@ const setRank = async () => {
   });
 };
 
-// setRank();
+setRank();
 
 // setInterval(setRank, 5000);
 

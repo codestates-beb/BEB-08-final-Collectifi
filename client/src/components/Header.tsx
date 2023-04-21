@@ -250,7 +250,14 @@ const Header = ({toggle}: PageLayoutProps) => {
     {name: 'MARKET', link: '/market'},
     {name: 'WIN', link: '/win'},
     {name: 'COMMUNITY', link: '/community'},
-    {name: 'EVENT', link: '/event'},
+    {
+      name: 'OTHERS',
+      link: '/event',
+      submenu: [
+        {name: 'EVENT', link: '/event'},
+        {name: 'DONATION', link: '/donation'},
+      ],
+    },
   ];
 
   const login = useRecoilCallback(({set}) => async () => {

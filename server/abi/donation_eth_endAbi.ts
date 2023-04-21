@@ -2,13 +2,6 @@ import {AbiItem} from 'web3-utils';
 
 const donation_eth_endAbi: AbiItem[] = [
   {
-    inputs: [],
-    name: 'refund',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
     inputs: [
       {
         internalType: 'uint256',
@@ -18,17 +11,6 @@ const donation_eth_endAbi: AbiItem[] = [
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
-  },
-  {
-    inputs: [],
-    name: 'withdrawDonations',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    stateMutability: 'payable',
-    type: 'receive',
   },
   {
     inputs: [
@@ -103,6 +85,13 @@ const donation_eth_endAbi: AbiItem[] = [
   },
   {
     inputs: [],
+    name: 'refund',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'targetAmount',
     outputs: [
       {
@@ -126,6 +115,17 @@ const donation_eth_endAbi: AbiItem[] = [
     ],
     stateMutability: 'view',
     type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'withdrawDonations',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    stateMutability: 'payable',
+    type: 'receive',
   },
 ];
 
