@@ -218,7 +218,7 @@ const DrawCardPage = () => {
                         handleSubmit(0);
                       }}
                     ></Pack>
-                    <PackPrice>500 TKI</PackPrice>
+                    <PackPrice>150 COL</PackPrice>
                   </PackListItem>
                   <PackListItem>
                     <PackLabel>High Class</PackLabel>
@@ -228,7 +228,7 @@ const DrawCardPage = () => {
                         handleSubmit(1);
                       }}
                     ></Pack>
-                    <PackPrice>1000 TKI</PackPrice>
+                    <PackPrice>300 COL</PackPrice>
                   </PackListItem>
                   <PackListItem>
                     <PackLabel>World Class</PackLabel>
@@ -238,7 +238,7 @@ const DrawCardPage = () => {
                         handleSubmit(2);
                       }}
                     ></Pack>
-                    <PackPrice>5000 TKI</PackPrice>
+                    <PackPrice>500 COL</PackPrice>
                   </PackListItem>
                 </PackList>
               </PackLayout>
