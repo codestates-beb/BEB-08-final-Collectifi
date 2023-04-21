@@ -31,6 +31,7 @@ export interface PostsAttributes {
 }
 interface User {
   nickname: string;
+  rank?: number;
 }
 
 const CommunityLayout = styled.div`
@@ -88,10 +89,14 @@ const PostButtonDiv = styled.div`
   justify-content: flex-end;
   margin: 10px;
 `;
+const RankIcon = styled.img`
+  width: 30px;
+  height: 30px;
+`;
 
 const Community = () => {
   const navigate = useNavigate();
-  const boardSize = '0.3fr 3.5fr 1fr 1fr 0.5fr 0.5fr';
+  const boardSize = '0.3fr 3fr 0.5fr 0.5fr 1fr 0.5fr 0.5fr';
   const [posts, setPosts] = useState<PostsAttributes[]>([]);
   const [popularPosts, setPopularPosts] = useState<PostsAttributes[]>([]);
   const timeAgo = new TimeAgo('en-US');
@@ -145,7 +150,6 @@ const Community = () => {
   };
 
   // 필터 관련
-  const [filterText, setFilterText] = useState('latest');
 
   const filterSelected = (e: any) => {
     if (e.target.value === 'latest') {
@@ -162,6 +166,18 @@ const Community = () => {
       setPosts(prev => [...prev.sort((a, b) => b.Post_comments.length - a.Post_comments.length)]);
     }
   };
+  // const setRankIcon = (e?: number) => {
+  //   if (e === 1) {
+  //     console.log('오브젝트는: ', <RankIcon src="/challenger.png" />);
+  //     return <RankIcon src="/challenger.png" />;
+  //   } else if (e === 2) {
+  //     return <RankIcon src="/grandmaster.png" />;
+  //   } else if (e === 3) {
+  //     return <RankIcon src="/master.png" />;
+  //   } else {
+  //     return <div></div>;
+  //   }
+  // };
 
   return (
     <CommunityLayout>
@@ -207,7 +223,7 @@ const Community = () => {
           <BoardList
             title={
               <BoardTitleItem
-                title={['POST', 'TITLE', 'USER', 'DATE', 'VIEW', 'LIKES']}
+                title={['POST', 'TITLE', 'USER', 'RANK', 'DATE', 'VIEW', 'LIKES']}
                 gridTemplateColumns={boardSize}
               />
             }
@@ -220,9 +236,9 @@ const Community = () => {
                 const listItem = [
                   item.id,
                   `${item.title} [${item.Post_comments.length.toString()}]`,
-                  item.User?.nickname,
-                  // timeAgo.format(item.created_at),
-                  // new Date().getMonth(),
+                  `${item.User?.nickname}`,
+                  // item.User?.rank,
+                  <RankIcon key={item.id} src={`/${item.User?.rank}.png`} alt="/0.png" />,
                   // item.created_ats.getMonth(),
                   // (new Date() - item.created_at).toString(),
                   item.created_at.toDateString(),

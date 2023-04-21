@@ -7,6 +7,7 @@ import axios from 'axios';
 import {toast} from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
 import Particle from '../components/UI/Particle';
+import Particle2 from '../components/UI/Particle2';
 
 const Layout = styled.div`
   margin-top: 100px;
@@ -151,7 +152,7 @@ const SwapPage = () => {
 
   return (
     <Layout>
-      {/* <ParticleS /> */}
+      <ParticleS />
       <Container>
         <TabBox>
           <Tab style={{backgroundColor: '#414792'}}>SWAP</Tab>
