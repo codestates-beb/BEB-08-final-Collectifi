@@ -18,7 +18,7 @@ contract COLToken is ERC20 {
 
 
     function joinReward(address payable joinUserAddress) public returns(bool) {
-        transfer(joinUserAddress,1000);
+        transfer(joinUserAddress,500000);
         return true;
     }
 

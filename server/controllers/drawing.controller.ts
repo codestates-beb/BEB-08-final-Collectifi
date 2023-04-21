@@ -17,6 +17,21 @@ export const drawing_post = async (req: MyRequest, res: Response, next: NextFunc
     console.log('=======address=====', address);
     const {card_pack} = req.body;
     //db에서 card_pack별로 랜덤으로 하나 뽑기
+    const user = await db.User.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (card_pack == 0 && user.token_amount < 150) {
+      return res.status(400).send({message: '잔액이 부족합니다.'});
+    }
+    if (card_pack == 1 && user.token_amount < 300) {
+      return res.status(400).send({message: '잔액이 부족합니다.'});
+    }
+    if (card_pack == 2 && user.token_amount < 500) {
+      return res.status(400).send({message: '잔액이 부족합니다.'});
+    }
     const data = await db.Nft_info.findOne({
       where: {
         card_pack,

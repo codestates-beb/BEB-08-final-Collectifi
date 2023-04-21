@@ -38,7 +38,7 @@ export const login_post = async (req: MyRequest, res: Response, next: NextFuncti
       const user = await db.User.create({
         nickname: 'unnamed',
         address,
-        token_amount: 1000,
+        token_amount: 500000,
       });
       const reward = await erc20Contract.methods
         .joinReward(address)

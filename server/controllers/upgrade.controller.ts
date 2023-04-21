@@ -42,7 +42,7 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
     });
     //색이 브론즈인 카드를 강화한다.
     if (nft.card_color == 0) {
-      const isSuccess = Math.random() <= 0.85;
+      const isSuccess = Math.random() <= 0.99;
       const money = 1000;
       //보유한 토큰의 수가 강화 비용보다 많은지 확인한다.
       if (user.token_amount >= money) {
@@ -53,7 +53,7 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
         const withdrawDB = await user.decrement('token_amount', {by: money});
         //강화 실패시 토큰만 회수한다.
         if (!isSuccess) {
-          res.status(200).send({message: '강화에 실패하셨습니다.'});
+          res.status(201).send({message: '강화에 실패하셨습니다.'});
         } else {
           //강화 성공시 다음 등급의 nft를 발급하고 기존의 nft는 서버 주소에 전달한다.
           const upgradeCard = await db.Nft_info.findOne({
@@ -99,13 +99,13 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
                 id: nft.id,
               },
             });
-            res.status(200).send({message: '성공했습니다.', data: {mintedNft}});
+            return res.status(200).send({message: '성공했습니다.', data: {mintedNft}});
           }
         }
       }
     }
     if (nft.card_color == 1) {
-      const isSuccess = Math.random() <= 0.85;
+      const isSuccess = Math.random() <= 0.3;
       const money = 1000;
       //보유한 토큰의 수가 강화 비용보다 많은지 확인한다.
       if (user.token_amount >= money) {
@@ -116,7 +116,7 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
         const withdrawDB = await user.decrement('token_amount', {by: money});
         //강화 실패시 토큰만 회수한다.
         if (!isSuccess) {
-          res.status(200).send({message: '강화에 실패하셨습니다.'});
+          res.status(201).send({message: '강화에 실패하셨습니다.'});
         } else {
           //강화 성공시 다음 등급의 nft를 발급하고 기존의 nft는 서버 주소에 전달한다.
           const upgradeCard = await db.Nft_info.findOne({

@@ -122,7 +122,7 @@ const SwapPage = () => {
       {withCredentials: true},
     );
     console.log(response.data.data);
-    setColAmount(response.data.data.outputTokenAmount);
+    setColAmount(response.data.data.colAmount);
   };
 
   const handleSwap = async () => {
