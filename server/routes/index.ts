@@ -13,6 +13,7 @@ import exchange from './exchange.route';
 import donation from './donation.route';
 import admin from './admin.route';
 import gallery from './gallery.route';
+import rank from './rank.route';
 
 router.use('/', main);
 router.use('/user', user);
@@ -25,5 +26,6 @@ router.use('/exchange', exchange);
 router.use('/donation', donation);
 router.use('/admin', admin);
 router.use('/gallery', gallery);
+router.use('/rank', rank);
 
 export default router;

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faArrowAltCircleDown} from '@fortawesome/free-regular-svg-icons';
+import {faArrowAltCircleDown, faPlusSquare} from '@fortawesome/free-regular-svg-icons';
 import {useForm} from 'react-hook-form';
 import axios from 'axios';
 import {toast} from 'react-toastify';
@@ -45,6 +45,10 @@ const Tab = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const InputBox = styled.div`
@@ -95,7 +99,7 @@ const BtnBox = styled.div`
   color: white;
   font-weight: 600;
   margin-top: 20px;
-  padding: 10px;
+  padding: 15px;
   border-radius: 10px;
 
   :hover {
@@ -156,7 +160,7 @@ const PoolPage = () => {
           />
         </InputBox>
         <CalBox onClick={handleCalClick}>
-          <FontAwesomeIcon icon={faArrowAltCircleDown} />
+          <FontAwesomeIcon icon={faPlusSquare} />
         </CalBox>
         <InputBox>
           <InputTitle>Input : COL</InputTitle>
