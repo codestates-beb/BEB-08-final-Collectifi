@@ -7,8 +7,10 @@ import {
   admin_blacklists_get,
   admin_post_delete,
   admin_comment_delete,
-  admin_user_delete,
   admin_blacklist_delete,
+  admin_win_post,
+  admin_win_get,
+  admin_user_blacklist,
 } from '../controllers/admin.controller';
 
 const router = express.Router();
@@ -25,7 +27,11 @@ router.get('/blacklists', admin_blacklists_get);
 // 삭제하기
 router.delete('/post', admin_post_delete);
 router.delete('/comment', admin_comment_delete);
-router.delete('/user', admin_user_delete);
+router.post('/user', admin_user_blacklist);
 router.delete('/blacklist', admin_blacklist_delete);
+
+// 승부예측 (win)
+router.get('/win', admin_win_get);
+router.post('/win', admin_win_post);
 
 export default router;

@@ -1,13 +1,8 @@
 import {AbiItem} from 'web3-utils';
 
-const donation_colAbi: AbiItem[] = [
+const donation_eth_endAbi: AbiItem[] = [
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: '_tokenAddress',
-        type: 'address',
-      },
       {
         internalType: 'uint256',
         name: '_targetAmount',
@@ -47,24 +42,6 @@ const donation_colAbi: AbiItem[] = [
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address payable',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-    ],
-    name: 'fund',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -141,24 +118,15 @@ const donation_colAbi: AbiItem[] = [
   },
   {
     inputs: [],
-    name: 'token',
-    outputs: [
-      {
-        internalType: 'contract COLToken',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'withdrawDonations',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  {
+    stateMutability: 'payable',
+    type: 'receive',
+  },
 ];
 
-export default donation_colAbi;
+export default donation_eth_endAbi;

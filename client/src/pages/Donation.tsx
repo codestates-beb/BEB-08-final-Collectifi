@@ -153,10 +153,30 @@ const ModalBtn = styled.button`
   font-weight: 600;
 `;
 
+const BottomBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const RefundBtn = styled.div`
+  margin-right: 15px;
+  background-color: #fd115c;
+  color: white;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 10px;
+  font-weight: 600;
+`;
+
 const Donation = () => {
   const [infos, setInfos] = useState<Info[]>([]);
   const [isModalOpenOne, setIsModalOpenOne] = useState(false);
   const [isModalOpenTwo, setIsModalOpenTwo] = useState(false);
+  const [isModalOpenThree, setIsModalOpenThree] = useState(false);
   const [amount, setAmount] = useState<any>();
 
   const setChange = (e: any) => {
@@ -171,6 +191,10 @@ const Donation = () => {
     setIsModalOpenTwo(true);
   };
 
+  const openModalThree = () => {
+    setIsModalOpenThree(true);
+  };
+
   const closeModalOne = () => {
     setIsModalOpenOne(false);
   };
@@ -178,14 +202,19 @@ const Donation = () => {
     setIsModalOpenTwo(false);
   };
 
-  const handleClick = async () => {
+  const closeModalThree = () => {
+    setIsModalOpenThree(false);
+  };
+  const handleClick = async (e: any) => {
+    e.preventDefault();
     const weiAmount = Web3.utils.toWei(amount.toString(), 'ether');
     const hexAmount = Web3.utils.toHex(weiAmount);
     console.log(hexAmount);
     const params = [
       {
-        from: '0xe3D815A6af27756B60db3d763de17faD43E15385',
-        to: '0xFBa65084683b91419ADBbEba7f886d43Ed717BbC',
+        from: '0x19A49D592c34dCcdA2B11c926609F84621e34480',
+
+        to: '0x9209224bE464Fec24a7C08A78eD87c2Df4335EdD',
         value: hexAmount,
       },
     ];
@@ -199,12 +228,20 @@ const Donation = () => {
     }
   };
 
-  const handleClickTwo = async () => {
+  const handleClickTwo = async (e: any) => {
     const response = await axios.post(
       'http://localhost:8000/donation',
       {amount},
       {withCredentials: true},
     );
+  };
+  const handleClickThree = async (e: any) => {
+    const response = await axios.post(
+      'http://localhost:8000/donation/refund',
+
+      {withCredentials: true},
+    );
+    console.log(response);
   };
 
   useEffect(() => {
@@ -243,11 +280,24 @@ const Donation = () => {
               </DonationTop>
               <DonationBottom>{infos[1]?.title}</DonationBottom>
             </DonationBox>
+            <DonationBox onClick={openModalThree}>
+              <DonationImg style={{opacity: 0.4}} bgImage={infos[2]?.img_url} />
+              <BarSegment width={infos[2]?.percent} color="#fd115c" />
+              <DonationTop>
+                <DonationPercent>{infos[2]?.percent}%</DonationPercent>
+                <DonationTarget>{infos[2]?.raisedEth} ETH /</DonationTarget>
+                <DonationTarget>{infos[2]?.targetEth} ETH</DonationTarget>
+              </DonationTop>
+              <BottomBox>
+                <DonationBottom>{infos[2]?.title}</DonationBottom>
+                <RefundBtn>Refund</RefundBtn>
+              </BottomBox>
+            </DonationBox>
           </GridContainer>
         ) : null}
         {isModalOpenOne && (
           <ModalOverlay onClick={closeModalOne}>
-            <form onSubmit={handleClick}>
+            <form onSubmit={e => handleClick(e)}>
               <ModalContent onClick={e => e.stopPropagation()}>
                 {/* 모달 컨텐츠 */}
                 <ModalTitle>{infos[0]?.title}</ModalTitle>
@@ -265,7 +315,7 @@ const Donation = () => {
         )}
         {isModalOpenTwo && (
           <ModalOverlay onClick={closeModalTwo}>
-            <form onSubmit={handleClickTwo}>
+            <form onSubmit={e => handleClickTwo(e)}>
               <ModalContent onClick={e => e.stopPropagation()}>
                 {/* 모달 컨텐츠 */}
                 <ModalTitle>{infos[1]?.title}</ModalTitle>
@@ -279,6 +329,16 @@ const Donation = () => {
                 <ModalBtn type="submit">Donate</ModalBtn>
               </ModalContent>
             </form>
+          </ModalOverlay>
+        )}
+        {isModalOpenThree && (
+          <ModalOverlay onSubmit={e => handleClickThree(e)}>
+            <ModalContent onClick={e => e.stopPropagation()}>
+              {/* 모달 컨텐츠 */}
+              <ModalTitle>Do you want to Refund your donation?</ModalTitle>
+
+              <ModalBtn onClick={handleClickThree}>Refund</ModalBtn>
+            </ModalContent>
           </ModalOverlay>
         )}
       </MiddleBox>

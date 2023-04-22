@@ -10,12 +10,19 @@ import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Dropdown from './Dropdown';
 import axios from 'axios';
-import { useRecoilValue, useRecoilCallback, useRecoilRefresher_UNSTABLE } from 'recoil';
-import { userAddr, userId, userNickname, userAmount, userReferral, logoutQuery } from '../modules/atom';
-import { getUserQuery } from '../modules/mypage/atom';
+import {useRecoilValue, useRecoilCallback, useRecoilRefresher_UNSTABLE} from 'recoil';
+import {
+  userAddr,
+  userId,
+  userNickname,
+  userAmount,
+  userReferral,
+  logoutQuery,
+} from '../modules/atom';
+import {getUserQuery} from '../modules/mypage/atom';
 import MyInfo from './MyInfo';
-import { darken } from 'polished';
-
+import {darken} from 'polished';
+import Cookies from 'js-cookie';
 
 import {toast} from 'react-toastify';
 declare global {
@@ -29,12 +36,11 @@ declare global {
 const navVariants = {
   top: {
     backgroundColor: 'rgb(250, 250, 250)', // 'white', '#333333',
-    boxShadow: 'none'
+    boxShadow: 'none',
   },
   scroll: {
     //backgroundColor: 'white',
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-
   },
 };
 
@@ -78,7 +84,7 @@ const Logo = styled.div`
   align-items: center;
 `;
 
-const LogoImgDiv = styled.div`
+const LogoImgDiv = styled(Link)`
   object-fit: contain;
   border: none;
   border-radius: 10px;
@@ -181,21 +187,21 @@ const NavBtnLink = styled.div`
   }
   &:active {
     background: ${props => darken(0.2, props.theme.mainColor)};
-  }  
+  }
 `;
 
 const MyInfoBox = styled.div`
   justify-self: right;
   align-self: center;
   padding-right: 20px;
-`
+`;
 
 const Header = ({toggle}: PageLayoutProps) => {
   const [dropdown, setDropdown] = useState('');
   //const [account, setAccount] = useState('');
   const currId = useRecoilValue(userId);
   const logoutRefresh = useRecoilRefresher_UNSTABLE(logoutQuery);
-  const userRefresh = useRecoilRefresher_UNSTABLE(getUserQuery); 
+  const userRefresh = useRecoilRefresher_UNSTABLE(getUserQuery);
 
   const onMouseEnter = (e: string) => {
     if (window.innerWidth < 768) {
@@ -244,10 +250,17 @@ const Header = ({toggle}: PageLayoutProps) => {
     {name: 'MARKET', link: '/market'},
     {name: 'WIN', link: '/win'},
     {name: 'COMMUNITY', link: '/community'},
-    {name: 'EVENT', link: '/event'},
-  ];  
+    {
+      name: 'OTHERS',
+      link: '/event',
+      submenu: [
+        {name: 'EVENT', link: '/event'},
+        {name: 'DONATION', link: '/donation'},
+      ],
+    },
+  ];
 
-  const login = useRecoilCallback(({ set }) => async () => {
+  const login = useRecoilCallback(({set}) => async () => {
     if (!window.ethereum) {
       console.log('Ethereum not detected in browser');
       return;
@@ -263,36 +276,36 @@ const Header = ({toggle}: PageLayoutProps) => {
           .post('http://localhost:8000/login', {address: res[0]}, {withCredentials: true})
           .then(res => {
             console.log('login_post success: ', res);
-            if(!res.data.data) return;
+            if (!res.data.data) return;
             set(userAddr, res.data.data.address);
             set(userId, res.data.data.id);
             set(userNickname, res.data.data.nickname);
-            set(userAmount, res.data.data.token_amount);  
-            set(userReferral, res.data.data.referral); 
+            set(userAmount, res.data.data.token_amount);
+            set(userReferral, res.data.data.referral);
             toast.success('logged in successfully! 🎉');
           });
         // setIsLoggedIn(true);
         // localStorage.setItem('isLoggedIn', res[0]);
       })
       .catch(e => {
-        console.log(e)
+        console.log(e);
         toast.error('logged in failed');
-      });      
+      });
   });
 
-  const logout = useRecoilCallback(({ snapshot, set }) => async () => {
+  const logout = useRecoilCallback(({snapshot, set}) => async () => {
     const result = await snapshot.getPromise(logoutQuery);
-    if(!result) 
-      return;
-    set(userAddr, "");
+    if (!result) return;
+    set(userAddr, '');
     set(userId, 0);
-    set(userNickname, "");
-    set(userAmount, 0); 
+    set(userNickname, '');
+    set(userAmount, 0);
     set(userReferral, null);
     logoutRefresh();
     userRefresh();
     toast.success('logged out successfully! 🎉');
     console.log("logout", result);
+    Cookies.remove('connect.sid');
   });
 
   return (
@@ -300,7 +313,7 @@ const Header = ({toggle}: PageLayoutProps) => {
       <Nav variants={navVariants} animate={headerAnimation} initial={'top'}>
         <NavbarContainer>
           <Logo>
-            <LogoImgDiv />
+            <LogoImgDiv to="/" />
             <NavLogo to="/">Collectifi</NavLogo>
           </Logo>
           <MobileIcon onClick={toggle}>
@@ -328,15 +341,14 @@ const Header = ({toggle}: PageLayoutProps) => {
               </NavItem>
             ))}
           </NavMenu>
-          <MyInfoBox>
-            {currId !== 0 && <MyInfo />}
-          </MyInfoBox>          
+          <MyInfoBox>{currId !== 0 && <MyInfo />}</MyInfoBox>
           <NavBtn>
             <NavBtnLink
               onClick={() => {
-                currId === 0 ? login() : logout()
-              }}            >
-              {currId === 0 ? 'CONNECT':"DISCONN"}
+                currId === 0 ? login() : logout();
+              }}
+            >
+              {currId === 0 ? 'CONNECT' : 'DISCONN'}
             </NavBtnLink>
           </NavBtn>
         </NavbarContainer>

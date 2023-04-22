@@ -95,71 +95,32 @@ const Community = () => {
   const [posts, setPosts] = useState<PostsAttributes[]>([]);
   const [popularPosts, setPopularPosts] = useState<PostsAttributes[]>([]);
   const timeAgo = new TimeAgo('en-US');
-
+  const [tabs, setTabs] = useState('General');
+  const params = {
+    tabs: tabs,
+  };
   useEffect(() => {
     // 모든 게시글을 불러옴
+
     axios
-      .get('http://localhost:8000/community')
+      .get('http://localhost:8000/community', {params})
       .then(response => {
+        console.log('모든 게시글: ', response);
         setPosts(
-          [...posts, ...response.data.data].map(post => {
+          [...response.data.data].map(post => {
             return {
               ...post,
               created_at: new Date(post.created_at),
             };
           }),
         );
+        setPostsLength(posts.length);
+        setCurrentPage(1);
       })
       .catch(error => {
         console.error(error);
       });
-
-    //   setPosts(
-    //     data.map(post => {
-    //       return {
-    //         ...post,
-    //         created_at: new Date(post.created_at),
-    //       };
-    //     }),
-    //   );
-    //   setPopularPosts(
-    //     data
-    //       .filter(item => item.likes >= 50)
-    //       .map(post => {
-    //         return {
-    //           ...post,
-    //           created_at: new Date(post.created_at),
-    //         };
-    //       }),
-    //   );
-  }, []);
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // },[])
-  // const fetchMoreData = () => {
-  //   if (!postLoading) {
-  //     SetPostLoading(true);
-  //     setTimeout(() => {
-  //       axios
-  //         .get('http://localhost:5500', {params: {page: page}})
-  //         .then(response => {
-  //           // SetPost([...post, ...response.data.data]);
-
-  //           if (response.data.data.length === 0) {
-  //             setHasMore(false);
-  //           } else {
-  //             setPage(page + 1);
-  //           }
-  //           console.log('main_get: ', response.data.data); // Do something with the response
-  //         })
-  //         .catch(error => {
-  //           console.error(error);
-  //           setHasMore(false);
-  //         });
-  //     }, 2000);
-  //     SetPostLoading(false);
-  //   }
-  // };
+  }, [tabs]);
 
   // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
@@ -173,9 +134,33 @@ const Community = () => {
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-  const [tabs, setTabs] = useState('General');
+  const [postsLength, setPostsLength] = useState(posts.length);
+  useEffect(() => {
+    setPostsLength(posts.length);
+    setCurrentPage(1);
+  }, [posts, tabs]);
+
   const clickHandler = (e: string) => {
     setTabs(e);
+  };
+
+  // 필터 관련
+  const [filterText, setFilterText] = useState('latest');
+
+  const filterSelected = (e: any) => {
+    if (e.target.value === 'latest') {
+      console.log('this is latest');
+      setPosts(prev => [...prev.sort((a, b) => b.created_at.getTime() - a.created_at.getTime())]);
+    } else if (e.target.value === 'views') {
+      console.log('this is views');
+      setPosts(prev => [...prev.sort((a, b) => b.views - a.views)]);
+    } else if (e.target.value === 'likes') {
+      setPosts(prev => [...prev.sort((a, b) => b.likes - a.likes)]);
+      console.log('this is likes', posts);
+    } else if (e.target.value === 'comments') {
+      console.log('this is most commented');
+      setPosts(prev => [...prev.sort((a, b) => b.Post_comments.length - a.Post_comments.length)]);
+    }
   };
 
   return (
@@ -186,7 +171,9 @@ const Community = () => {
           element={<PostPage setCurrentPage={setCurrentPage} setPosts={setPosts} posts={posts} />}
         />
       </Routes>
-
+      <PostButtonDiv>
+        <Button onClick={() => navigate('/write')}>Post</Button>
+      </PostButtonDiv>
       <TabUl>
         <TabLi>
           <TabButton
@@ -207,12 +194,16 @@ const Community = () => {
           </TabButton>
         </TabLi>
       </TabUl>
-      <PostButtonDiv>
-        <Button onClick={() => navigate('/write')}>Post</Button>
-      </PostButtonDiv>
-      {/* <div>{tabs}</div> */}
-      {tabs == 'General' && (
+
+      {tabs && (
         <>
+          <select onChange={filterSelected}>
+            <option value="latest">Latest</option>
+            <option value="views">Views</option>
+            <option value="likes">Likes</option>
+            <option value="comments">most commented</option>
+          </select>
+
           <BoardList
             title={
               <BoardTitleItem
@@ -253,65 +244,13 @@ const Community = () => {
           </BoardList>
           <Pagination
             dataPerPage={postsPerPage}
-            dataLength={posts.length}
+            dataLength={postsLength}
             paginate={paginate}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
           />
         </>
       )}
-      {tabs == 'Popular' && (
-        <>
-          <BoardList
-            title={
-              <BoardTitleItem
-                title={['POST', 'TITLE', 'USER', 'DATE', 'VIEW', 'LIKES']}
-                gridTemplateColumns={boardSize}
-              />
-            }
-          >
-            {currentPopularPost &&
-              currentPopularPost.map(item => {
-                // const before = new Date(new Date().getTime() - item.created_at.getTime()).getTime();
-                // if (new Date().getMonth() - item.created_at.getMonth()) {
-                // }
-                const listItem = [
-                  item.id,
-                  `${item.title} [${item.likes}]`,
-                  item.user_id,
-                  // timeAgo.format(item.created_at),
-                  // new Date().getMonth(),
-                  // item.created_ats.getMonth(),
-                  // (new Date() - item.created_at).toString(),
-                  item.created_at.toDateString(),
-                  // item.created_at.getTime(),
-                  // new Date(new Date().getTime() - item.created_at.getTime()).toDateString(),
-                  // before,
-                  item.views,
-                  item.likes,
-                ];
-                return (
-                  <BoardListItem
-                    key={item.id}
-                    listItem={listItem}
-                    gridTemplateColumns={boardSize}
-                    linkTo={item.id.toString()}
-                  />
-                );
-              })}
-          </BoardList>
-          <Pagination
-            dataPerPage={postsPerPage}
-            dataLength={popularPosts.length}
-            paginate={paginate}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
-        </>
-      )}
-      {/* <Tab title={['General', 'Popular']}>
-        
-      </Tab> */}
     </CommunityLayout>
   );
 };

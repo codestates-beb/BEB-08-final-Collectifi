@@ -60,7 +60,7 @@ class Nft_record extends Model<NftRecordAttributes> {
   }
 
   public static associate(db: any) {
-    db.Nft_record.belongsTo(db.User, {
+    db.Nft_record.belongsTo(db.Nft, {
       foreignKey: 'nft_id',
       targetKey: 'id',
       onDelete: 'cascade',
