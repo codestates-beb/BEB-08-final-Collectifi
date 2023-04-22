@@ -5,7 +5,7 @@ import {MyRequest} from '../@types/session';
 import {sendResponse} from './utils';
 import Web3 from 'web3';
 import erc20abi from '../abi/erc20abi';
-const web3 = new Web3(`HTTP://127.0.0.1:${process.env.GANACHE_PORT}`);
+const web3 = new Web3(`HTTP://172.24.16.1:7545`);
 const erc20Contract = new web3.eth.Contract(erc20abi, process.env.ERC20_CA);
 
 // 마이페이지 (유저 프로필)
@@ -13,6 +13,7 @@ export const mypage_get = async (req: MyRequest, res: Response, next: NextFuncti
   try {
     // 1. URL parameter로 해당 user의 id 받아오기
     const {id} = req.params;
+
     // 2. db에서 user 검색하기
     const user = await db.User.findOne({
       where: {
@@ -39,6 +40,13 @@ export const mypage_get = async (req: MyRequest, res: Response, next: NextFuncti
       where: {
         user_id: id,
       },
+      include: [{
+          model: db.Nft_gallery,
+          required: false,
+          where: {
+            isWithdraw: false,
+          },
+        }]
     });
     // 4. user 정보, posts, nfts 다 보내주기
     // const result: ResponseData = {
