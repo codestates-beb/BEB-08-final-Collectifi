@@ -145,19 +145,19 @@ export const dummy_get = async (req: MyRequest, res: Response, next: NextFunctio
     }
 
     // Nft_info 데이터 넣기
-    nft_infos.map(item => {
-      const result = db.Nft_info.create({
-        player: item.player,
-        season: item.season,
-        team: item.team,
-        card_pack: item.card_pack,
-        card_color: item.card_color,
-        img_url: item.img_url,
-        team_record: item.team_record,
-        man_record: item.man_record,
-      });
-    });
-    //판매중인 Nft 데이터 넣기 (마켓 테스트 위한)
+    // nft_infos.map(item => {
+    //   const result = db.Nft_info.create({
+    //     player: item.player,
+    //     season: item.season,
+    //     team: item.team,
+    //     card_pack: item.card_pack,
+    //     card_color: item.card_color,
+    //     img_url: item.img_url,
+    //     team_record: item.team_record,
+    //     man_record: item.man_record,
+    //   });
+    // });
+    // //판매중인 Nft 데이터 넣기 (마켓 테스트 위한)
     nft_infos.slice(0, 12).map(item => {
       const selling_nfts = db.Nft.create({
         token_id: 1,

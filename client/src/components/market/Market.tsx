@@ -26,7 +26,7 @@ const Market = () => {
   return (
     <MarketLayout>
       <PageTitle title='MARKET'/>
-      <Tab title={["SAIL"]}>
+      <Tab title={["SALE"]}>
         <CardList itemWidth={"250px"}>
           {cardList.map((el:nft ,i:number) => {
             return (

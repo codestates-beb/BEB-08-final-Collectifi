@@ -64,6 +64,7 @@ const CardDetail = () => {
    }
     //판매등록 요청    
     const sellRegi = await snapshot.getPromise(getSellRegiQuery);
+    console.log(sellRegi);
     if(!sellRegi) {
       openModal("판매등록 실패", "판매등록에 실패 했어요.");
       return;
@@ -144,7 +145,7 @@ const CardDetail = () => {
     cardInfo.season,
     cardInfo.man_record,
     cardInfo.team_record, 
-    cardInfo.user_id,
+    cardInfo.User.nickname,
     cardInfo.isSell && cardInfo.selling_price
   ];   
   console.log(cardInfo, txList, isOwner);
@@ -176,13 +177,13 @@ const CardDetail = () => {
               listItem={listItem} 
               gridTemplateColumns='2fr 8fr'
               isLast={arr.length === i + 1}
-              linkTo={(infoTitle[i] === 'OWNER') ? `/user/${el}`: undefined}
+              linkTo={(infoTitle[i] === 'OWNER') ? `/user/${cardInfo.user_id}`: undefined}
               />)
           })}
         </BoardList>
         <div className='btn-wrapper'>
-          {(cardInfo.isSell && !isOwner) && <CDButton onClick={handleBuyClick}>BUY</CDButton>}          
-          {(!cardInfo.isSell && isOwner && userAddress !== "") && <div>
+          {(cardInfo.isSell && !isOwner && cardInfo.Nft_galleries.length === 0) && <CDButton onClick={handleBuyClick}>BUY</CDButton>}          
+          {(!cardInfo.isSell && isOwner && userAddress !== "" && cardInfo.Nft_galleries.length === 0) && <div>
             <label htmlFor="price-input" />
             <Input id="price-input" placeholder="INPUT SELL PRICE" ref={priceInputRef} onChange={handleInputChange}/>
             <CDButton onClick={handleSellClick}>SELL</CDButton>
@@ -192,7 +193,7 @@ const CardDetail = () => {
     </section>
     <section className='bottom'>
       <div>
-        <Tab title={["TX HISTORY", "OFFER"]}>
+        <Tab title={["TX HISTORY"]}>
           <BoardList 
             title={<BoardTitleItem title={["FROM", "TO", "PRICE", "DATE"]} 
             gridTemplateColumns='2fr 2fr 1fr 1fr'/>
