@@ -205,14 +205,16 @@ const Donation = () => {
   const closeModalThree = () => {
     setIsModalOpenThree(false);
   };
-  const handleClick = async () => {
+  const handleClick = async (e: any) => {
+    e.preventDefault();
     const weiAmount = Web3.utils.toWei(amount.toString(), 'ether');
     const hexAmount = Web3.utils.toHex(weiAmount);
     console.log(hexAmount);
     const params = [
       {
-        from: '0xe3D815A6af27756B60db3d763de17faD43E15385',
-        to: '0xFBa65084683b91419ADBbEba7f886d43Ed717BbC',
+        from: '0x19A49D592c34dCcdA2B11c926609F84621e34480',
+
+        to: '0x9209224bE464Fec24a7C08A78eD87c2Df4335EdD',
         value: hexAmount,
       },
     ];
@@ -226,14 +228,14 @@ const Donation = () => {
     }
   };
 
-  const handleClickTwo = async () => {
+  const handleClickTwo = async (e: any) => {
     const response = await axios.post(
       'http://localhost:8000/donation',
       {amount},
       {withCredentials: true},
     );
   };
-  const handleClickThree = async () => {
+  const handleClickThree = async (e: any) => {
     const response = await axios.post(
       'http://localhost:8000/donation/refund',
 
@@ -280,11 +282,11 @@ const Donation = () => {
             </DonationBox>
             <DonationBox onClick={openModalThree}>
               <DonationImg style={{opacity: 0.4}} bgImage={infos[2]?.img_url} />
-              <BarSegment width={30} color="#fd115c" />
+              <BarSegment width={infos[2]?.percent} color="#fd115c" />
               <DonationTop>
-                <DonationPercent>30%</DonationPercent>
+                <DonationPercent>{infos[2]?.percent}%</DonationPercent>
                 <DonationTarget>{infos[2]?.raisedEth} ETH /</DonationTarget>
-                <DonationTarget>{infos[2]?.targetAmount} ETH</DonationTarget>
+                <DonationTarget>{infos[2]?.targetEth} ETH</DonationTarget>
               </DonationTop>
               <BottomBox>
                 <DonationBottom>{infos[2]?.title}</DonationBottom>
@@ -295,7 +297,7 @@ const Donation = () => {
         ) : null}
         {isModalOpenOne && (
           <ModalOverlay onClick={closeModalOne}>
-            <form onSubmit={handleClick}>
+            <form onSubmit={e => handleClick(e)}>
               <ModalContent onClick={e => e.stopPropagation()}>
                 {/* 모달 컨텐츠 */}
                 <ModalTitle>{infos[0]?.title}</ModalTitle>
@@ -313,7 +315,7 @@ const Donation = () => {
         )}
         {isModalOpenTwo && (
           <ModalOverlay onClick={closeModalTwo}>
-            <form onSubmit={handleClickTwo}>
+            <form onSubmit={e => handleClickTwo(e)}>
               <ModalContent onClick={e => e.stopPropagation()}>
                 {/* 모달 컨텐츠 */}
                 <ModalTitle>{infos[1]?.title}</ModalTitle>
@@ -330,7 +332,7 @@ const Donation = () => {
           </ModalOverlay>
         )}
         {isModalOpenThree && (
-          <ModalOverlay onClick={closeModalThree}>
+          <ModalOverlay onSubmit={e => handleClickThree(e)}>
             <ModalContent onClick={e => e.stopPropagation()}>
               {/* 모달 컨텐츠 */}
               <ModalTitle>Do you want to Refund your donation?</ModalTitle>

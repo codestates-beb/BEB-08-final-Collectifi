@@ -4,31 +4,6 @@ const donation_colAbi: AbiItem[] = [
   {
     inputs: [
       {
-        internalType: 'address payable',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-    ],
-    name: 'fund',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'refund',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'address',
         name: '_tokenAddress',
         type: 'address',
@@ -41,13 +16,6 @@ const donation_colAbi: AbiItem[] = [
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
-  },
-  {
-    inputs: [],
-    name: 'withdrawDonations',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
   },
   {
     inputs: [
@@ -79,6 +47,24 @@ const donation_colAbi: AbiItem[] = [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address payable',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'fund',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -122,6 +108,13 @@ const donation_colAbi: AbiItem[] = [
   },
   {
     inputs: [],
+    name: 'refund',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'targetAmount',
     outputs: [
       {
@@ -151,12 +144,19 @@ const donation_colAbi: AbiItem[] = [
     name: 'token',
     outputs: [
       {
-        internalType: 'contract GLDToken',
+        internalType: 'contract COLToken',
         name: '',
         type: 'address',
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'withdrawDonations',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
 ];

@@ -23,7 +23,7 @@ export const community_get = async (req: MyRequest, res: Response, next: NextFun
         include: [
           {
             model: db.User,
-            attributes: ['nickname'],
+            attributes: ['nickname', 'rank'],
           },
           {
             model: db.Post_comment,
@@ -41,7 +41,7 @@ export const community_get = async (req: MyRequest, res: Response, next: NextFun
         include: [
           {
             model: db.User,
-            attributes: ['nickname'],
+            attributes: ['nickname', 'rank'],
           },
           {
             model: db.Post_comment,
@@ -136,7 +136,7 @@ export const detail_get = async (req: MyRequest, res: Response, next: NextFuncti
       include: [
         {
           model: db.User,
-          attributes: ['nickname'],
+          attributes: ['nickname', 'rank'],
         },
         {
           model: db.Post_comment,
@@ -150,7 +150,7 @@ export const detail_get = async (req: MyRequest, res: Response, next: NextFuncti
         post_id: id,
       },
       include: [
-        {model: db.User, attributes: ['nickname']},
+        {model: db.User, attributes: ['nickname', 'rank']},
         {
           model: db.Post_comment_liked,
           attributes: ['user_id'], // (댓글을 불러올 때 글쓴이 user_id를 가져옴)
@@ -386,7 +386,7 @@ export const comment_post = async (req: MyRequest, res: Response, next: NextFunc
       include: [
         {
           model: db.User,
-          attributes: ['nickname'],
+          attributes: ['nickname', 'rank'],
         },
         {
           model: db.Post_comment_liked,
