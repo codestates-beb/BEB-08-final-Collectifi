@@ -5,7 +5,7 @@ import {MyRequest} from '../@types/session';
 import {sendResponse} from './utils';
 import Web3 from 'web3';
 import erc20abi from '../abi/erc20abi';
-const web3 = new Web3(`HTTP://172.24.16.1:7545`);
+const web3 = new Web3(`HTTP://127.0.0.1:${process.env.GANACHE_PORT}`);
 const erc20Contract = new web3.eth.Contract(erc20abi, process.env.ERC20_CA);
 
 // 마이페이지 (유저 프로필)

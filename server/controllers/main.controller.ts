@@ -8,7 +8,7 @@ import {nft_infos} from './nft_infos';
 import {data} from './dummy_posts';
 import bcrypt from 'bcrypt';
 import {gallerys} from './dummy_gallery';
-const web3 = new Web3(`HTTP://172.24.16.1:7545`);
+const web3 = new Web3(`HTTP://127.0.0.1:${process.env.GANACHE_PORT}`);
 const erc20Contract = new web3.eth.Contract(erc20abi, process.env.ERC20_CA);
 
 // 홈페이지는 프론트에서 서비스 소개 페이지로 대체 될 예정
