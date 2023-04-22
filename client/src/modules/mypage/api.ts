@@ -3,7 +3,7 @@ import { SERVERURL, ISCONNECT } from "../atom";
 import { userInfo  as userInfoData } from "../../data/mypage";
 
 export const userInfo = async (id: number) => {
-  console.log("userInfo", id)
+  //console.log("userInfo", id)
   if(!ISCONNECT) return userInfoData;
   const options = {
     method: 'GET',
@@ -62,6 +62,64 @@ export const editReferral = async (address: string) => {
     return data;
   } catch (err) {
     console.log("editReferral err: ",err);
+    return null;
+  }
+}
+
+export const galleryInfo = async (id: number) => {
+  //console.log("userInfo", id)
+  const options = {
+    method: 'GET',
+    url: `${SERVERURL}/gallery/mypage/${id}`,
+    headers: {accept: 'application/json'},
+    withCredentials: true,    
+  };
+
+  try {
+    const data = await axios(options);
+    return data;
+  } catch (err) {
+    console.log("galleryInfo err: ",err);
+    return null;
+  }
+}
+
+export const withdraw = async (id: number) => {
+  //if(!ISCONNECT) return sellCardData;
+  const options = {
+    method: 'GET',
+    url: `${SERVERURL}/gallery/withdraw/${id}/`,
+    headers: {accept: 'application/json'},
+    withCredentials: true,    
+  };
+
+  try {
+    const data = await axios(options);
+    return data;
+  } catch (err) {
+    console.log("withdraw err: ",err);
+    return null;
+  }
+}
+
+export const updateWithdraw = async (gallId: number, nftId: number) => {
+  //if(!ISCONNECT) return sellCardData;
+  const options = {
+    method: 'POST',
+    url: `${SERVERURL}/gallery/withdraw`,
+    headers: {accept: 'application/json'},
+    withCredentials: true,
+    data: {
+      gallery_id: gallId,
+      nft_id: nftId,
+    }
+  };
+
+  try {
+    const data = await axios(options);
+    return data;
+  } catch (err) {
+    console.log("updateWithdraw err: ",err);
     return null;
   }
 }

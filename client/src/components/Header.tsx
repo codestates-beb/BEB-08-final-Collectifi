@@ -237,7 +237,7 @@ const Header = ({toggle}: PageLayoutProps) => {
       name: 'EARN',
       link: '/staking',
       submenu: [
-        {name: 'STAKING', link: '/staking'},
+        {name: 'STAKING', link: '/gallery'},
         {name: 'SWAP', link: '/swap'},
       ],
     },
@@ -291,6 +291,7 @@ const Header = ({toggle}: PageLayoutProps) => {
     set(userReferral, null);
     logoutRefresh();
     userRefresh();
+    toast.success('logged out successfully! 🎉');
     console.log("logout", result);
   });
 

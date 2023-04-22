@@ -4,7 +4,7 @@ import CardListItem from './CardListItem';
 
 type Props = {
   itemWidth: string;
-  children: React.ReactElement<typeof CardListItem>;
+  children: React.ReactElement<typeof CardListItem>[];
   //children: React.ReactNode;
 }
 

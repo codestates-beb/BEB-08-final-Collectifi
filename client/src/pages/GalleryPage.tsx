@@ -2,8 +2,9 @@ import React from 'react';
 import {Suspense} from 'react';
 import {ErrorBoundary} from 'react-error-boundary';
 import Gallery from '../components/gallery/Gallery';
+import Fallback from '../components/Fallback';
 
-const StakingPage = () => {
+const GalleryPage = () => {
   return (
     <ErrorBoundary fallback={<div>error...</div>}>
       <Suspense fallback={<div>Loading...</div>}>
@@ -13,4 +14,4 @@ const StakingPage = () => {
   );
 };
 
-export default StakingPage;
+export default GalleryPage;

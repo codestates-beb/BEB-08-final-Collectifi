@@ -9,6 +9,7 @@ type Props = {
   onClick?: () => void;
   className?: string;
   isPreventDefault?: boolean;
+  isSelected?: boolean;
   //children: React.ReactNode[];
 }
 
@@ -30,7 +31,7 @@ const BoardListItem: React.FC<Props> = (props) => {
       isClick={props.onClick}
     >
       <Link to={props.linkTo || ""} onClick={handleClick}>
-        <BoardListItemRow className='title' gridTemplateColumns={props.gridTemplateColumns} col={col}>
+        <BoardListItemRow className='title' gridTemplateColumns={props.gridTemplateColumns} col={col} isSelected={props.isSelected}>
           {/* {React.Children.map(props.children, (child, i) => <div className='item' key={i}>{child}</div>)} */}
           {props.listItem.map((el, i) => <div className='item' key={i}>{el}</div>)}
         </BoardListItemRow>
@@ -43,7 +44,7 @@ export default BoardListItem;
 const BoardListItemLayout = styled.li<{linkTo?: string; isClick?: () => void;}>`
   ${props => (!props.linkTo && !props.isClick) && `pointer-events: none;`}
 `
-const BoardListItemRow = styled.div<{gridTemplateColumns: string; col: number}>`
+const BoardListItemRow = styled.div<{gridTemplateColumns: string; col: number; isSelected?: boolean}>`
   display: grid;
   grid-template-columns: ${props => props.gridTemplateColumns};
   border-bottom: 1px solid ${props => props.theme.lineColor};
@@ -58,4 +59,13 @@ const BoardListItemRow = styled.div<{gridTemplateColumns: string; col: number}>`
     white-space: nowrap;
     text-overflow: ellipsis;
   }  
+
+  ${props => props.isSelected && `
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 0 1px ${props.theme.mainColor};
+    //border: none;
+    //border: 1px solid ${props.theme.mainColor}
+    //background: linear-gradient(rgb(212, 212, 212) 0%, rgb(215, 215, 215) 100%);
+  `}
 `

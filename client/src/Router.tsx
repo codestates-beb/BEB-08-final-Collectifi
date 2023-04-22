@@ -22,7 +22,6 @@ import SliderTest2 from './pages/SliderTest2';
 import Donation from './pages/Donation';
 import GalleryPage from './pages/GalleryPage';
 import GalleryDetailPage from './pages/GalleryDetailPage';
-import GalleryRegi from './components/gallery/GalleryRegi';
 import AdminLogin from './pages/AdminLogin';
 import Admin from './pages/Admin';
 
@@ -33,7 +32,7 @@ const Router: React.FC<{toggle: () => void}> = props => {
         <Route path="/" element={<MainPage />} />
         <Route path="/draw" element={<DrawCardPage />} />
         <Route path="/upgrade" element={<UpgradeCardPage />} />
-        <Route path="/staking" element={<StakingPage />} />
+        {/* <Route path="/staking" element={<StakingPage />} /> */}
         <Route path="/swap" element={<SwapPage />} />
         <Route path="/market" element={<MarketPage />} />
         <Route path="/market/:id" element={<CardDetailPage />} />
@@ -42,7 +41,7 @@ const Router: React.FC<{toggle: () => void}> = props => {
         <Route path="/community/*" element={<Community />} />
         <Route path="/event/*" element={<Event />} />
         <Route path="/donation/*" element={<Donation />} />
-        <Route path="/gallery" element={<GalleryRegi />} />
+        <Route path="/gallery" element={<GalleryPage />} />
         <Route path="/gallery/:id" element={<GalleryDetailPage />} />
       </Route>
       <Route path="/write" element={<WritePage />} />
