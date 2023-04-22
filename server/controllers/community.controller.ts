@@ -2,35 +2,34 @@ import {Request, Response, NextFunction} from 'express';
 import {ResponseData} from './controllers';
 import db from '../models';
 import Web3 from 'web3';
-import erc20abi from '../abis/erc20Abi';
 import {MyRequest} from '../@types/session';
 import {sendResponse} from './utils';
-import { Op } from 'sequelize';
+import {Op} from 'sequelize';
+import erc20abi from '../abi/erc20abi';
 // 글 목록 페이지
 export const community_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     // 1. db에서 posts 가져오기 (페이지네이션 고려해서)
     console.log('id: ', req.session.user);
     const {tabs} = req.query;
-    console.log("tab==========",tabs)
+    console.log('tab==========', tabs);
     if (tabs == 'General') {
-      
     }
     let posts;
     if (tabs === 'General') {
-    posts = await db.Post.findAll({
-          order: [['id', 'DESC']],
+      posts = await db.Post.findAll({
+        order: [['id', 'DESC']],
 
-          include: [
-            {
-              model: db.User,
-              attributes: ['nickname'],
-            },
-            {
-              model: db.Post_comment,
-            },
-          ],
-        });
+        include: [
+          {
+            model: db.User,
+            attributes: ['nickname'],
+          },
+          {
+            model: db.Post_comment,
+          },
+        ],
+      });
     } else if (tabs === 'Popular') {
       posts = await db.Post.findAll({
         where: {
@@ -48,8 +47,8 @@ export const community_get = async (req: MyRequest, res: Response, next: NextFun
             model: db.Post_comment,
           },
         ],
-    })
-  }
+      });
+    }
 
     // 2. 프론트에 보내주기
     const result: ResponseData = {
@@ -92,9 +91,8 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
     const postLiked = await db.Post_liked.create({
       post_id: Number(post.id),
       address: userAddress,
-      user_id: id
- 
-    })
+      user_id: id,
+    });
     //5. 잘 저장되었다면, erc-20 토큰을 보상으로 1개 주기
     if (post) {
       const web3 = new Web3(
@@ -121,14 +119,14 @@ export const post_post = async (req: MyRequest, res: Response, next: NextFunctio
   }
 };
 
-// 글 디테일 페이지 
+// 글 디테일 페이지
 export const detail_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {
     //1. URL params에서 post_id 가져오기
     console.log(req.session.user?.id);
     console.log(req.params);
     const id = req.params.postId;
-    const userId = req.session.user?.id || 0 ;
+    const userId = req.session.user?.id || 0;
     console.log(id);
     //2. DB에서 해당 포스트 불러오기
     const post = await db.Post.findOne({
@@ -152,21 +150,15 @@ export const detail_get = async (req: MyRequest, res: Response, next: NextFuncti
         post_id: id,
       },
       include: [
-        {model: db.User,
-        attributes: ['nickname'],
-      },
-      {
-        model: db.Post_comment_liked,
-        attributes: ['user_id'],   // (댓글을 불러올 때 글쓴이 user_id를 가져옴)
-        
-      }
-
+        {model: db.User, attributes: ['nickname']},
+        {
+          model: db.Post_comment_liked,
+          attributes: ['user_id'], // (댓글을 불러올 때 글쓴이 user_id를 가져옴)
+        },
       ],
-      order: [[db.Post_comment_liked,'id', 'ASC']], 
-
+      order: [[db.Post_comment_liked, 'id', 'ASC']],
     });
- 
-    
+
     // 조회수 증가
     const result = await post.increment('views', {by: 1});
 
@@ -184,10 +176,10 @@ export const detail_get = async (req: MyRequest, res: Response, next: NextFuncti
     console.log('=====post.user_id==', post.user_id);
 
     const isOwner = req.session.user?.id == post.user_id;
-    
+
     // const address = user.address;
     //3. 프론트로 user의 address와, post 데이터 보내주기
-    sendResponse(res, 200, '게시물을 성공적으로 가져왔습니다.', {post, isOwner, comments,userId});  // 이 요청을 보낸 user의 id를 다시 돌려 보냄
+    sendResponse(res, 200, '게시물을 성공적으로 가져왔습니다.', {post, isOwner, comments, userId}); // 이 요청을 보낸 user의 id를 다시 돌려 보냄
   } catch (error) {
     sendResponse(res, 400, '게시물 가져오기 실패.');
   }
@@ -210,7 +202,6 @@ export const like_post = async (req: MyRequest, res: Response, next: NextFunctio
       },
     });
     // 해당 유저가 좋아요/싫어요를 누른 적이 있는지 체크
-    
 
     // 2. 좋아요 / 싫어요인지 체크
     const {data} = req.body;
@@ -222,24 +213,22 @@ export const like_post = async (req: MyRequest, res: Response, next: NextFunctio
     const posttLikedFind = await db.Post_liked.findOne({
       where: {
         post_id: postId,
-        user_id: user?.id
+        user_id: user?.id,
       },
     });
     // 첫번째 데이터는 글쓴이 이므로 글쓴이가 눌렀는지 판단
     const firstData = await db.Post_liked.findAll({
-      where: { post_id:  postId},
-      order:[['id','ASC']],
+      where: {post_id: postId},
+      order: [['id', 'ASC']],
       limit: 1,
-    })
-    if (firstData[0].user_id == user?.id ) {
+    });
+    if (firstData[0].user_id == user?.id) {
       return sendResponse(res, 400, "You can't Like/Dislike your own post.");
     }
-    if( posttLikedFind ) {
+    if (posttLikedFind) {
       // return sendResponse(res, 400, firstData[0].address);
       return sendResponse(res, 400, 'You can click the Like/Dislike button only once.');
     }
-    
-
 
     // 3-1. 좋아요 경우 post의 likes를 1 증가
     if (data === 'likes') {
@@ -263,15 +252,14 @@ export const like_post = async (req: MyRequest, res: Response, next: NextFunctio
 
     //   }
     // }
-        // 지갑 주소와 user_id를 post_comment_likeds에 추가
-        const posttLiked = await db.Post_liked.create({
-          post_id: Number(postId),
-          address: user?.address,
-          user_id: user?.id
-        })
-    
+    // 지갑 주소와 user_id를 post_comment_likeds에 추가
+    const posttLiked = await db.Post_liked.create({
+      post_id: Number(postId),
+      address: user?.address,
+      user_id: user?.id,
+    });
 
-    sendResponse(res, 200, '좋아요/싫어요 누르기 성공',{data});
+    sendResponse(res, 200, '좋아요/싫어요 누르기 성공', {data});
   } catch (error) {
     sendResponse(res, 400, '좋아요/싫어요 누르기 실패');
     console.log(error);
@@ -385,30 +373,30 @@ export const comment_post = async (req: MyRequest, res: Response, next: NextFunc
       post_id: Number(postId),
       content,
     });
-    console.log("comment: ",comment);
-   
-        // 3. 작성자의 address와 user_id를 post_comment_liked에 추가
+    console.log('comment: ', comment);
+
+    // 3. 작성자의 address와 user_id를 post_comment_liked에 추가
     const commentLiked = await db.Post_comment_liked.create({
       post_comment_id: Number(comment.id),
       address: userAddress,
-      user_id: userId
- 
-    })
+      user_id: userId,
+    });
     const result = await db.Post_comment.findOne({
       where: {id: comment.id},
-      include:  [{
-        model: db.User,
-        attributes: ['nickname'],
-      },{model: db.Post_comment_liked,
-        attributes: ['user_id']  // 쓴 댓글을 프론트에 보내줄 때 user_id를 포함시킴
-      }],
-     
-      
-    })
-
+      include: [
+        {
+          model: db.User,
+          attributes: ['nickname'],
+        },
+        {
+          model: db.Post_comment_liked,
+          attributes: ['user_id'], // 쓴 댓글을 프론트에 보내줄 때 user_id를 포함시킴
+        },
+      ],
+    });
 
     //4. 프론트로 post 데이터 보내주기
-    sendResponse(res, 200, '성공했습니다',{result});
+    sendResponse(res, 200, '성공했습니다', {result});
   } catch (error) {
     sendResponse(res, 400, '실패했습니다');
   }
@@ -419,7 +407,7 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
   try {
     // 1. 로그인한 유저인지 확인 + user 정보 받아오기
     const user = req.session.user;
-    const userId = req.session.user?.id
+    const userId = req.session.user?.id;
     // 1-1. 로그인 안했으면 돌려보냄
     if (!user) {
       sendResponse(res, 400, '실패했습니다');
@@ -429,7 +417,7 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
     console.log('=====commentId====', commentId);
     const {data} = req.body;
     console.log('=====data====', data);
-    
+
     const userAddress = req.session.user?.address;
     const comment = await db.Post_comment.findOne({
       where: {
@@ -444,23 +432,23 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
     const commentLikedFind = await db.Post_comment_liked.findOne({
       where: {
         post_comment_id: commentId,
-        user_id: userId
+        user_id: userId,
       },
     });
     // 첫번째 데이터는 글쓴이 이므로 글쓴이가 눌렀는지 판단
     const firstData = await db.Post_comment_liked.findAll({
-      where: { post_comment_id:  commentId},
-      order:[['id','ASC']],
+      where: {post_comment_id: commentId},
+      order: [['id', 'ASC']],
       limit: 1,
-    })
-    if (firstData[0].user_id == userId ) {
+    });
+    if (firstData[0].user_id == userId) {
       return sendResponse(res, 400, "You can't Like/Dislike your own comment.");
     }
-    if( commentLikedFind ) {
+    if (commentLikedFind) {
       // return sendResponse(res, 400, firstData[0].address);
       return sendResponse(res, 400, 'You can click the Like/Dislike button only once.');
     }
-    
+
     // 3-1. 좋아요 경우 post의 likes를 1 증가
     if (data === 'likes') {
       const increaseLike = await comment.increment('likes', {by: 1});
@@ -469,18 +457,15 @@ export const likeComment_post = async (req: MyRequest, res: Response, next: Next
     else if (data === 'dislikes') {
       const increaseDislike = await comment.increment('dislikes', {by: 1});
     }
-    
 
     // 지갑 주소와 user_id를 post_comment_likeds에 추가
     const commentLiked = await db.Post_comment_liked.create({
       post_comment_id: Number(comment.id),
       address: userAddress,
-      user_id: userId
-    })
+      user_id: userId,
+    });
 
-
-
-    sendResponse(res, 200, '성공했습니다',{data});
+    sendResponse(res, 200, '성공했습니다', {data});
   } catch (error) {
     sendResponse(res, 400, '실패했습니다');
 
@@ -535,7 +520,7 @@ export const editComment_patch = async (req: MyRequest, res: Response, next: Nex
     // 3. db comment title, content 내용 업데이트
     const result = await db.Post_comment.update({content}, {where: {id: commentId}});
     // 4. 프론트에 성공했다 알려주기
-    sendResponse(res, 200, '성공했습니다'+content);
+    sendResponse(res, 200, '성공했습니다' + content);
   } catch (error) {
     sendResponse(res, 400, '실패했습니다');
     console.log(error);

@@ -159,5 +159,3 @@ export const gallery_apporve_nft_get = async (
     return res.status(400).send({message: '실패했습니다.'});
   }
 };
-
-// nft_staking

@@ -90,7 +90,7 @@ export const game_reward_post = async (req: MyRequest, res: Response, next: Next
       token = await soccerContract.methods.drawToken().call();
     }
 
-    const drainage = totalToken / token;
+    const drainage = Math.floor(totalToken / token);
 
     const approve = await erc20Contract.methods
       .approve(process.env.SOCCER_CA, totalToken)
@@ -102,6 +102,6 @@ export const game_reward_post = async (req: MyRequest, res: Response, next: Next
     console.log('=======match====', matchedReward);
     return res.status(200).send({message: '성공'});
   } catch (e) {
-    console.log(e);
+    return res.status(400).send({message: '실패'});
   }
 };

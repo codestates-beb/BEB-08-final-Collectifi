@@ -162,13 +162,13 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
                 id: nft.id,
               },
             });
-            res.status(200).send({message: '성공했습니다.', data: {mintedNft}});
+            return res.status(200).send({message: '성공했습니다.', data: {mintedNft}});
           }
         }
       }
     }
   } catch (e) {
-    res.status(400).send({message: '실패했습니다'});
+    return res.status(400).send({message: '실패했습니다'});
     console.log(e);
   }
 };

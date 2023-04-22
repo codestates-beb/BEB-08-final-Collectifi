@@ -82,7 +82,7 @@ export const drawing_post = async (req: MyRequest, res: Response, next: NextFunc
         const withdraw = await user.decrement('token_amount', {
           by: card_pack == 0 ? 150 : card_pack == 1 ? 300 : 500,
         });
-        res.status(200).send({message: '민팅 성공', data: {mintedNft}});
+        return res.status(200).send({message: '민팅 성공', data: {mintedNft}});
       }
     }
   } catch (e) {
