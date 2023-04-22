@@ -78,7 +78,11 @@ export const Liquidity_account_post = async (req: MyRequest, res: Response, next
       console.log('========outputToken==========', outputToken);
       // const colToken = toEther(outputToken);
       // console.log('==========colToken=======', colToken);
-      return res.status(200).send({message: '유동성 추가', data: {outputToken: outputToken}});
+      const ouputEthTokenAmount = outputToken / 10 ** 18;
+
+      return res
+        .status(200)
+        .send({message: '유동성 추가', data: {outputToken: ouputEthTokenAmount}});
     }
   } catch {
     return res.status(400).send({message: 'outputAccount 실패했습니다.'});
@@ -111,11 +115,15 @@ export const Liquidity_post = async (req: MyRequest, res: Response, next: NextFu
       .send({from: userAddress, value: toWei(ethAmount), gas: 50000000});
     console.log('==============liquidity=============', liquidity);
 
+    const ouputEthTokenAmount = outputToken / 10 ** 18;
+
     if (exchangeTokenBalance == 0 || exchangeEthBalance == 0) {
       //최초의 유동성
       return res.status(200).send({message: '최초의 유동성', data: {}});
     } else {
-      return res.status(200).send({message: '유동성 추가', data: {outputToken: outputToken}});
+      return res
+        .status(200)
+        .send({message: '유동성 추가', data: {outputToken: ouputEthTokenAmount}});
     }
   } catch {
     return res.status(400).send({message: 'liquidity_post에서 오류가 발생했습니다.'});
@@ -133,11 +141,8 @@ export const Swap_account_post = async (req: MyRequest, res: Response, next: Nex
       .getOutputAmountWithFee(toWei(ethAmount), exchangeEthBalance, exchangeTokenBalance)
       .call();
 
-    const colAmount = toEther(outputTokenAmount);
-
-    return res
-      .status(200)
-      .send({message: 'outputAccount 성공했습니다.', data: {outputTokenAmount}});
+    const colAmount = outputTokenAmount / 10 ** 18;
+    return res.status(200).send({message: 'outputAccount 성공했습니다.', data: {colAmount}});
   } catch {
     return res.status(400).send({message: 'outputAccount 실패했습니다.'});
   }
@@ -163,7 +168,8 @@ export const Swap_post = async (req: MyRequest, res: Response, next: NextFunctio
         address: userAddress,
       },
     });
-    const tokenIncre = await user.increment('token_amount', {by: outputTokenAmount});
+    const ouputEthTokenAmount = (outputTokenAmount / 10 ** 18).toFixed(2);
+    const tokenIncre = await user.increment('token_amount', {by: ouputEthTokenAmount});
     return res.status(200).send({message: 'swap에 성공했습니다.'});
   } catch {
     return res.status(400).send({message: 'swap에 실패했습니다.'});
