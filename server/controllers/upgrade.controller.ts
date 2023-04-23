@@ -40,6 +40,7 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
         id,
       },
     });
+    console.log('======유저=====', user)
     //색이 브론즈인 카드를 강화한다.
     if (nft.card_color == 0) {
       const isSuccess = Math.random() <= 0.99;
@@ -47,6 +48,7 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
       //보유한 토큰의 수가 강화 비용보다 많은지 확인한다.
       if (user.token_amount >= money) {
         //토큰을 회수하고 db에 업데이트 해준다.
+        
         const withdraw = await erc20Contract.methods
           .transfer(process.env.SERVER_ADDRESS, money)
           .send({from: user.address, gas: 500000});
@@ -63,15 +65,22 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
               card_color: nft.card_color + 1,
             },
           });
-          const approve = await erc721Contract.methods
-            .approve(process.env.SERVER_ADDRESS, nft.token_id)
-            .send({from: user.address, gas: 500000});
-          const transfer = await erc721Contract.methods
-            .transferNFT(user.address, process.env.SERVER_ADDRESS, nft.token_id)
-            .send({from: user.address, gas: 500000});
+          console.log('======업그레이드카드=======',upgradeCard)
+          // const approve = await erc721Contract.methods
+          //   .approve(process.env.SERVER_ADDRESS, nft.token_id)
+          //   .send({from: user.address, gas: 500000});
+          //   console.log('======어프로브=======',approve)
+          // const transfer = await erc721Contract.methods
+          //   .transferNFT(user.address, process.env.SERVER_ADDRESS, nft.token_id)
+          //   .send({from: user.address, gas: 500000});
+          //   console.log('======트랜스퍼=======',transfer)
+          const userAddress = req.session.user?.address;
+          const burn = await erc721Contract.methods.burn(nft.token_id).send({from:userAddress,gas:500000});
+          console.log('======번=====',burn)
           const result = await erc721Contract.methods
             .mintNFT(user.address, upgradeCard.img_url, upgradeCard.player, upgradeCard.season, 0)
             .send({from: process.env.SERVER_ADDRESS, gas: 500000});
+            console.log('======리절트=======',result)
           //다음 등급의 nft를 db에 업데이트해준다
           const token_id = await erc721Contract.methods.getTokenId().call();
           if (result) {
