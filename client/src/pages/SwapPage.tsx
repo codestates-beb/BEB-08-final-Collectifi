@@ -6,8 +6,10 @@ import {useForm} from 'react-hook-form';
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
+import Particle from '../components/UI/Particle';
+import Particle2 from '../components/UI/Particle2';
 
-const Layout = styled.div`
+export const Layout = styled.div`
   margin-top: 100px;
   /* background-color: blue; */
   display: flex;
@@ -15,13 +17,15 @@ const Layout = styled.div`
   align-items: center;
 `;
 
-const Container = styled.div`
+export const Container = styled.div`
   width: 600px;
   height: 600px;
   padding: 15px;
   border-radius: 15px;
   box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.3);
-  background-color: #fd115c;
+  /* background-color: #fd115c; */
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.3);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -29,8 +33,8 @@ const Container = styled.div`
   margin-bottom: 40px;
 `;
 
-const TabBox = styled.div`
-  background-color: #05050b;
+export const TabBox = styled.div`
+  background-color: #585860;
   border-radius: 5px;
   padding: 5px;
   width: 100%;
@@ -40,7 +44,7 @@ const TabBox = styled.div`
   color: white;
 `;
 
-const Tab = styled.div`
+export const Tab = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -51,10 +55,10 @@ const Tab = styled.div`
   }
 `;
 
-const InputBox = styled.div`
+export const InputBox = styled.div`
   border-radius: 5px;
   margin-top: 10px;
-  background-color: #262a56;
+  background-color: #494c68;
   padding: 20px 20px;
   width: 100%;
   font-size: 24px;
@@ -65,15 +69,15 @@ const InputBox = styled.div`
   justify-content: space-between;
 `;
 
-const InputTitle = styled.div`
+export const InputTitle = styled.div`
   font-size: 28px;
   font-weight: 600;
   color: white;
 `;
 
-const Input = styled.input`
+export const Input = styled.input`
   all: none;
-  background-color: #262a56;
+  background-color: #66698b;
   border: none;
   height: 70px;
   font-size: 40px;
@@ -82,7 +86,7 @@ const Input = styled.input`
   font-weight: 600;
 `;
 
-const CalBox = styled.div`
+export const CalBox = styled.div`
   margin-top: 10px;
   /* background-color: pink; */
   font-size: 50px;
@@ -93,20 +97,24 @@ const CalBox = styled.div`
   }
 `;
 
-const BtnBox = styled.div`
-  background-color: #262a56;
+export const BtnBox = styled.div`
+  background-color: rgba(253, 17, 92);
   font-size: 35px;
   color: white;
   font-weight: 600;
   margin-top: 20px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
   padding: 15px;
 
   :hover {
     cursor: pointer;
     scale: 1.05;
   }
+`;
+export const ParticleS = styled(Particle)`
+  z-index: 1;
+  background: linear-gradient(45deg, #fc466b, #3f5efb);
 `;
 
 const SwapPage = () => {
@@ -147,9 +155,10 @@ const SwapPage = () => {
 
   return (
     <Layout>
+      <ParticleS />
       <Container>
         <TabBox>
-          <Tab style={{backgroundColor: '#414792'}}>SWAP</Tab>
+          <Tab style={{backgroundColor: '#fc466b'}}>SWAP</Tab>
           <Tab onClick={() => navigate('/pool')}>POOL</Tab>
         </TabBox>
         <InputBox>

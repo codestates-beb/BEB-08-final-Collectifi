@@ -32,8 +32,15 @@ export interface PostsAttributes {
 }
 interface User {
   nickname: string;
+  rank?: number;
 }
-
+interface IRank {
+  id: number;
+  user_id: number;
+  post_id: number;
+  likes: number;
+  ranking: number;
+}
 const CommunityLayout = styled.div`
   padding: 40px 20px 30px;
   max-width: 1140px;
@@ -91,10 +98,36 @@ const PostButtonDiv = styled.div`
   justify-content: flex-end;
   //margin: 10px;
 `;
+export const RankIcon = styled.img`
+  width: 30px;
+  height: 30px;
+`;
+const RankContainer = styled.table`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 14px;
+  padding: 10px;
+  padding-bottom: 30px;
+  width: 180px;
+  background: rgba(255, 255, 255, 0.3);
+
+  /* background-color: pink; */
+  position: sticky;
+  /* width: 13%; */
+  top: 50%;
+  border-radius: 20px;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 10px 20px 40px -6px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  /* left: 30%; */
+`;
 
 const Community = () => {
   const navigate = useNavigate();
-  const boardSize = '0.3fr 3.5fr 1fr 1fr 0.5fr 0.5fr';
+  const boardSize = '0.3fr 3fr 0.5fr 0.5fr 1fr 0.5fr 0.5fr';
   const [posts, setPosts] = useState<PostsAttributes[]>([]);
   const [popularPosts, setPopularPosts] = useState<PostsAttributes[]>([]);
   const timeAgo = new TimeAgo('en-US');
@@ -148,7 +181,6 @@ const Community = () => {
   };
 
   // 필터 관련
-  const [filterText, setFilterText] = useState('latest');
 
   const filterSelected = (e: any) => {
     if (e.target.value === 'latest') {
@@ -165,97 +197,146 @@ const Community = () => {
       setPosts(prev => [...prev.sort((a, b) => b.Post_comments.length - a.Post_comments.length)]);
     }
   };
+  // const setRankIcon = (e?: number) => {
+  //   if (e === 1) {
+  //     console.log('오브젝트는: ', <RankIcon src="/challenger.png" />);
+  //     return <RankIcon src="/challenger.png" />;
+  //   } else if (e === 2) {
+  //     return <RankIcon src="/grandmaster.png" />;
+  //   } else if (e === 3) {
+  //     return <RankIcon src="/master.png" />;
+  //   } else {
+  //     return <div></div>;
+  //   }
+  // };
+  // 랭크 가져옴
+
+  const [ranks, setRanks] = useState<IRank[]>([]);
+  useEffect(() => {
+    axios
+      .get('http://localhost:8000/rank', {withCredentials: true})
+      .then(response => {
+        console.log('모든 랭크: ', response.data.data.ranks);
+        setRanks([...response.data.data.ranks]);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
   return (
-    <CommunityLayout>
-      <PageTitle title='COMMUNITY'/>
-      <Routes>
-        <Route
-          path=":id"
-          element={<PostPage setCurrentPage={setCurrentPage} setPosts={setPosts} posts={posts} />}
-        />
-      </Routes>
-      <PostButtonDiv>
-        <Button onClick={() => navigate('/write')}>Post</Button>
-      </PostButtonDiv>
-      <TabUl>
-        <TabLi>
-          <TabButton
-            onClick={() => clickHandler('General')}
-            selected={tabs === 'General'}
-            color={'rgb(123, 123, 123)'}
-          >
-            General
-          </TabButton>
-        </TabLi>
-        <TabLi>
-          <TabButton
-            onClick={() => clickHandler('Popular')}
-            selected={tabs === 'Popular'}
-            color={'rgb(123, 123, 123)'}
-          >
-            Popular
-          </TabButton>
-        </TabLi>
-      </TabUl>
-
-      {tabs && (
-        <>
-          <select onChange={filterSelected}>
-            <option value="latest">Latest</option>
-            <option value="views">Views</option>
-            <option value="likes">Likes</option>
-            <option value="comments">most commented</option>
-          </select>
-
-          <BoardList
-            title={
-              <BoardTitleItem
-                title={['POST', 'TITLE', 'USER', 'DATE', 'VIEW', 'LIKES']}
-                gridTemplateColumns={boardSize}
-              />
-            }
-          >
-            {currentPost &&
-              currentPost.map(item => {
-                // const before = new Date(new Date().getTime() - item.created_at.getTime()).getTime();
-                // if (new Date().getMonth() - item.created_at.getMonth()) {
-                // }
-                const listItem = [
-                  item.id,
-                  `${item.title} [${item.Post_comments.length.toString()}]`,
-                  item.User?.nickname,
-                  // timeAgo.format(item.created_at),
-                  // new Date().getMonth(),
-                  // item.created_ats.getMonth(),
-                  // (new Date() - item.created_at).toString(),
-                  item.created_at.toDateString(),
-                  // item.created_at.getTime(),
-                  // new Date(new Date().getTime() - item.created_at.getTime()).toDateString(),
-                  // before,
-                  item.views,
-                  item.likes,
-                ];
-                return (
-                  <BoardListItem
-                    key={item.id}
-                    listItem={listItem}
-                    gridTemplateColumns={boardSize}
-                    linkTo={item.id.toString()}
-                  />
-                );
-              })}
-          </BoardList>
-          <Pagination
-            dataPerPage={postsPerPage}
-            dataLength={postsLength}
-            paginate={paginate}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+    <>
+      <RankContainer>
+        {/* <div>Rank</div> */}
+        <thead>
+          <tr>
+            <th>Rank</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ranks.map(rank => (
+            <tr key={rank.id}>
+              <td>{rank.ranking}</td>
+              <td>
+                <RankIcon key={rank.id} src={`/${rank.ranking}.png`} alt="/0.png" />
+              </td>
+              {/* <span>id:{rank.id} </span> */}
+              <td>User{rank.user_id - 1} | </td>
+              {/* <span>글번호:{rank.post_id} </span> */}
+              <td> {rank.likes}Likes</td>
+            </tr>
+          ))}
+        </tbody>
+      </RankContainer>
+      <CommunityLayout>
+        <Routes>
+          <Route
+            path=":id"
+            element={<PostPage setCurrentPage={setCurrentPage} setPosts={setPosts} posts={posts} />}
           />
-        </>
-      )}
-    </CommunityLayout>
+        </Routes>
+        <PostButtonDiv>
+          <Button onClick={() => navigate('/write')}>Post</Button>
+        </PostButtonDiv>
+        <TabUl>
+          <TabLi>
+            <TabButton
+              onClick={() => clickHandler('General')}
+              selected={tabs === 'General'}
+              color={'rgb(123, 123, 123)'}
+            >
+              General
+            </TabButton>
+          </TabLi>
+          <TabLi>
+            <TabButton
+              onClick={() => clickHandler('Popular')}
+              selected={tabs === 'Popular'}
+              color={'rgb(123, 123, 123)'}
+            >
+              Popular
+            </TabButton>
+          </TabLi>
+        </TabUl>
+
+        {tabs && (
+          <>
+            <select onChange={filterSelected}>
+              <option value="latest">Latest</option>
+              <option value="views">Views</option>
+              <option value="likes">Likes</option>
+              <option value="comments">most commented</option>
+            </select>
+
+            <BoardList
+              title={
+                <BoardTitleItem
+                  title={['POST', 'TITLE', 'USER', 'RANK', 'DATE', 'VIEW', 'LIKES']}
+                  gridTemplateColumns={boardSize}
+                />
+              }
+            >
+              {currentPost &&
+                currentPost.map(item => {
+                  // const before = new Date(new Date().getTime() - item.created_at.getTime()).getTime();
+                  // if (new Date().getMonth() - item.created_at.getMonth()) {
+                  // }
+                  const listItem = [
+                    item.id,
+                    `${item.title} [${item.Post_comments.length.toString()}]`,
+                    `${item.User?.nickname}`,
+                    // item.User?.rank,
+                    <RankIcon key={item.id} src={`/${item.User?.rank}.png`} alt="/0.png" />,
+                    // item.created_ats.getMonth(),
+                    // (new Date() - item.created_at).toString(),
+                    item.created_at.toDateString(),
+                    // item.created_at.getTime(),
+                    // new Date(new Date().getTime() - item.created_at.getTime()).toDateString(),
+                    // before,
+                    item.views,
+                    item.likes,
+                  ];
+                  return (
+                    <BoardListItem
+                      key={item.id}
+                      listItem={listItem}
+                      gridTemplateColumns={boardSize}
+                      linkTo={item.id.toString()}
+                    />
+                  );
+                })}
+            </BoardList>
+            <Pagination
+              dataPerPage={postsPerPage}
+              dataLength={postsLength}
+              paginate={paginate}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </>
+        )}
+      </CommunityLayout>
+    </>
   );
 };
 

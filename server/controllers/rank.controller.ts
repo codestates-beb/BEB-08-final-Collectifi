@@ -10,6 +10,7 @@ export const rank_get = async (req: MyRequest, res: Response, next: NextFunction
   try {
     // db rank 가져오기
     const ranks = await db.Rank.findAll({
+      order: [['ranking', 'ASC']],
       include: [
         {
           model: db.User,
