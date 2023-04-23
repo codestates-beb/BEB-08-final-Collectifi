@@ -6,7 +6,7 @@ const StakingPage = () => {
   return (
     <div>
       StakingPage
-      <Fireworks />
+      {/* <Fireworks /> */}
     </div>
   );
 };

@@ -7,6 +7,8 @@ import axios from 'axios';
 import testImg from '../data/7-1.png';
 import {useNavigate} from 'react-router-dom';
 import {toast} from 'react-toastify';
+import {ParticleS} from './SwapPage';
+import Fireworks from '../components/UI/Particle2';
 
 const DrawLayout = styled(Layout)`
   height: 100%;
@@ -85,27 +87,48 @@ interface Src {
   src: string;
 }
 
-const Pack = styled.div<Src>`
+const Pack = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-size: cover;
-  background-image: ${({src}) => `url(${src})`};
-  /* background: #eaea04; */
+  background: rgba(255, 255, 255, 0.6);
   width: 260px;
   height: 370px;
-  /* border-radius: 7%; */
-  /* border: 1px solid black; */
+  border-radius: 7%;
+  border: 1px solid white;
   color: black;
   text-align: center;
   box-shadow: 5px 5px 5px grey;
+  margin-bottom: 20px;
   /* transform: rotateY(130deg); */
   /* transform: rotateZ(90deg); */
   /* transform-origin: left; */
   &:hover {
     cursor: pointer;
-    /* transform: translateY(-5px); 
-    transition: transform 0.5s ease; */
-    animation: ${rotate} 3s linear infinite;
+    transform: translateY(-5px);
+    transition: transform 0.5s ease;
+    /* animation: ${rotate} 3s linear infinite;*/
   }
-  margin-bottom: 20px;
+`;
+const PackImgBox = styled.div`
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 7px;
+  padding: 10px;
+`;
+const PackImg = styled.div<Src>`
+  background-size: cover;
+  background-image: ${({src}) => `url(${src})`};
+  width: 100px;
+  height: 170px;
+  margin: 20px;
+`;
+const PackLabelBox = styled.div`
+  padding: 10px;
+  margin: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
 `;
 
 export const CardContainer = styled.div`
@@ -168,26 +191,26 @@ const DrawCardPage = () => {
     console.log(selectedPack);
 
     if (confirm('정말 구매하시겠습니까?')) {
-      axios
-        .post('http://localhost:8000/drawing', {card_pack: e}, {withCredentials: true})
-        .then((res: any) => {
-          setCard(res.data.data.mintedNft);
-          toast.success('Successfully Minted your Nft!🎉');
-        });
+      // axios
+      //   .post('http://localhost:8000/drawing', {card_pack: e}, {withCredentials: true})
+      //   .then((res: any) => {
+      //     setCard(res.data.data.mintedNft);
+      //     toast.success('Successfully Minted your Nft!🎉');
+      //   });
 
       // 테스트용
-      // setCard({
-      //   token_id: 1,
-      //   user_id: 1,
-      //   player: 'Test',
-      //   season: '2023',
-      //   team: 'team1',
-      //   card_color: 1,
-      //   price: 5,
-      //   selling_price: 10,
-      //   img_url: '/7-1.png',
-      //   isSell: false,
-      // });
+      setCard({
+        token_id: 1,
+        user_id: 1,
+        player: 'Test',
+        season: '2023',
+        team: 'team1',
+        card_color: 1,
+        price: 5,
+        selling_price: 10,
+        img_url: '/7-1.png',
+        isSell: false,
+      });
       console.log('yes');
     } else {
       console.log('no');
@@ -198,6 +221,7 @@ const DrawCardPage = () => {
     <>
       {card ? (
         <CardContainer>
+          <Fireworks />
           <CardComment>Congratulations!!!</CardComment>
           <Card src={card.img_url} />
           <button onClick={handleButtonClick}>Check on MyPage</button>
@@ -211,34 +235,49 @@ const DrawCardPage = () => {
               <PackLayout>
                 <PackList>
                   <PackListItem>
-                    <PackLabel>Normal Class</PackLabel>
                     <Pack
-                      src={'/bronze-pack.png'}
                       onClick={(e: any) => {
                         handleSubmit(0);
                       }}
-                    ></Pack>
-                    <PackPrice>150 COL</PackPrice>
+                    >
+                      <PackImgBox>
+                        <PackImg src={'/bronze-pack.png'} />
+                      </PackImgBox>
+                      <PackLabelBox>
+                        <PackLabel>Normal Class</PackLabel>
+                        <PackPrice>150 COL</PackPrice>
+                      </PackLabelBox>
+                    </Pack>
                   </PackListItem>
                   <PackListItem>
-                    <PackLabel>High Class</PackLabel>
                     <Pack
-                      src={'/silver-pack.png'}
                       onClick={(e: any) => {
                         handleSubmit(1);
                       }}
-                    ></Pack>
-                    <PackPrice>300 COL</PackPrice>
+                    >
+                      <PackImgBox>
+                        <PackImg src={'/silver-pack.png'} />
+                      </PackImgBox>
+                      <PackLabelBox>
+                        <PackLabel>High Class</PackLabel>
+                        <PackPrice>300 COL</PackPrice>
+                      </PackLabelBox>
+                    </Pack>
                   </PackListItem>
                   <PackListItem>
-                    <PackLabel>World Class</PackLabel>
                     <Pack
-                      src={'/gold-pack.png'}
                       onClick={(e: any) => {
                         handleSubmit(2);
                       }}
-                    ></Pack>
-                    <PackPrice>500 COL</PackPrice>
+                    >
+                      <PackImgBox>
+                        <PackImg src={'/gold-pack.png'} />
+                      </PackImgBox>
+                      <PackLabelBox>
+                        <PackLabel>World Class</PackLabel>
+                        <PackPrice>500 COL</PackPrice>
+                      </PackLabelBox>
+                    </Pack>
                   </PackListItem>
                 </PackList>
               </PackLayout>
