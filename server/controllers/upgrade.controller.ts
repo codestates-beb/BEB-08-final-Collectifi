@@ -34,6 +34,7 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
   try {
     //user와 nft 정보를 받아와야 한다.
     const id = req.session.user?.id;
+    const userAddress = req.session.user?.address;
     const {nft} = req.body;
     const user = await db.User.findOne({
       where: {
@@ -63,12 +64,15 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
               card_color: nft.card_color + 1,
             },
           });
-          const approve = await erc721Contract.methods
-            .approve(process.env.SERVER_ADDRESS, nft.token_id)
-            .send({from: user.address, gas: 500000});
-          const transfer = await erc721Contract.methods
-            .transferNFT(user.address, process.env.SERVER_ADDRESS, nft.token_id)
-            .send({from: user.address, gas: 500000});
+          const burn = await erc721Contract.methods
+            .burn(nft.token_id)
+            .send({from: userAddress, gas: 500000});
+          // const approve = await erc721Contract.methods
+          //   .approve(process.env.SERVER_ADDRESS, nft.token_id)
+          //   .send({from: user.address, gas: 500000});
+          // const transfer = await erc721Contract.methods
+          //   .transferNFT(user.address, process.env.SERVER_ADDRESS, nft.token_id)
+          //   .send({from: user.address, gas: 500000});
           const result = await erc721Contract.methods
             .mintNFT(user.address, upgradeCard.img_url, upgradeCard.player, upgradeCard.season, 0)
             .send({from: process.env.SERVER_ADDRESS, gas: 500000});
