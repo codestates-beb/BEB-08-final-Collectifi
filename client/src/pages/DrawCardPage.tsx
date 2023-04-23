@@ -225,7 +225,7 @@ const DrawCardPage = () => {
       {modal && (
         <ModalAlert
           title={'Buy Now'}
-          message={'Are you sure you want to buy it?' + selectedPack}
+          message={'Are you sure you want to buy it?'}
           onConfirm={() => {
             console.log('no!');
             setModal(false);

@@ -15,6 +15,7 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import Tab from '../components/UI/Tab';
 import {darken, lighten} from 'polished';
+import DetailPage from './DetailPage';
 
 TimeAgo.addDefaultLocale(en);
 export interface PostsAttributes {
@@ -223,33 +224,17 @@ const Community = () => {
 
   return (
     <>
-      <RankContainer>
-        {/* <div>Rank</div> */}
-        <thead>
-          <tr>
-            <th>Rank</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ranks.map(rank => (
-            <tr key={rank.id}>
-              <td>{rank.ranking}</td>
-              <td>
-                <RankIcon key={rank.id} src={`/${rank.ranking}.png`} alt="/0.png" />
-              </td>
-              {/* <span>id:{rank.id} </span> */}
-              <td>User{rank.user_id - 1} | </td>
-              {/* <span>글번호:{rank.post_id} </span> */}
-              <td> {rank.likes}Likes</td>
-            </tr>
-          ))}
-        </tbody>
-      </RankContainer>
       <CommunityLayout>
         <Routes>
           <Route
             path=":id"
             element={<PostPage setCurrentPage={setCurrentPage} setPosts={setPosts} posts={posts} />}
+          />
+          <Route
+            path="/detail/:id"
+            element={
+              <DetailPage setCurrentPage={setCurrentPage} setPosts={setPosts} posts={posts} />
+            }
           />
         </Routes>
         <PostButtonDiv>
