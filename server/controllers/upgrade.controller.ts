@@ -74,6 +74,8 @@ export const upgrade_post = async (req: MyRequest, res: Response, next: NextFunc
           //   .transferNFT(user.address, process.env.SERVER_ADDRESS, nft.token_id)
           //   .send({from: user.address, gas: 500000});
           //   console.log('======트랜스퍼=======',transfer)
+          const totalsup = await erc721Contract.methods.getTotalSupply();
+          console.log('totalsup: ',totalsup)
           const userAddress = req.session.user?.address;
           const burn = await erc721Contract.methods.burn(nft.token_id).send({from:userAddress,gas:500000});
           console.log('======번=====',burn)
