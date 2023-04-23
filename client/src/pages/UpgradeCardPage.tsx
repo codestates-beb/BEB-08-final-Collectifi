@@ -157,7 +157,7 @@ const UpgradeCardPage = () => {
     axios.get('http://localhost:8000/upgrade', {withCredentials: true}).then((res: any) => {
       setMyCards(res.data.data.nfts);
       setMyTokens(res.data.data.token_amount);
-      console.log(res.data.data);
+      console.log('get upgrade: ', res.data.data);
     });
 
     console.log('hi');
@@ -169,8 +169,11 @@ const UpgradeCardPage = () => {
       axios
         .post('http://localhost:8000/upgrade', {nft: target}, {withCredentials: true})
         .then((res: any) => {
+          console.log('upgrade res: ', res);
           setUpgradeCard(res.data.data.mintedNft);
-          console.log(res);
+        })
+        .catch(err => {
+          console.log('upgrade error: ', err);
         });
 
       console.log('yes');

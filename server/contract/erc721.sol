@@ -29,7 +29,6 @@ contract NFTLootBox is ERC721URIStorage, Ownable {
     }
 
     function mintNFT(address recipient, string memory tokenURI,string memory _name,string memory _description,uint256 _price) public onlyOwner returns (uint256) {
-        require(token.balanceOf(recipient) >= bronzCard);
 
         name.push(_name);
         description.push(_description);
@@ -83,6 +82,4 @@ contract NFTLootBox is ERC721URIStorage, Ownable {
         require(tokenId <= _tokenIds.current(), "Invalid token ID");
         price[tokenId-1] = newPrice;
     }
-
-
 }
