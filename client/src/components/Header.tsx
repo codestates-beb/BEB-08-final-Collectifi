@@ -241,7 +241,7 @@ const Header = ({toggle}: PageLayoutProps) => {
     },
     {
       name: 'EARN',
-      link: '/staking',
+      link: '/gallery',
       submenu: [
         {name: 'STAKING', link: '/gallery'},
         {name: 'SWAP', link: '/swap'},

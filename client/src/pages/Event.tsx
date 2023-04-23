@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Layout} from '../Styles';
 import {TabButton, TabLi, TabUl} from './CommunityPage';
+import PageTitle from '../components/UI/PageTitle';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -9,11 +10,11 @@ import {faSearch} from '@fortawesome/free-solid-svg-icons';
 export const TopBox = styled.div`
   width: 100%;
 
-  height: 100px;
+  //height: 100px;
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
-  margin-bottom: 25px;
+ //margin-bottom: 25px;
 `;
 
 export const TopTitle = styled.div`
@@ -145,7 +146,8 @@ const Event = () => {
   return (
     <Layout>
       <TopBox>
-        <TopTitle>Events</TopTitle>
+        {/* <TopTitle>Events</TopTitle> */}
+        <PageTitle title='EVENTS'/>
         <TopSearchBar>
           <div>Total : 4 </div>
           <Input placeholder="Search..." />
