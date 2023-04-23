@@ -226,29 +226,8 @@ const Community = () => {
 
   return (
     <>
-      <RankContainer>
-        {/* <div>Rank</div> */}
-        <thead>
-          <tr>
-            <th>Rank</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ranks.map(rank => (
-            <tr key={rank.id}>
-              <td>{rank.ranking}</td>
-              <td>
-                <RankIcon key={rank.id} src={`/${rank.ranking}.png`} alt="/0.png" />
-              </td>
-              {/* <span>id:{rank.id} </span> */}
-              <td>User{rank.user_id - 1} | </td>
-              {/* <span>글번호:{rank.post_id} </span> */}
-              <td> {rank.likes}Likes</td>
-            </tr>
-          ))}
-        </tbody>
-      </RankContainer>
       <CommunityLayout>
+        <PageTitle title='COMMUNITY'/>
         <Routes>
           <Route
             path=":id"
@@ -336,6 +315,28 @@ const Community = () => {
           </>
         )}
       </CommunityLayout>
+      <RankContainer>
+        {/* <div>Rank</div> */}
+        <thead>
+          <tr>
+            <th>Rank</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ranks.map(rank => (
+            <tr key={rank.id}>
+              <td>{rank.ranking}</td>
+              <td>
+                <RankIcon key={rank.id} src={`/${rank.ranking}.png`} alt="/0.png" />
+              </td>
+              {/* <span>id:{rank.id} </span> */}
+              <td>User{rank.user_id - 1} | </td>
+              {/* <span>글번호:{rank.post_id} </span> */}
+              <td> {rank.likes}Likes</td>
+            </tr>
+          ))}
+        </tbody>
+      </RankContainer>
     </>
   );
 };
