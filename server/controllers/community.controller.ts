@@ -46,6 +46,7 @@ export const community_get = async (req: MyRequest, res: Response, next: NextFun
           {
             model: db.Post_comment,
           },
+          
         ],
       });
     }
