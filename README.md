@@ -70,7 +70,7 @@ Web3 커뮤니티 활동을 하면 토큰을 주는 형식으로 프로젝트.
  </tr>
  
   <tr>
-  <td align='center'>서학용</td>
+  <td align='center'></td>
   <td align='center'>Front-end, Smart Contract</td>
   <td align='center'><a href="https://github.com/shypang">shypang</a></td>
 
