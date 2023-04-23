@@ -16,6 +16,7 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import Tab from '../components/UI/Tab';
 import {darken, lighten} from 'polished';
+import DetailPage from './DetailPage';
 
 TimeAgo.addDefaultLocale(en);
 export interface PostsAttributes {
@@ -227,11 +228,17 @@ const Community = () => {
   return (
     <>
       <CommunityLayout>
-        <PageTitle title='COMMUNITY'/>
+        <PageTitle title="COMMUNITY" />
         <Routes>
           <Route
             path=":id"
             element={<PostPage setCurrentPage={setCurrentPage} setPosts={setPosts} posts={posts} />}
+          />
+          <Route
+            path="/detail/:id"
+            element={
+              <DetailPage setCurrentPage={setCurrentPage} setPosts={setPosts} posts={posts} />
+            }
           />
         </Routes>
         <PostButtonDiv>
@@ -316,7 +323,6 @@ const Community = () => {
         )}
       </CommunityLayout>
       <RankContainer>
-        {/* <div>Rank</div> */}
         <thead>
           <tr>
             <th>Rank</th>

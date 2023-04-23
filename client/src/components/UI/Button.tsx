@@ -1,16 +1,16 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import { darken } from 'polished';
+import styled, {css} from 'styled-components';
+import {darken} from 'polished';
 
 type Props = {
-  className?: string; 
-  type?: 'submit' | 'reset' | 'button'; 
-  onClick?: () => void;
+  className?: string;
+  type?: 'submit' | 'reset' | 'button';
+  onClick?: (e?: any) => void;
   children?: React.ReactNode;
   color?: string;
-}
+};
 
-const Button: React.FC<Props> = (props) => {
+const Button: React.FC<Props> = props => {
   return (
     <ButtonLayout
       className={`button ${props.className || ''}`}
@@ -25,10 +25,9 @@ const Button: React.FC<Props> = (props) => {
 
 Button.defaultProps = {
   //color: '#333',
-}
+};
 
 export default Button;
-
 
 const ButtonLayout = styled.button<Props>`
   display: inline-flex;
@@ -41,7 +40,7 @@ const ButtonLayout = styled.button<Props>`
   color: rgb(250, 250, 250);
   font-weight: bold;
   cursor: pointer;
-  
+
   //크기
   //height: 2rem;
   //width: 4rem;
@@ -49,7 +48,7 @@ const ButtonLayout = styled.button<Props>`
 
   ${props => {
     let selected = props.color || props.theme.mainColor;
-    if(!selected) selected = '#333' 
+    if (!selected) selected = '#333';
     return css`
       background: ${selected};
       &:hover {
@@ -57,7 +56,7 @@ const ButtonLayout = styled.button<Props>`
       }
       &:active {
         background: ${darken(0.2, selected)};
-      }      
-    `
-  }}  
-`
+      }
+    `;
+  }}
+`;

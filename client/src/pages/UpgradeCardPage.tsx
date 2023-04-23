@@ -8,7 +8,10 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import {AnimatePresence} from 'framer-motion';
-
+import {toast} from 'react-toastify';
+import Button from '../components/UI/Button';
+import {userId} from '../modules/atom';
+import {useRecoilValue} from 'recoil';
 const AppContainer = styled.div`
   background-color: #000;
   height: 100vh;
@@ -152,7 +155,7 @@ const UpgradeCardPage = () => {
   const [target, setTarget] = useState<Card | null>();
   const [upgradeCard, setUpgradeCard] = useState<Card>();
   const totalCards = myCards.length - 1;
-
+  const currId = useRecoilValue(userId);
   useEffect(() => {
     axios.get('http://localhost:8000/upgrade', {withCredentials: true}).then((res: any) => {
       setMyCards(res.data.data.nfts);
@@ -169,8 +172,13 @@ const UpgradeCardPage = () => {
       axios
         .post('http://localhost:8000/upgrade', {nft: target}, {withCredentials: true})
         .then((res: any) => {
-          console.log('upgrade res: ', res);
-          setUpgradeCard(res.data.data.mintedNft);
+          if (res.data.message === '성공했습니다.') {
+            console.log('upgrade res: ', res);
+            setUpgradeCard(res.data.data.mintedNft);
+            toast.success('You have successfully upgraded your card!');
+          } else {
+            toast.info('You failed to upgrade your card. 🛠');
+          }
         })
         .catch(err => {
           console.log('upgrade error: ', err);
@@ -184,7 +192,7 @@ const UpgradeCardPage = () => {
 
   const navigate = useNavigate();
   const handleButtonClick = () => {
-    navigate('/');
+    navigate(`/user/${currId}`);
   };
 
   const [index, setIndex] = useState(0);
@@ -232,7 +240,8 @@ const UpgradeCardPage = () => {
         <CardContainer>
           <CardComment>Congratulations!!!</CardComment>
           <Card bgImage={upgradeCard.img_url} />
-          <button onClick={handleButtonClick}>Check on MyPage</button>
+          <Button onClick={handleButtonClick}>Check on MyPage</Button>
+          {/* <button>Check on MyPage</button> */}
         </CardContainer>
       ) : (
         <div>
@@ -257,14 +266,14 @@ const UpgradeCardPage = () => {
                 </UpgradeText>
                 <UpgradeText>보유 COL: {myTokens}</UpgradeText>
 
-                <button
+                <Button
                   onClick={(e: any) => {
                     handleUpgrade(e);
                   }}
                 >
                   강화하기
-                </button>
-                <Confetti innerText={'성공'} />
+                </Button>
+                {/* <Confetti innerText={'성공'} /> */}
               </CardInfo>
             </TargetCard>
           </Layout>

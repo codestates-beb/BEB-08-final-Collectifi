@@ -12,7 +12,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {toast} from 'react-toastify';
 import {userId} from '../modules/atom';
 import {useRecoilValue} from 'recoil';
-interface PostProps {
+export interface PostProps {
   setCurrentPage: (value: number) => void;
   setPosts: (value: PostsAttributes[]) => void;
   posts: PostsAttributes[];

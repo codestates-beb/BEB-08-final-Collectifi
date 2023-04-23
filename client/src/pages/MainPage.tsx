@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Suspense} from 'react';
 import {ErrorBoundary} from 'react-error-boundary';
 import Button from '../components/UI/Button';
@@ -15,7 +15,8 @@ import {toast} from 'react-toastify';
 import {TypeAnimation} from 'react-type-animation';
 import CountUp from 'react-countup';
 import {useNavigate} from 'react-router-dom';
-
+import ScrollTrigger from 'react-scroll-trigger/types';
+import {useAnimation, useScroll} from 'framer-motion';
 const MainLayout = styled.div`
   width: 100%;
   height: 100%;
@@ -253,6 +254,20 @@ const MainPage = () => {
   const Toast = () => {
     toast('first notification');
   };
+  const headerAnimation = useAnimation();
+  const {scrollY} = useScroll();
+  useEffect(() => {
+    scrollY.onChange(() => {
+      if (scrollY.get() > 1350) {
+        // headerAnimation.start('scroll');
+        // setDarkMode(false);
+        setCounterOn(true);
+      } else {
+        // headerAnimation.start('top');
+        // setDarkMode(true);
+      }
+    });
+  }, [scrollY, headerAnimation]);
   const [counterOn, setCounterOn] = useState(false);
   return (
     <MainLayout>
@@ -352,7 +367,9 @@ const MainPage = () => {
           <Balloon1 src="/balloon3.png" />
         </FloatingDiv3>
 
-        <CountUpS start={0} end={25} duration={5} delay={0} />
+        {/* <ScrollTrigger onEnter={() => setCounterOn(true)} onExit={() => setCounterOn(false)}> */}
+        {counterOn && <CountUpS start={0} end={25} duration={5} delay={0} />}
+        {/* </ScrollTrigger> */}
       </Section>
     </MainLayout>
   );
