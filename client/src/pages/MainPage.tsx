@@ -14,6 +14,7 @@ import styled, {keyframes} from 'styled-components';
 import {toast} from 'react-toastify';
 import {TypeAnimation} from 'react-type-animation';
 import CountUp from 'react-countup';
+import {useNavigate} from 'react-router-dom';
 
 const MainLayout = styled.div`
   width: 100%;
@@ -157,6 +158,16 @@ const floatAnimation3 = keyframes`
     transform: translateY(0px);
   }
 `;
+const FloatingButton = styled.button`
+  width: 300px;
+  height: 50px;
+  position: absolute;
+  top: 92%;
+  left: 40%;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+`;
 
 const FloatingDiv1 = styled.div`
   width: 100%;
@@ -225,6 +236,7 @@ const Balloon2 = styled.img`
   width: 100%;
 `;
 const MainPage = () => {
+  const navigate = useNavigate();
   const [error, setError] = useState<any>(null);
   const [error2, setError2] = useState<any>(null);
   const [error3, setError3] = useState<any>(null);
@@ -303,7 +315,7 @@ const MainPage = () => {
       <MainWrapper>
         <MainImg src="/bg3.png" />
         <MainBack />
-        <MainButton onClick={Toast}>Get Player NFT</MainButton>
+        <MainButton onClick={() => navigate('/draw')}>Get Player NFT</MainButton>
         <MainTypeAnimation
           sequence={[
             'Own your NFT', // Types 'One'
@@ -323,7 +335,10 @@ const MainPage = () => {
         />
       </MainWrapper>
 
-      <Section2Image src="/trophy.png" />
+      <Section>
+        <Section2Image src="/trophy.png" />
+        <FloatingButton onClick={() => navigate('/community')}></FloatingButton>
+      </Section>
 
       <Section>
         <UpgradeBack src="/upgrade_background.jpg" />

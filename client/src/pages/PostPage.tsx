@@ -5,7 +5,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import {data} from '../data/data';
 import {WriteButton, WriteForm, WriteInput, WriteLabel, WriteTextarea} from './WritePage';
-import {PostsAttributes} from './CommunityPage';
+import {PostsAttributes, RankIcon} from './CommunityPage';
 import {faThumbsUp, faThumbsDown, faEdit} from '@fortawesome/free-regular-svg-icons';
 import {faCrown, faTrash, faCheck, faClose} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -31,6 +31,7 @@ interface Post {
 }
 interface User {
   nickname: string;
+  rank: number;
 }
 
 interface Post_comment {
@@ -79,9 +80,12 @@ const WriteContent = styled.div`
   margin-top: 10px;
   margin-bottom: 30px;
   line-height: 1.2;
+  text-align: center;
 `;
 const Writer = styled.span`
   padding: 10px;
+  display: flex;
+  align-items: center;
 `;
 const DateS = styled.span`
   display: flex;
@@ -142,7 +146,10 @@ const CommentUser = styled.div`
   justify-content: space-between;
   margin: 5px;
 `;
-
+const NickRank = styled.div`
+  display: flex;
+  align-items: center;
+`;
 const CrownIcon = styled(FontAwesomeIcon)`
   margin-left: 10px;
   color: #e9e900;
@@ -483,7 +490,10 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
           <Title>{postTitle}</Title>
 
           <WriterDate>
-            <Writer>Writer: {post.User?.nickname}</Writer>
+            <Writer>
+              <div>Writer: {post.User?.nickname}</div>
+              <RankIcon src={`/${post.User?.rank}.png`} alt="/0.png" />
+            </Writer>
             <DateS>
               <div>View: {post.views}</div>
               <div> {post.created_at.split('T')[0]}</div>
@@ -515,10 +525,11 @@ const PostPage = ({setCurrentPage, setPosts, posts}: PostProps) => {
               comments?.map(comment => (
                 <Comment key={comment.id}>
                   <CommentUser>
-                    <div>
-                      {comment.User.nickname}
-                      <CrownIcon icon={faCrown} />
-                    </div>
+                    <NickRank>
+                      <div>{comment.User.nickname}</div>
+                      {/* <CrownIcon icon={faCrown} /> */}
+                      <RankIcon src={`/${comment.User?.rank}.png`} alt="/0.png" />
+                    </NickRank>
 
                     {/* 댓쓴이와  로그인 계정이 동일한가? */}
                     {recoilUserId !== 0 && comment.Post_comment_likeds[0]?.user_id == user_Id ? (
