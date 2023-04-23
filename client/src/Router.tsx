@@ -20,9 +20,8 @@ import Event from './pages/Event';
 import EditPage from './pages/EditPage';
 import SliderTest2 from './pages/SliderTest2';
 import Donation from './pages/Donation';
-// import GalleryPage from './pages/GalleryPage';
-// import GalleryDetailPage from './pages/GalleryDetailPage';
-// import GalleryRegi from './components/gallery/GalleryRegi';
+import GalleryPage from './pages/GalleryPage';
+import GalleryDetailPage from './pages/GalleryDetailPage';
 import AdminLogin from './pages/AdminLogin';
 import Admin from './pages/Admin/Admin';
 import WinTest from './pages/WinTest';
@@ -35,7 +34,7 @@ const Router: React.FC<{toggle: () => void}> = props => {
         <Route path="/" element={<MainPage />} />
         <Route path="/draw" element={<DrawCardPage />} />
         <Route path="/upgrade" element={<UpgradeCardPage />} />
-        <Route path="/staking" element={<StakingPage />} />
+        {/* <Route path="/staking" element={<StakingPage />} /> */}
         <Route path="/swap" element={<SwapPage />} />
         <Route path="/pool" element={<PoolPage />} />
         <Route path="/market" element={<MarketPage />} />
@@ -45,8 +44,8 @@ const Router: React.FC<{toggle: () => void}> = props => {
         <Route path="/community/*" element={<Community />} />
         <Route path="/event/*" element={<Event />} />
         <Route path="/donation/*" element={<Donation />} />
-        {/* <Route path="/gallery" element={<GalleryRegi />} />
-        <Route path="/gallery/:id" element={<GalleryDetailPage />} /> */}
+        <Route path="/gallery" element={<GalleryPage />} />
+        <Route path="/gallery/:id" element={<GalleryDetailPage />} />
       </Route>
       <Route path="/write" element={<WritePage />} />
       <Route path="/edit" element={<EditPage />} />

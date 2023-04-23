@@ -1,16 +1,18 @@
 import { atom, selector, selectorFamily } from "recoil";
-import { userInfo, editNickname, editReferral } from "./api";
-import { userId, userNickname } from "../atom";
+import { userInfo, editNickname, editReferral, galleryInfo, withdraw, updateWithdraw} from "./api";
+import { userId, userNickname, userAmount } from "../atom";
 
 export const currentUserId = atom<number>({
   key: 'CurrentUserId',
   default: 0,
 });
 
+
 export const userInfoQuery = selectorFamily({
   key: 'UserInfoQuery',
   get: (id: number) => async ({get}) => {
     get(userId);
+    get(userAmount);
     //get(userNickname);
     const response = await userInfo(id);
     return response;
@@ -33,6 +35,35 @@ export const editReferralQuery = selectorFamily({
     const response = await editReferral(address);
     return response;
   }, 
+});
+
+export const galleryInfoQuery = selectorFamily({
+  key: 'GalleryInfoQuery',
+  get: (id: number) => async ({get}) => {
+    get(userId);
+    get(userAmount);
+    //get(userNickname);
+    const response = await galleryInfo(id);
+    return response;
+  },
+});
+
+export const withdrawQuery = selectorFamily({
+  key: 'WithdrawQuery',
+  get: (id: number) => async () => {
+    const response = await withdraw(id);
+    if(!response) return null;
+    return response;
+  },
+});
+
+export const updateWithdrawQuery = selectorFamily({
+  key: 'UdateWithdrawQuery',
+  get: (param: {gallId: number, nftId: number}) => async () => {
+    const response = await updateWithdraw(param.gallId, param.nftId);
+    if(!response) return null;
+    return response;
+  },
 });
 
 export const getUserInfoQuery = selector({

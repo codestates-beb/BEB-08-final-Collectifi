@@ -2,10 +2,10 @@ import {Request, Response, NextFunction} from 'express';
 import {ResponseData} from './controllers';
 import db from '../models';
 import Web3 from 'web3';
-import erc20abi from '../abis/erc20Abi';
 import {MyRequest} from '../@types/session';
 import {sendResponse} from './utils';
 import {Op} from 'sequelize';
+import erc20abi from '../abi/erc20abi';
 // 글 목록 페이지
 export const community_get = async (req: MyRequest, res: Response, next: NextFunction) => {
   try {

@@ -1,17 +1,17 @@
 import React from 'react';
 import {Suspense} from 'react';
 import {ErrorBoundary} from 'react-error-boundary';
-import Mypage from '../components/mypage/MyPage';
+import GalleryDetail from '../components/gallery/GalleryDetail';
 import Fallback from '../components/Fallback';
 
-const UserPage = () => {
+const GalleryDetailPage = () => {
   return (
-    <ErrorBoundary fallback={<Fallback />}>
+    <ErrorBoundary fallback={<div>error...</div>}>
       <Suspense>
-        <Mypage />
+        <GalleryDetail />
       </Suspense>
     </ErrorBoundary>
   );
 };
 
-export default UserPage;
+export default GalleryDetailPage;

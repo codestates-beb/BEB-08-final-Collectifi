@@ -22,9 +22,8 @@ export const market_get = async (req: Request, res: Response, next: NextFunction
     });
     return res.status(200).send({message: 'nft 목록 불러오기 성공', data: nfts});
   } catch (e) {
-    return res.status(400).send({message: 'nft 목록 불러오기 실패'});
-
     console.log(e);
+    return res.status(400).send({message: 'nft 목록 불러오기 실패'});   
   }
 };
 
@@ -36,6 +35,17 @@ export const market_nft_get = async (req: MyRequest, res: Response, next: NextFu
     console.log('=====userAddress=====', userAddress);
     const nft = await db.Nft.findOne({
       where: {token_id},
+      include: [{
+          model: db.User,
+          attributes: ['nickname'],
+        }, {
+          model: db.Nft_gallery,
+          required: false,
+          where: {
+            isWithdraw: false,
+          },
+        }
+      ]
     });
     const userGetNft = await db.User.findOne({
       where: {id: nft.user_id},
@@ -56,9 +66,8 @@ export const market_nft_record_get = async (req: Request, res: Response, next: N
     });
     return res.status(200).send({message: 'nft 목록 불러오기 성공', data: nftRecords});
   } catch (e) {
-    return res.status(400).send({message: 'nft 목록 불러오기 실패'});
-
     console.log(e);
+    return res.status(400).send({message: 'nft 목록 불러오기 실패'});
   }
 };
 
@@ -72,9 +81,8 @@ export const market_sell_get = async (req: MyRequest, res: Response, next: NextF
     });
     return res.status(200).send({message: '성공', data: nfts});
   } catch (e) {
-    return res.status(400).send({message: '실패'});
-
     console.log(e);
+    return res.status(400).send({message: '실패'});
   }
 };
 
@@ -105,8 +113,8 @@ export const market_sell_post = async (req: MyRequest, res: Response, next: Next
     }
     return res.status(400).send({message: '실패했습니다'});
   } catch (e) {
-    return res.status(400).send({message: '실패했습니다'});
     console.log(e);
+    return res.status(400).send({message: '실패했습니다'});    
   }
 };
 
@@ -177,7 +185,7 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
       const stringNftOwnerAddress: string = String(nftOwnerAddress);
 
       if (stringNftOwnerAddress.toUpperCase() == stringFromAddress.toUpperCase()) {
-        console.log('=======하이===');
+        console.log('=======하이===', fromAddress, toAddress, token_id, selling_price);
 
         //확인 후 NFT옮기는 권한을 부여한 후 NFT 소유권 이동 및 토큰 수량 업데이트
         const safeTransferFrom = await erc721Contract.methods
@@ -222,7 +230,7 @@ export const market_buy_post = async (req: MyRequest, res: Response, next: NextF
     }
     return res.status(400).send({message: '오류가 발생했습니다'});
   } catch (e) {
-    return res.status(400).send({message: '실패했습니다'});
     console.log('ERROR:: ', e);
+    return res.status(400).send({message: '실패했습니다'});    
   }
 };

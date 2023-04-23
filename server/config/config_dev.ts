@@ -8,6 +8,7 @@ interface Config {
   database: string;
   host: string;
   dialect:Dialect;
+  timezone: string;
 }
 
 const config:Config = {
@@ -16,8 +17,8 @@ const config:Config = {
       password : process.env.DB_PASSWD || "9164",
       database : process.env.DB_DBNAME || "test",
       host : process.env.DB_HOST || "localhost",
-      dialect : "mysql"
-  
+      dialect : "mysql",
+      timezone: "+09:00"
 };
 
 export default config;
