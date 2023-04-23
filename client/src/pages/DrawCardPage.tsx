@@ -9,6 +9,7 @@ import {useNavigate} from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {ParticleS} from './SwapPage';
 import Fireworks from '../components/UI/Particle2';
+import ModalAlert from '../components/UI/ModalAlert';
 
 const DrawLayout = styled(Layout)`
   height: 100%;
@@ -175,6 +176,7 @@ type PackAttributes = number;
 const DrawCardPage = () => {
   const [selectedPack, setSelectedPack] = useState<PackAttributes>(0);
   const navigate = useNavigate();
+  const [modal, setModal] = useState(false);
 
   const [card, setCard] = useState<CardAttributes>();
   const handleButtonClick = () => {
@@ -188,7 +190,7 @@ const DrawCardPage = () => {
   const handleSubmit = async (e: any) => {
     console.log(e);
     setSelectedPack(e);
-    console.log(selectedPack);
+    console.log('selected: ', selectedPack);
 
     if (confirm('정말 구매하시겠습니까?')) {
       // axios
@@ -212,6 +214,7 @@ const DrawCardPage = () => {
         isSell: false,
       });
       console.log('yes');
+      toast.success('Successfully minted your NFT card! 🎈');
     } else {
       console.log('no');
     }
@@ -219,11 +222,40 @@ const DrawCardPage = () => {
 
   return (
     <>
+      {modal && (
+        <ModalAlert
+          title={'Buy Now'}
+          message={'Are you sure you want to buy it?' + selectedPack}
+          onConfirm={() => {
+            console.log('no!');
+            setModal(false);
+          }}
+          onConfirm2={() => {
+            console.log('yes!');
+            setModal(false);
+            setCard({
+              token_id: 1,
+              user_id: 1,
+              player: 'Test',
+              season: '2023',
+              team: 'team1',
+              card_color: 1,
+              price: 5,
+              selling_price: 10,
+              img_url: '/7-1.png',
+              isSell: false,
+            });
+            console.log('yes');
+            toast.success('Successfully minted your NFT card! 🎈');
+          }}
+        />
+      )}
       {card ? (
         <CardContainer>
           <Fireworks />
           <CardComment>Congratulations!!!</CardComment>
           <Card src={card.img_url} />
+
           <button onClick={handleButtonClick}>Check on MyPage</button>
         </CardContainer>
       ) : (
@@ -237,7 +269,9 @@ const DrawCardPage = () => {
                   <PackListItem>
                     <Pack
                       onClick={(e: any) => {
-                        handleSubmit(0);
+                        // handleSubmit(0);
+                        setSelectedPack(0);
+                        setModal(true);
                       }}
                     >
                       <PackImgBox>
@@ -252,7 +286,9 @@ const DrawCardPage = () => {
                   <PackListItem>
                     <Pack
                       onClick={(e: any) => {
-                        handleSubmit(1);
+                        // handleSubmit(1);
+                        setSelectedPack(1);
+                        setModal(true);
                       }}
                     >
                       <PackImgBox>
@@ -267,7 +303,9 @@ const DrawCardPage = () => {
                   <PackListItem>
                     <Pack
                       onClick={(e: any) => {
-                        handleSubmit(2);
+                        // handleSubmit(2);
+                        setSelectedPack(2);
+                        setModal(true);
                       }}
                     >
                       <PackImgBox>
