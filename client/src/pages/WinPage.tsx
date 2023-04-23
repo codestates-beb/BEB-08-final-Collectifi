@@ -5,9 +5,13 @@ import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import {toast} from 'react-toastify';
 import Timer from './Timer';
+import PageTitle from '../components/UI/PageTitle';
+
 const WinLayout = styled.div`
-  margin-top: 150px;
-  max-width: 70%;
+  // margin-top: 150px;
+  // max-width: 70%;
+  padding: 40px 20px 30px;
+  max-width: 1140px;
   margin: 0 auto;
   @media only screen and (max-width: 1024px) {
     max-width: 93%;
@@ -23,7 +27,7 @@ const BigBox = styled.div`
   border-radius: 10px;
   box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.3);
 
-  margin-top: 50px;
+  //margin-top: 50px;
   height: 350px;
   margin-bottom: 40px;
   display: flex;
@@ -189,6 +193,7 @@ const WinPage = () => {
 
   return (
     <WinLayout>
+      <PageTitle title='BET ON MATCHS'/>
       <BigBox>
         <MatchDate>29th April</MatchDate>
         <Timer />

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Layout} from '../Styles';
 import {MiddleBox, TopBox, TopTitle} from './Event';
+import PageTitle from '../components/UI/PageTitle';
 import styled from 'styled-components';
 import Web3 from 'web3';
 
@@ -22,7 +23,7 @@ interface Info {
 }
 
 const GridContainer = styled.div`
-  padding: 30px 30px;
+  //padding: 30px 30px;
   width: 100%;
   /* background-color: blue; */
   height: 800px;
@@ -255,7 +256,7 @@ const Donation = () => {
   return (
     <Layout>
       <TopBox>
-        <TopTitle>Donations</TopTitle>
+        <PageTitle title='DONATIONS'/>
       </TopBox>
       <MiddleBox>
         {infos ? (
