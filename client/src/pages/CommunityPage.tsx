@@ -228,7 +228,7 @@ const Community = () => {
   return (
     <>
       <CommunityLayout>
-        <PageTitle title='COMMUNITY'/>
+        <PageTitle title="COMMUNITY" />
         <Routes>
           <Route
             path=":id"
@@ -323,7 +323,6 @@ const Community = () => {
         )}
       </CommunityLayout>
       <RankContainer>
-        {/* <div>Rank</div> */}
         <thead>
           <tr>
             <th>Rank</th>
