@@ -10,6 +10,7 @@ import Button from '../components/UI/Button';
 import BoardList from '../components/UI/BoardList';
 import BoardTitleItem from '../components/UI/BoardTitleItem';
 import BoardListItem from '../components/UI/BoardListItem';
+import PageTitle from '../components/UI/PageTitle';
 // created_at 포맷 라이브러리
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
@@ -41,7 +42,9 @@ interface IRank {
   ranking: number;
 }
 const CommunityLayout = styled.div`
-  max-width: 70%;
+  padding: 40px 20px 30px;
+  max-width: 1140px;
+  margin: 0 auto;
   margin: 0 auto;
   @media only screen and (max-width: 1024px) {
     max-width: 93%;
@@ -93,7 +96,7 @@ export const TabButton = styled.button<{selected: boolean}>`
 const PostButtonDiv = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin: 10px;
+  //margin: 10px;
 `;
 export const RankIcon = styled.img`
   width: 30px;
@@ -223,29 +226,8 @@ const Community = () => {
 
   return (
     <>
-      <RankContainer>
-        {/* <div>Rank</div> */}
-        <thead>
-          <tr>
-            <th>Rank</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ranks.map(rank => (
-            <tr key={rank.id}>
-              <td>{rank.ranking}</td>
-              <td>
-                <RankIcon key={rank.id} src={`/${rank.ranking}.png`} alt="/0.png" />
-              </td>
-              {/* <span>id:{rank.id} </span> */}
-              <td>User{rank.user_id - 1} | </td>
-              {/* <span>글번호:{rank.post_id} </span> */}
-              <td> {rank.likes}Likes</td>
-            </tr>
-          ))}
-        </tbody>
-      </RankContainer>
       <CommunityLayout>
+        <PageTitle title='COMMUNITY'/>
         <Routes>
           <Route
             path=":id"
@@ -333,6 +315,28 @@ const Community = () => {
           </>
         )}
       </CommunityLayout>
+      <RankContainer>
+        {/* <div>Rank</div> */}
+        <thead>
+          <tr>
+            <th>Rank</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ranks.map(rank => (
+            <tr key={rank.id}>
+              <td>{rank.ranking}</td>
+              <td>
+                <RankIcon key={rank.id} src={`/${rank.ranking}.png`} alt="/0.png" />
+              </td>
+              {/* <span>id:{rank.id} </span> */}
+              <td>User{rank.user_id - 1} | </td>
+              {/* <span>글번호:{rank.post_id} </span> */}
+              <td> {rank.likes}Likes</td>
+            </tr>
+          ))}
+        </tbody>
+      </RankContainer>
     </>
   );
 };

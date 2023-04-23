@@ -81,7 +81,7 @@ const RegiForm: React.FC<Props> = (props) => {
      return;
     }     
     setStakeData(stakeQData);
-    return;    
+    return;
   });
 
   const handleStakeClick = useRecoilCallback(({ snapshot }) => async () => {

@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 // 컴포넌트
 export const Layout = styled.div`
-  max-width: 80%;
+  padding: 40px 20px 30px;
+  max-width: 1140px;
   margin: 0 auto;
   display: flex;
   justify-content: center;
