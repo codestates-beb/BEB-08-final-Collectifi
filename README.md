@@ -30,7 +30,7 @@
 <hr/>
 
 <h3>Team Notion</h3>
-<a href="https://better-beam-bc8.notion.site/Collectifi-c471bd4e3ae442a48429f66fe8a5cbcc" target="_blank">
+<a href="https://codestates.notion.site/3-e8190ef76f694ef788f41897fc78d9f1?p=ff232f6e561e4e628f0fd543ae0c035c" target="_blank">
 <img src="https://simpleicons.org/icons/notion.svg" width=100 height=100></a>
 
 
