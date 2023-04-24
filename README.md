@@ -114,8 +114,6 @@
 - Disconnect : 메타마스크 지갑과의 연동을 해제합니다.
 
 
-<img width="80%" src="https://user-images.githubusercontent.com/37131369/233878090-da5a3571-6cf9-424b-aacc-ee866d50dd53.mp4">
-
 로그아웃 시
 - Login : 로그인 페이지로 이동합니다.
 - 회원가입 : 회원가입 페이지로 이동합니다.
