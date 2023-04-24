@@ -127,7 +127,7 @@
 
 <h3>draw Page</h3>
 
-<img width="50%" src="https://user-images.githubusercontent.com/89294486/233893144-76076bc7-61de-4f2b-85f4-5c5f231a7662.gif">
+<img width="80%" src="https://user-images.githubusercontent.com/89294486/233893144-76076bc7-61de-4f2b-85f4-5c5f231a7662.gif">
 
 - 팩은 Normal Class, High Class, World Class로 이루어져 있으며 뽑는 가격과 등장하는 축구 선수가 다릅니다.
 
@@ -144,7 +144,7 @@
 
 <h3>Gallery Page</h3>
 
-<img width="50%" src="https://user-images.githubusercontent.com/89294486/233894446-c1221c5b-b0c0-4ce1-b41a-07156e975444.gif">
+<img width="80%" src="https://user-images.githubusercontent.com/89294486/233894446-c1221c5b-b0c0-4ce1-b41a-07156e975444.gif">
 
 - 3개의 그룹으로 나뉘어져 있습니다
 - 그룹에 속한 축구 선수들을 스테이킹 할 수 있습니다.
@@ -154,7 +154,7 @@
 
 <h3>Market Page</h3>
 
-<img width="50%" src="https://user-images.githubusercontent.com/89294486/233895153-8deaf112-64ab-41b1-b3bc-21e0f8705ea4.gif">
+<img width="80%" src="https://user-images.githubusercontent.com/89294486/233895153-8deaf112-64ab-41b1-b3bc-21e0f8705ea4.gif">
 
 - 축구 선수 카드들을 거래하는 페이지입니다.
 - 자신이 보유한 카드를 마켓에 등록 할 수 있습니다.
@@ -165,7 +165,7 @@
 
 <h3>Win Page</h3>
 
-<img width="40%" src="https://user-images.githubusercontent.com/89294486/233895373-6ec5d9e5-8cc3-426d-8011-b86dc1ea14b7.gif">
+<img width="80%" src="https://user-images.githubusercontent.com/89294486/233895373-6ec5d9e5-8cc3-426d-8011-b86dc1ea14b7.gif">
 
 - 실제 경기가 이루어지기 전 해당 경기에 COL토큰을 걸어 승부 예측을 할 수 있습니다.
 - 경기가 끝난 후 결과에 따라 보상을 지급받습니다.
@@ -174,12 +174,12 @@
 
 <h3>Community Page</h3>
 
-<img width="40%" src="https://user-images.githubusercontent.com/89294486/233895613-d3ec80d6-5241-4a12-9a19-af80d8d4529f.gif">
+<img width="80%" src="https://user-images.githubusercontent.com/89294486/233895613-d3ec80d6-5241-4a12-9a19-af80d8d4529f.gif">
 
 
 
 
-<img width="40%" src="https://user-images.githubusercontent.com/89294486/233895870-730bb0de-30cd-45c4-ba38-e11c0bcde282.gif">
+<img width="80%" src="https://user-images.githubusercontent.com/89294486/233895870-730bb0de-30cd-45c4-ba38-e11c0bcde282.gif">
 
 
 
@@ -194,7 +194,7 @@
 
 Top Section : 로그인한 user의 정보를 확인합니다.
 
-<img width="40%" src="https://user-images.githubusercontent.com/89343745/227845004-a016f485-9e26-4917-a72f-5a4bd4d61643.png">
+<img width="80%" src="https://user-images.githubusercontent.com/89343745/227845004-a016f485-9e26-4917-a72f-5a4bd4d61643.png">
 
 - 추후 진행할 이벤트 페이지입니다.
 
@@ -202,7 +202,7 @@ Top Section : 로그인한 user의 정보를 확인합니다.
 
 <h3>Donation</h3>
 
-<img width="40%" src="https://user-images.githubusercontent.com/89294486/233896317-9ea7c4ea-3201-4f9e-b8c5-f1f224533bfd.gif">
+<img width="80%" src="https://user-images.githubusercontent.com/89294486/233896317-9ea7c4ea-3201-4f9e-b8c5-f1f224533bfd.gif">
 
 - 정해진 기간동안 기부금을 모금합니다.
 - 목표 금액을 달성하면 기부를 완료합니다.
@@ -211,6 +211,8 @@ Top Section : 로그인한 user의 정보를 확인합니다.
 <hr/>
 
 <h3>My Page</h3>
+
+<img width="80%" src="https://user-images.githubusercontent.com/89294486/233897143-cfbfece9-c6ce-4ae6-bb4a-2cc33c1ff34b.gif">
 
 
 - 지갑주소, 토큰 보유량,닉네임을 볼 수 있습니다.
