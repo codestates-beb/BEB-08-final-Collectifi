@@ -119,7 +119,7 @@
 
 <h3>Home Page</h3>
 
-<img width="80%" src="https://user-images.githubusercontent.com/89343745/227840297-53681ae5-d4b3-4486-8998-8a9dca41c85a.gif">
+<img width="80%" src="https://user-images.githubusercontent.com/37131369/233893128-03c27a89-6fff-4d7b-8265-e1a8ddc10926.gif">
 
 - 메인 페이지
 
