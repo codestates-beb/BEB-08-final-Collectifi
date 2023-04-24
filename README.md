@@ -210,6 +210,13 @@ Top Section : 로그인한 user의 정보를 확인합니다.
 
 <hr/>
 
+<h3>Swap</h3>
+
+<img width="80%" src="https://user-images.githubusercontent.com/89294486/233898680-673ecc4d-d7fa-47d6-91ef-d053507d268a.gif">
+
+- 코인간 스왑기능이 가능합니다.
+
+
 <h3>My Page</h3>
 
 <img width="80%" src="https://user-images.githubusercontent.com/89294486/233897143-cfbfece9-c6ce-4ae6-bb4a-2cc33c1ff34b.gif">
@@ -221,5 +228,7 @@ Top Section : 로그인한 user의 정보를 확인합니다.
 - 자신이 보유한 카드들의 목록을 볼 수 있습니다.
 - 자신이 쓴 글들의 목록을 볼 수 있습니다.
 - 갤러리에 등록한 카드들의 목록을 볼 수 있습니다.
+
+
 
 
