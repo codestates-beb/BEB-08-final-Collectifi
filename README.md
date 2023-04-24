@@ -154,7 +154,7 @@
 
 <h3>Market Page</h3>
 
-<img width="50%" src="https://user-images.githubusercontent.com/89343745/227843046-fd72636f-1467-47fd-ac46-7026dcf4a7cb.gif">
+<img width="50%" src="https://user-images.githubusercontent.com/89294486/233895153-8deaf112-64ab-41b1-b3bc-21e0f8705ea4.gif">
 
 - 축구 선수 카드들을 거래하는 페이지입니다.
 - 자신이 보유한 카드를 마켓에 등록 할 수 있습니다.
@@ -165,7 +165,7 @@
 
 <h3>Win Page</h3>
 
-<img width="40%" src="https://user-images.githubusercontent.com/89343745/227843587-1fb24cb5-6ae4-4692-9b43-202ddd5050c5.png">
+<img width="40%" src="https://user-images.githubusercontent.com/89294486/233895373-6ec5d9e5-8cc3-426d-8011-b86dc1ea14b7.gif">
 
 - 실제 경기가 이루어지기 전 해당 경기에 COL토큰을 걸어 승부 예측을 할 수 있습니다.
 - 경기가 끝난 후 결과에 따라 보상을 지급받습니다.
@@ -174,7 +174,14 @@
 
 <h3>Community Page</h3>
 
-<img width="40%" src="https://user-images.githubusercontent.com/89343745/227844371-607a89d4-2c49-4757-85e1-a101e2398886.png">
+<img width="40%" src="https://user-images.githubusercontent.com/89294486/233895613-d3ec80d6-5241-4a12-9a19-af80d8d4529f.gif">
+
+
+
+
+<img width="40%" src="https://user-images.githubusercontent.com/89294486/233895870-730bb0de-30cd-45c4-ba38-e11c0bcde282.gif">
+
+
 
 - 유저들의 커뮤니티 페이지입니다.
 - 글을 등록 할 수 있으며 1 COL 토큰을 보상으로 받습니다.
@@ -195,7 +202,7 @@ Top Section : 로그인한 user의 정보를 확인합니다.
 
 <h3>Donation</h3>
 
-
+<img width="40%" src="https://user-images.githubusercontent.com/89294486/233896317-9ea7c4ea-3201-4f9e-b8c5-f1f224533bfd.gif">
 
 - 정해진 기간동안 기부금을 모금합니다.
 - 목표 금액을 달성하면 기부를 완료합니다.
