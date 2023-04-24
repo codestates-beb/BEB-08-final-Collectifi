@@ -88,11 +88,10 @@
 # Diagram
 <h3>Flow chart</h3>
 
-<img width="1392" alt="스크린샷 2023-03-24 오후 1 36 29" src="https://user-images.githubusercontent.com/89294486/227430385-d62165dc-26e8-4a9a-a78f-387419997441.png">
-![flow](https://user-images.githubusercontent.com/37131369/233877828-d6d7e63c-c8d6-45db-9c7f-22fd51d4ebe0.png)
+<img width="1392" alt="스크린샷 2023-03-24 오후 1 36 29" src="https://user-images.githubusercontent.com/37131369/233877828-d6d7e63c-c8d6-45db-9c7f-22fd51d4ebe0.png">
 <h3>DB Schema</h3>
 
-<img width="1392" alt="스크린샷 2023-03-24 오후 1 36 29" src="https://user-images.githubusercontent.com/89343745/227846942-693248d9-2978-42fb-b913-10f8b9b925d4.png">
+<img width="1392" alt="스크린샷 2023-03-24 오후 1 36 29" src="https://user-images.githubusercontent.com/37131369/233877984-44a658b8-298c-4343-94bd-2b87b36728d7.png">
 
 
 
