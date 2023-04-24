@@ -109,7 +109,8 @@
 - Market : 축구 선수 카드 거래 페이지로 이동합니다.
 - Win : 승부예측 페이지로 이동합니다.
 - Community : 유저들간의 커뮤니티 페이지로 이동합니다.
-- Others : 이벤트 페이지로 이동합니다.
+- Others-Event : 이벤트 페이지로 이동합니다.
+- Others-Donation :  페이지로 이동합니다.
 - Connect : 메타마스크 지갑과 연동합니다.
 - Disconnect : 메타마스크 지갑과의 연동을 해제합니다.
 
@@ -124,91 +125,96 @@
 
 <img width="80%" src="https://user-images.githubusercontent.com/89343745/227840297-53681ae5-d4b3-4486-8998-8a9dca41c85a.gif">
 
-- Infinite Scroll 구현
-- 게시글을 위부터 생성된 시간이 빠른 순으로 확인할 수 있습니다.
+- 메인 페이지
 
 <hr/>
 
-<h3>Join Page</h3>
+<h3>draw Page</h3>
 
 <img width="50%" src="https://user-images.githubusercontent.com/89343745/227841380-e83d3774-1eca-424b-aea4-30ebff38a655.gif">
 
-- 비밀번호 : 8자 이상 대문자, 특수문자가 포함되어야만 합니다.
-- DB에 동일한 닉네임이 없고, 비밀번호가 일치한다면 DB에 정보를 저장합니다.
-- bcrypt: 원본이 아닌 해싱한 비밀번호를 DB에 저장합니다.
-- 사용자의 비밀번호를 통해 web3로 지갑을 생성하고 DB에 저장합니다.
-- 회원가입에 성공할시 알림 메시지를 띄우고, 로그인 페이지로 이동합니다.
+- 팩은 Normal Class, High Class, World Class로 이루어져 있으며 뽑는 가격과 등장하는 축구 선수가 다릅니다.
 
 <hr/>
 
-<h3>Login Page</h3>
+<h3>Upgrade Page</h3>
 
 <img width="50%" src="https://user-images.githubusercontent.com/89343745/227842171-1d1e44fc-3c0a-4b18-b280-3739c227aafc.gif">
 
-- DB에서 동일한 닉네임을 찾습니다.
-- 입력한 비밀번호를 bcrypt를 이용해 DB의 해싱한 비밀번호와 비교합니다.
-- 입력한 정보가 맞다면 로그인하고, 홈페이지로 이동합니다.
-
+- 뽑은 카드를 강화 할 수 있습니다.
+- 등급은 동색 -> 은색 -> 금색 순으로 이루어져 있습니다
+- 강화 비용은 동일하며 업그레이드 되는 확률은 상이합니다.
 <hr/>
 
-<h3>ETH Faucet</h3>
+<h3>Gallery Page</h3>
 
 <img width="50%" src="https://user-images.githubusercontent.com/89343745/227842662-9083cb38-36f8-49a6-b8c7-9ae3c30a31f0.gif">
 
-- 서버 계정인 가나슈 0번째 계정에서 0.1ETH를 로그인한 사용자에 전송합니다.
-- DB에서 user 정보를 업데이트 합니다.(eth_amount 0.1 증가)
+- 3개의 그룹으로 나뉘어져 있습니다
+- 그룹에 속한 축구 선수들을 스테이킹 할 수 있습니다.
+- 스테이킹 기간을 정할 수 있으며 기간이 만료하면 COL토큰을 보상으로 받습니다.
 
 <hr/>
 
-<h3>Write Page</h3>
+<h3>Market Page</h3>
 
 <img width="50%" src="https://user-images.githubusercontent.com/89343745/227843046-fd72636f-1467-47fd-ac46-7026dcf4a7cb.gif">
 
-- 게시글 작성시 ERC-20 토큰 1개를 사용자 주소로 지급합니다.
-- DB에 post, user 정보를 업데이트 합니다. (post 생성 / user 토큰 증가)
-- 작성에 성공하면 홈페이지에서 해당 글을 확인할 수 있습니다.
+- 축구 선수 카드들을 거래하는 페이지입니다.
+- 자신이 보유한 카드를 마켓에 등록 할 수 있습니다.
+- 등록된 카드들을 구매 할 수 있습니다.
+- 등록된 카드의 판매 기록을 볼 수 있습니다.
 
 <hr/>
 
-<h3>Detail Page</h3>
+<h3>Win Page</h3>
 
 <img width="40%" src="https://user-images.githubusercontent.com/89343745/227843587-1fb24cb5-6ae4-4692-9b43-202ddd5050c5.png">
 
-- 홈페이지에서 게시글들을 불러올 때 DB에서 post의 모든 정보를 불러옵니다.
-- 그 중 post의 id를 props로 전달하고, 클릭시 params에 해당 id를 전달해 검색합니다.
+- 실제 경기가 이루어지기 전 해당 경기에 COL토큰을 걸어 승부 예측을 할 수 있습니다.
+- 경기가 끝난 후 결과에 따라 보상을 지급받습니다.
 
 <hr/>
 
-<h3>NFT Mint Page</h3>
+<h3>Community Page</h3>
 
 <img width="40%" src="https://user-images.githubusercontent.com/89343745/227844371-607a89d4-2c49-4757-85e1-a101e2398886.png">
 
-- 로컬 컴퓨터에서 이미지를 불러옵니다.
-- 해당 이미지는 ipfs에 업로드되고, ipfs url을 전달받아 서버에 전달합니다.
-- 블록체인 네트워크(가나슈)에 트랜잭션을 실행하고, DB에서 nft를 저장합니다.
+- 유저들의 커뮤니티 페이지입니다.
+- 글을 등록 할 수 있으며 1 COL 토큰을 보상으로 받습니다.
+- 글들을 정렬 할 수 있습니다.
+- 좋아요를 많이 받은 유저 3명을 Rank 3로 선정합니다.
 
 <hr/>
 
-<h3>My Page</h3>
+<h3>Event</h3>
 
 Top Section : 로그인한 user의 정보를 확인합니다.
 
 <img width="40%" src="https://user-images.githubusercontent.com/89343745/227845004-a016f485-9e26-4917-a72f-5a4bd4d61643.png">
 
-- 나의 nft : 내가 민팅한 nft들을 확인합니다.
+- 추후 진행할 이벤트 페이지입니다.
 
 <hr/>
 
-Middle Section
+<h3>Donation</h3>
 
-- 나의 nft : 내가 민팅한 nft들을 확인합니다.
 
-- 내가 쓴 글 : 내가 작성한 게시글들을 확인합니다.
 
-<img width="40%" src="https://user-images.githubusercontent.com/89343745/227845382-bab2b5ac-3b83-43dc-91a3-04240136dbce.png">
+- 정해진 기간동안 기부금을 모금합니다.
+- 목표 금액을 달성하면 기부를 완료합니다.
+- 정해진 기간동안 목표 금액을 달성하지 못하면 기부금을 반환합니다.
 
 <hr/>
 
-- 송금 : 글쓰기 보상으로 획득한 ERC-20 토큰을 다른 주소로 송금할 수 있습니다.
+<h3>My Page</h3>
 
-<img width="40%" src="https://user-images.githubusercontent.com/89343745/227845706-7534c80a-e57f-469b-88b4-c4963630d709.gif">
+
+- 지갑주소, 토큰 보유량,닉네임을 볼 수 있습니다.
+- 닉네임을 수정 할 수 있습니다.
+- 추천인을 최대 1명 저장 할 수 있으며 저장 완료 시 보상을 지급받습니다.
+- 자신이 보유한 카드들의 목록을 볼 수 있습니다.
+- 자신이 쓴 글들의 목록을 볼 수 있습니다.
+- 갤러리에 등록한 카드들의 목록을 볼 수 있습니다.
+
+
