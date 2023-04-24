@@ -127,7 +127,7 @@
 
 <h3>draw Page</h3>
 
-<img width="50%" src="https://user-images.githubusercontent.com/89343745/227841380-e83d3774-1eca-424b-aea4-30ebff38a655.gif">
+<img width="50%" src="https://user-images.githubusercontent.com/89294486/233893144-76076bc7-61de-4f2b-85f4-5c5f231a7662.gif">
 
 - 팩은 Normal Class, High Class, World Class로 이루어져 있으며 뽑는 가격과 등장하는 축구 선수가 다릅니다.
 
@@ -135,7 +135,7 @@
 
 <h3>Upgrade Page</h3>
 
-<img width="50%" src="https://user-images.githubusercontent.com/89343745/227842171-1d1e44fc-3c0a-4b18-b280-3739c227aafc.gif">
+<img width="50%" src="https://user-images.githubusercontent.com/89294486/233894001-e91107d2-cd73-4974-bbe5-e21900c9c9c3.gif">
 
 - 뽑은 카드를 강화 할 수 있습니다.
 - 등급은 동색 -> 은색 -> 금색 순으로 이루어져 있습니다
@@ -144,7 +144,7 @@
 
 <h3>Gallery Page</h3>
 
-<img width="50%" src="https://user-images.githubusercontent.com/89343745/227842662-9083cb38-36f8-49a6-b8c7-9ae3c30a31f0.gif">
+<img width="50%" src="https://user-images.githubusercontent.com/89294486/233894446-c1221c5b-b0c0-4ce1-b41a-07156e975444.gif">
 
 - 3개의 그룹으로 나뉘어져 있습니다
 - 그룹에 속한 축구 선수들을 스테이킹 할 수 있습니다.
