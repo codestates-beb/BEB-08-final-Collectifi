@@ -108,7 +108,6 @@
 - Mypage : 마이 페이지로 이동합니다.
 - Logout : 로그아웃 됩니다.
 
-<img width="80%" src="https://user-images.githubusercontent.com/89343745/227840820-a636e2f9-bae6-4fc4-a5e0-72e2fe8b4d36.png">
 
 
 <img width="80%" src="https://user-images.githubusercontent.com/37131369/233878090-da5a3571-6cf9-424b-aacc-ee866d50dd53.mp4">
