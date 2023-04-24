@@ -99,7 +99,7 @@
 #  Functions
 <h3>Header</h3>
 
-<img width="1392" alt="스크린샷 2023-03-24 오후 1 36 29" src="https://user-images.githubusercontent.com/89294486/227426246-b0add5fb-f15f-4e28-9304-ffb74237a773.png">
+<img width="1437" alt="2023-04-24_11 43 39" src="https://user-images.githubusercontent.com/37131369/233889135-913b13bd-7530-4b8b-a672-ea16da124cb9.png">
 
 - Logo : 홈 페이지으로 이동합니다.
 - Play-Pack : 축구 선수 카드를 뽑는 페이지로 이동합니다.
