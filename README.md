@@ -146,7 +146,9 @@
 
 <img width="80%" src="https://user-images.githubusercontent.com/89294486/233894446-c1221c5b-b0c0-4ce1-b41a-07156e975444.gif">
 
-- 3개의 그룹으로 나뉘어져 있습니다
+<img width="80%" src="https://user-images.githubusercontent.com/89294486/233899809-2a9a56eb-702b-4f84-8120-655df26fe6e2.gif">
+
+- 전시(스테이킹) 기능으로 COL토큰을 보상으로 받습니다.
 - 그룹에 속한 축구 선수들을 스테이킹 할 수 있습니다.
 - 스테이킹 기간을 정할 수 있으며 기간이 만료하면 COL토큰을 보상으로 받습니다.
 
