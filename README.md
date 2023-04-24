@@ -112,6 +112,7 @@
 - Others-Event : 이벤트 페이지로 이동합니다.
 - Others-Donation :  페이지로 이동합니다.
 - Connect : 메타마스크 지갑과 연동합니다.
+<img width="1165" alt="2023-04-24_1 32 44" src="https://user-images.githubusercontent.com/37131369/233900747-cb71fdf3-cf9c-4397-a798-04fd4f11952f.png">
 - Disconnect : 메타마스크 지갑과의 연동을 해제합니다.
 
 
