@@ -110,9 +110,8 @@
 - Win : 승부예측 페이지로 이동합니다.
 - Community : 유저들간의 커뮤니티 페이지로 이동합니다.
 - Others : 이벤트 페이지로 이동합니다.
-- Logout : 로그아웃 됩니다.
-
-<img width="80%" src="https://user-images.githubusercontent.com/89343745/227840820-a636e2f9-bae6-4fc4-a5e0-72e2fe8b4d36.png">
+- Connect : 메타마스크 지갑과 연동합니다.
+- Disconnect : 메타마스크 지갑과의 연동을 해제합니다.
 
 
 <img width="80%" src="https://user-images.githubusercontent.com/37131369/233878090-da5a3571-6cf9-424b-aacc-ee866d50dd53.mp4">
