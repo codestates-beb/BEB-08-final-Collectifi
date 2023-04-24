@@ -71,9 +71,9 @@
  </tr>
  
   <tr>
-  <td align='center'></td>
+  <td align='center'>박규태</td>
   <td align='center'>Front-end, Smart Contract</td>
-  <td align='center'><a href="https://github.com/shypang">shypang</a></td>
+  <td align='center'><a href="https://github.com/soma90">soma90</a></td>
 
  </tr>
   
