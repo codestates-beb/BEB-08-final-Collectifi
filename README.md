@@ -192,14 +192,6 @@
 
 <hr/>
 
-<h3>Event</h3>
-
-Top Section : 로그인한 user의 정보를 확인합니다.
-
-
-
-- 추후 진행할 이벤트 페이지입니다.
-
 <hr/>
 
 <h3>Donation</h3>
