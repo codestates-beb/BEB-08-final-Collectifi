@@ -102,12 +102,17 @@
 <img width="1392" alt="스크린샷 2023-03-24 오후 1 36 29" src="https://user-images.githubusercontent.com/89294486/227426246-b0add5fb-f15f-4e28-9304-ffb74237a773.png">
 
 - Logo : 홈 페이지으로 이동합니다.
-- Mint NFT : NFT 민팅 페이지로 이동합니다.
-- Write : 게시글 작성 페이지로 이동합니다.
-- ETH Faucet : 0.1ETH를 지급 받습니다.
-- Mypage : 마이 페이지로 이동합니다.
+- Play-Pack : 축구 선수 카드를 뽑는 페이지로 이동합니다.
+- Play-Upgrade : 축구 선수 카드를 강화하는 페이지로 이동합니다.
+- Earn-Staking : 축구 선수 카드를 스테이킹해 보상을 얻는 페이지로 이동합니다.
+- Earn-Swap : ETH를 COL 토큰으로 교환하는 페이지로 이동합니다.
+- Market : 축구 선수 카드 거래 페이지로 이동합니다.
+- Win : 승부예측 페이지로 이동합니다.
+- Community : 유저들간의 커뮤니티 페이지로 이동합니다.
+- Others : 이벤트 페이지로 이동합니다.
 - Logout : 로그아웃 됩니다.
 
+<img width="80%" src="https://user-images.githubusercontent.com/89343745/227840820-a636e2f9-bae6-4fc4-a5e0-72e2fe8b4d36.png">
 
 
 <img width="80%" src="https://user-images.githubusercontent.com/37131369/233878090-da5a3571-6cf9-424b-aacc-ee866d50dd53.mp4">
