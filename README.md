@@ -194,7 +194,7 @@
 
 Top Section : 로그인한 user의 정보를 확인합니다.
 
-<img width="80%" src="https://user-images.githubusercontent.com/89343745/227845004-a016f485-9e26-4917-a72f-5a4bd4d61643.png">
+
 
 - 추후 진행할 이벤트 페이지입니다.
 
