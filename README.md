@@ -65,7 +65,7 @@
 
   <tr>
   <td align='center'>김상우</td>
-  <td align='center'>logo maker</td>
+  <td align='center'>support</td>
   <td align='center'><a href="https://github.com/keepgoing2021">keepgoing2021</a></td>
 
  </tr>
