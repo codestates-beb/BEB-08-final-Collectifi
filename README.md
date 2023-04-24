@@ -135,7 +135,7 @@
 
 <h3>Upgrade Page</h3>
 
-<img width="50%" src="https://user-images.githubusercontent.com/89294486/233894001-e91107d2-cd73-4974-bbe5-e21900c9c9c3.gif">
+<img width="80%" src="https://user-images.githubusercontent.com/89294486/233894001-e91107d2-cd73-4974-bbe5-e21900c9c9c3.gif">
 
 - 뽑은 카드를 강화 할 수 있습니다.
 - 등급은 동색 -> 은색 -> 금색 순으로 이루어져 있습니다
