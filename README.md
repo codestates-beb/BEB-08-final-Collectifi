@@ -35,11 +35,9 @@
 
 
 
-# Web3 Incentivized Community Project
+# Soccer player card collection and Incentive community
 
-Web3 커뮤니티 활동을 하면 토큰을 주는 형식으로 프로젝트.  
-
-게시글을 작성하면 ERC-20 토큰 TKI를 받으며, 이 토큰을 활용해 NFT를 민팅 할 수 있고 토큰을 타인에게 전송도 가능합니다.
+커뮤니티 활동을 하면 토큰을 받고 축구 선수 카드 뽑기 등 다양한 활동을 하는 프로젝트.  
 
 
 <h3> Team members </h3>
